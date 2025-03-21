@@ -3,23 +3,46 @@
     padding:0;
 }
 
+:root{
+    font-size:16px;
+    --color-accent:#3fdb1f;
+    --color-border:#000;
+
+    --fontsize-standard:1rem;
+    --fontsize-h1:3rem;
+    --fontsize-h2:1.75rem;
+
+    --fontsize-small:0.8rem;
+    --lineheight-small:1.25rem;
+}
+
 .front{
-    font-size:25px;
+    font-size:var(--fontsize-h2);
+}
+
+.front__redacted b, .front_redacted strong{
+    background-color:var(--color-accent);
+}
+
+.front__redacted rt{
+    display:none;
 }
 
 .front__vocab{
-	font-size:2.5em;
-	color:#3fdb1f;
+	font-size:var(--fontsize-h1);
+	color:var(--color-accent);
 			
 }
 
 b, strong{
-    color:#3fdb1f;
+    color:var(--color-accent);
+    font-weight:400;
 }
 
 .contents{
     display:flex;
     box-sizing: border-box;
+	font-size:20px;
 }
 
 .contents__meaning{
@@ -46,36 +69,49 @@ b, strong{
     flex-direction: column;
     align-items: center;
 
-    border-left: 2px solid black;
+    border-left: 2px solid var(--color-border);
 
 		
-		max-height:700px;		
+    max-height:700px;		
     overflow-y:auto;
-		padding:10px;
-		line-height:1em;
+    padding:10px;
+    line-height:1em;
 }
 
 
 
 .contents__details__information__kanji{
     padding: 5px;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--color-border);
+}
+
+
+.contents__details__information__kanji b, .contents__details__information__kanji strong{
+    font-size:var(--fontsize-h1);
+	font-weight:100;
+    line-height:var(--fontsize-h1);
 }
 
 
 .contents__details__information__notes{
     box-sizing: border-box;
     padding: 10px;
-    font-size: 14px;
+    font-size: var(--fontsize-small);
+	line-height:var(--lineheight-small);
     width:100%;
     text-align: left;
+    text-indent: 2em;
+}
+
+.contents__details__information__notes div{
+    margin-top:0.5em;
 }
 
 .card {
     font-family: arial;
     font-size: 20px;
     text-align: center;
-    color: black;
+    color: var(--color-border);
     background-color: white;
     margin:0;
     padding:0;
@@ -89,14 +125,15 @@ b, strong{
     flex-direction: column;
     align-items: center;
 
-    border-left: 2px solid black;
+    border-left: 2px solid var(--color-border);
     
     padding: 10px;
 }
 
 .contents__details__longform__sentence{
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--color-border);
 	padding-bottom: 10px;
+    font-size:1em;
 }
 
 .contents__details__longform__forming{

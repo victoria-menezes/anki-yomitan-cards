@@ -3,7 +3,10 @@
 </head>
 
 <body>
-{{FrontSide}}
+    <section class='front'>
+        <span>{{Sentence}}</span>
+        <br>
+    {{Sentence-translated}}
 <hr id=answer>
 <div class = 'contents'>
 	<div class='contents__meaning'>
@@ -11,10 +14,8 @@
 	</div>
 	<div class = 'contents__details'>
         <div class="contents__details__longform">
-			<div class = 'contents__details__longform__sentence'>
-				<p class="contents__details__longform__sentence__original">{{Sentence}}</p>
-				<p class='contents__details__longform__sentence__translation'>{{Sentence-translated}}</p>
-			</div>
+            <div class="vocab">{{Vocab-furigana}}</div>
+            {{Audio}}
 			<div class='contents__details__information__notes'>{{Notes}}</div>
 		</div>		
         <div class="contents__details__information">
