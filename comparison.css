@@ -1,0 +1,74 @@
+*{
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --accent-color:#3fdb1f;
+}
+
+.container{
+    margin-top:50px;
+    display:flex;
+    justify-content: space-between;
+}
+
+.divisor{
+    width:5px;
+    background-color: black;
+}
+.container__element{
+    width: 30%;
+    text-align: center;
+    padding: 0.5em 1em 1em 1em;
+    box-sizing: border-box;
+    flex-grow:1;
+}
+
+.bold, b, strong{
+    color:var(--accent-color);
+    font-weight:700;
+}
+
+.container__element__vocab{
+    font-size:2.5em;
+    display: inline-block;
+    line-height: 1em;
+}
+
+.container__element__sentence{
+    margin:0.5em 0;
+}
+
+.back{
+    height:800px;
+    display:flex;
+    flex-flow:column;
+    padding:0;
+}
+
+.container__element__dictionary{
+    height: 40%;
+    box-sizing: border-box;
+    padding: 1.5em;
+    overflow-y:auto;
+    border-bottom:5px solid black;
+}
+
+.container__element__notes{
+    flex-grow:1;
+    padding:0.5em;
+    overflow-y: auto;
+}
+
+.container__element__navi{
+    border-bottom: 3px solid black;
+    padding: 0.25em 0;
+    margin-bottom:0.5em;
+}
+
+.button{
+    text-decoration: none;
+    width:100px;
+    display:inline-block;
+}

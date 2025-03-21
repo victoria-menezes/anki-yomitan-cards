@@ -1,0 +1,61 @@
+<head>
+	<link rel="stylesheet" href="comparison.css">
+</head>
+
+<div class="container">
+    {{#Element 1}}
+    <div class="container__element">
+        <div class="container__element__vocab bold">
+            {{Element 1}}<br>
+        </div>
+        <div class="container__element__audio">
+            {{Audio 1}}
+        </div>
+        {{#Sentence 1}}
+        <div class="container__element__sentence">
+            <a class=hint href="#" onclick="this.style.display='none';document.getElementById('hint1').style.display='inline-block';return false;">
+                Show Sentence</a>
+            <div id="hint1" class=hint style="display: none">{{Sentence 1}}</div>
+        </div>
+        {{/Sentence 1}}
+    </div>
+    {{/Element 1}}
+
+    {{#Element 2}}
+    <div class="divisor"></div>
+    <div class="container__element">
+        <div class="container__element__vocab bold">
+            {{Element 2}}
+        </div>
+        <div class="container__element__audio">
+            {{Audio 2}}
+        </div>
+        {{#Sentence 2}}
+        <div class="container__element__sentence">
+            <a class=hint href="#" onclick="this.style.display='none';document.getElementById('hint2').style.display='inline-block';return false;">
+                Show Sentence</a>
+            <div id="hint2" class=hint style="display: none">{{Sentence 2}}</div>
+        </div>
+        {{/Sentence 2}}
+    </div>
+    {{/Element 2}}
+
+    {{#Element 3}}
+    <div class="divisor"></div>
+    <div class="container__element">
+        <div class="container__element__vocab bold">
+            {{Element 3}}
+        </div>
+        <div class="container__element__audio">
+            {{Audio 3}}
+        </div>
+        {{#Sentence 3}}
+        <div class="container__element__sentence">
+            <a class=hint href="#" onclick="this.style.display='none';document.getElementById('hint3').style.display='inline-block';return false;">
+                Show Sentence</a>
+            <div id="hint3" class=hint style="display: none">{{Sentence 3}}</div>
+        </div>
+        {{/Sentence 3}}
+    </div>
+    {{/Element 3}}
+</div>

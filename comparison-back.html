@@ -1,0 +1,237 @@
+<head>
+	<link rel="stylesheet" href="comparison.css">
+</head>
+
+
+<div class="container">
+    {{#Element 1}}
+    <div class="container__element">
+        <div class="container__element__vocab bold">
+            {{Element 1}}<br>
+        </div>
+        <div class="container__element__audio">
+            {{Audio 1}}
+        </div>
+        {{#Sentence 1}}
+        <div class="container__element__sentence">
+            <a class=hint href="#" onclick="this.style.display='none';document.getElementById('hint1').style.display='inline-block';return false;">
+                Show Sentence</a>
+            <div id="hint1" class=hint style="display: none">{{Sentence 1}}<br>{{Translation 1}}</div>
+        </div>
+        {{/Sentence 1}}
+    </div>
+    {{/Element 1}}
+
+    {{#Element 2}}
+    <div class="divisor"></div>
+    <div class="container__element">
+        <div class="container__element__vocab bold">
+            {{Element 2}}
+        </div>
+        <div class="container__element__audio">
+            {{Audio 2}}
+        </div>
+        {{#Sentence 2}}
+        <div class="container__element__sentence">
+            <a class=hint href="#" onclick="this.style.display='none';document.getElementById('hint2').style.display='inline-block';return false;">
+                Show Sentence</a>
+            <div id="hint2" class=hint style="display: none">{{Sentence 2}}<br>{{Translation 2}}</div>
+        </div>
+        {{/Sentence 2}}
+    </div>
+    {{/Element 2}}
+
+    {{#Element 3}}
+    <div class="divisor"></div>
+    <div class="container__element">
+        <div class="container__element__vocab bold">
+            {{Element 3}}
+        </div>
+        <div class="container__element__audio">
+            {{Audio 3}}
+        </div>
+        {{#Sentence 3}}
+        <div class="container__element__sentence">
+            <a class=hint href="#" onclick="this.style.display='none';document.getElementById('hint3').style.display='inline-block';return false;">
+                Show Sentence</a>
+            <div id="hint3" class=hint style="display: none">{{Sentence 3}}<br>{{Translation 3}}</div>
+        </div>
+        {{/Sentence 3}}
+    </div>
+    {{/Element 3}}
+</div>
+
+<hr id=answer>
+
+<div class="container">
+    {{#Element 1}}
+        <div class="container__element back">
+        {{#Dictionary 1}}
+            <div class="container__element__navi">
+                <a id="dict1-show" class="bold" href="#" onclick="this.style.display='none';
+                    document.getElementById('dict1').style.display='inline-block';
+                    document.getElementById('extra1').style.height='40%';
+                    document.getElementById('dict1-hide').style.display='inline-block';
+                    return false;"
+                    style="display:none;" >
+                    Show Dictionary
+                </a>
+                <a id="dict1-hide" class="bold" href="#" onclick="this.style.display='none';
+                    document.getElementById('dict1').style.display='none';
+                    document.getElementById('dict1-show').style.display='inline-block';
+                    return false;">
+                    Hide Dictionary
+                </a>
+            </div>    
+            <div class="container__element__dictionary" id="dict1">
+                {{Dictionary 1}}
+            </div>
+        {{/Dictionary 1}}
+            <div class="container__element__notes" id="extra1">
+                <div class="container__element__navi">
+                    {{#Forming 1}}
+                    <a id="navi-forming1" class="bold button" href="#" onclick="
+                    this.style.textDecoration='underline';
+                    document.getElementById('navi-notes1').style.textDecoration='none';
+                    document.getElementById('notes1').style.display='none';
+                    document.getElementById('forming1').style.display='inline-block';
+                    return false;">
+                        Forming
+                    </a>
+                    {{/Forming 1}}
+                    {{#Notes 1}}
+                        {{#Forming 1}} | {{/Forming 1}}
+                    {{/Notes 1}}
+                    {{#Notes 1}}
+                    <a id="navi-notes1" class="bold button" href="#" onclick="
+                    this.style.textDecoration='underline';
+                    document.getElementById('navi-forming1').style.textDecoration='none';
+                    document.getElementById('forming1').style.display='none';
+                    document.getElementById('notes1').style.display='inline-block';
+                    return false;" >
+                        Notes
+                    </a>
+                    {{/Notes 1}}
+                </div>
+                <span id="forming1" style="display:none;">{{Forming 1}}</span>
+                <span id="notes1">{{Notes 1}}</span>
+            </div>
+        </div>
+    {{/Element 1}}
+
+    {{#Element 2}}
+    
+    <div class="divisor"></div>
+        <div class="container__element back">
+        {{#Dictionary 2}}
+            <div class="container__element__navi">
+                <a id="dict2-show" class="bold" href="#" onclick="this.style.display='none';
+                    document.getElementById('dict2').style.display='inline-block';
+                    document.getElementById('extra2').style.height='40%';
+                    document.getElementById('dict2-hide').style.display='inline-block';
+                    return false;"
+                    style="display:none;" >
+                    Show Dictionary
+                </a>
+                <a id="dict2-hide" class="bold" href="#" onclick="this.style.display='none';
+                    document.getElementById('dict2').style.display='none';
+                    document.getElementById('dict2-show').style.display='inline-block';
+                    return false;">
+                    Hide Dictionary
+                </a>
+            </div>    
+            <div class="container__element__dictionary" id="dict2">
+                {{Dictionary 2}}
+            </div>
+        {{/Dictionary 2}}
+            <div class="container__element__notes" id="extra2">
+                <div class="container__element__navi">
+                    {{#Forming 2}}
+                    <a id="navi-forming2" class="bold button" href="#" onclick="
+                    this.style.textDecoration='underline';
+                    document.getElementById('navi-notes2').style.textDecoration='none';
+                    document.getElementById('notes2').style.display='none';
+                    document.getElementById('forming2').style.display='inline-block';
+                    return false;">
+                        Forming
+                    </a>
+                    {{/Forming 2}}
+                    {{#Notes 2}}
+                        {{#Forming 2}} | {{/Forming 2}}
+                    {{/Notes 2}}
+                    {{#Notes 2}}
+                    <a id="navi-notes2" class="bold button" href="#" onclick="
+                    this.style.textDecoration='underline';
+                    document.getElementById('navi-forming2').style.textDecoration='none';
+                    document.getElementById('forming2').style.display='none';
+                    document.getElementById('notes2').style.display='inline-block';
+                    return false;" >
+                        Notes
+                    </a>
+                    {{/Notes 2}}
+                </div>
+                <span id="forming2" style="display:none;">{{Forming 2}}</span>
+                <span id="notes2">{{Notes 2}}</span>
+            </div>
+        </div>
+    {{/Element 2}}
+
+    {{#Element 3}}
+    
+    <div class="divisor"></div>
+        <div class="container__element back">
+        {{#Dictionary 3}}
+            <div class="container__element__navi">
+                <a id="dict3-show" class="bold" href="#" onclick="this.style.display='none';
+                    document.getElementById('dict3').style.display='inline-block';
+                    document.getElementById('extra3').style.height='40%';
+                    document.getElementById('dict3-hide').style.display='inline-block';
+                    return false;"
+                    style="display:none;" >
+                    Show Dictionary
+                </a>
+                <a id="dict3-hide" class="bold" href="#" onclick="this.style.display='none';
+                    document.getElementById('dict3').style.display='none';
+                    document.getElementById('dict3-show').style.display='inline-block';
+                    return false;">
+                    Hide Dictionary
+                </a>
+            </div>    
+            <div class="container__element__dictionary" id="dict3">
+                {{Dictionary 3}}
+            </div>
+        {{/Dictionary 3}}
+            <div class="container__element__notes" id="extra3">
+                <div class="container__element__navi">
+                    {{#Forming 3}}
+                    <a id="navi-forming3" class="bold button" href="#" onclick="
+                    this.style.textDecoration='underline';
+                    document.getElementById('navi-notes3').style.textDecoration='none';
+                    document.getElementById('notes3').style.display='none';
+                    document.getElementById('forming3').style.display='inline-block';
+                    return false;">
+                        Forming
+                    </a>
+                    {{/Forming 3}}
+                    {{#Notes 3}}
+                        {{#Forming 3}} | {{/Forming 3}}
+                    {{/Notes 3}}
+                    {{#Notes 3}}
+                    <a id="navi-notes3" class="bold button" href="#" onclick="
+                    this.style.textDecoration='underline';
+                    document.getElementById('navi-forming3').style.textDecoration='none';
+                    document.getElementById('forming3').style.display='none';
+                    document.getElementById('notes3').style.display='inline-block';
+                    return false;" >
+                        Notes
+                    </a>
+                    {{/Notes 3}}
+                </div>
+                <span id="forming3" style="display:none;">{{Forming 3}}</span>
+                <span id="notes3">{{Notes 3}}</span>
+            </div>
+        </div>
+    {{/Element 3}}
+
+
+</div>

@@ -1,0 +1,104 @@
+*{
+    margin:0;
+    padding:0;
+}
+
+.front{
+    font-size:25px;
+}
+
+.front__vocab{
+	font-size:2.5em;
+	color:#3fdb1f;
+			
+}
+
+b, strong{
+    color:#3fdb1f;
+}
+
+.contents{
+    display:flex;
+    box-sizing: border-box;
+}
+
+.contents__meaning{
+    box-sizing:border-box;
+    width:50%;
+    font-size:15px;
+    padding: 10px 30px;
+    max-height: 700px;
+    overflow-y:auto;
+}
+
+.contents__details{
+    display:flex;
+    justify-content:space-evenly;
+
+    width:100%;
+}
+
+.contents__details__information{
+    box-sizing: border-box;
+
+    width:40%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+
+    border-left: 2px solid black;
+
+		
+		max-height:700px;		
+    overflow-y:auto;
+		padding:10px;
+		line-height:1em;
+}
+
+
+
+.contents__details__information__kanji{
+    padding: 5px;
+    border-bottom: 2px solid black;
+}
+
+
+.contents__details__information__notes{
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 14px;
+    width:100%;
+    text-align: left;
+}
+
+.card {
+    font-family: arial;
+    font-size: 20px;
+    text-align: center;
+    color: black;
+    background-color: white;
+    margin:0;
+    padding:0;
+}
+
+.contents__details__longform{
+    box-sizing: border-box;
+    width:60%;
+
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+
+    border-left: 2px solid black;
+    
+    padding: 10px;
+}
+
+.contents__details__longform__sentence{
+    border-bottom: 2px solid black;
+	padding-bottom: 10px;
+}
+
+.contents__details__longform__forming{
+    padding:1em;
+}
