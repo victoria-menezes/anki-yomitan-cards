@@ -1,5 +1,12 @@
 <head>
 	<link rel="stylesheet" href="styles.css">
+	<script>
+		if (document.getElementById("transitivity").textContent=='Transitive'){
+			document.getElementById("transitivity").style.color="var(--color-transitive)";
+		} else{
+			document.getElementById("transitivity").style.color="var(--color-intransitive)";
+		}
+	</script> 
 </head>
 
 <body>
@@ -15,7 +22,8 @@
 				<p class="contents__details__longform__sentence__original">{{Sentence}}</p>
 				<p class='contents__details__longform__sentence__translation'>{{Sentence-translated}}</p>
 			</div>
-			<div class='contents__details__information__notes'>{{Notes}}</div>
+			<div class='contents__details__information__transitivity' id='transitivity'>{{Transitivity}}</div>
+			<div class='contents__details__information__notes' id='notes'>{{Notes}}</div>
 		</div>		
         <div class="contents__details__information">
 			<div class='contents__details__information__kanji'>{{Kanji}}</div>
