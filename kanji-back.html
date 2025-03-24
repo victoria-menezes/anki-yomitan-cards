@@ -1,3 +1,5 @@
+<head></head>
+<body>
 {{FrontSide}}
 
 <hr id=answer>
@@ -13,13 +15,13 @@
     </div>
     <div class="contents__kunyomi divisor-right">
         <h2 class="contents__title">KUN</h2>
-        <div class="contents__kunyomi__readings">
+        <div class="contents__kun--readings contents__readings" id="kun">
             {{Kunyomi}}
         </div>
     </div>
     <div class="contents__onyomi">
         <h2 class="contents__title">ON</h2>
-        <div class="contents__onyomi__readings">
+        <div class="contents__on--readings contents__readings" id="on">
             {{Onyomi}}
         </div>
     </div>
@@ -28,4 +30,14 @@
 <script>
     let content = document.getElementsByClassName("yomitan-glossary")[0].innerText
     document.getElementById("meanings").innerText=content
+
+    let kun = document.getElementsByClassName("contents__kun--readings")[0].innerText
+    kun = kun.replaceAll(", ","<br>");
+    document.getElementById("kun").innerHTML = kun
+
+    let on = document.getElementsByClassName("contents__on--readings")[0].innerText
+    on = on.replaceAll(", ","<br>");
+    document.getElementById("on").innerHTML = on
 </script>
+
+</body>

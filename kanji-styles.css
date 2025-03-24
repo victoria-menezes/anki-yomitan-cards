@@ -17,6 +17,7 @@
     --fontsize-standard:1rem;
     --fontsize-h1:3rem;
     --fontsize-h2:1.75rem;
+    --fontsize-h3:1.5rem;
 
     --fontsize-small:1rem;
     --lineheight-small:1.25rem;
@@ -53,7 +54,7 @@
 }
 
 .contents__readings{
-    font-size: var(--fontsize-h2);
+    font-size: var(--fontsize-h3);
 }
 
 .contents__examples__content{
