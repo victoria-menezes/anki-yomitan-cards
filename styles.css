@@ -7,8 +7,9 @@
     font-size:16px;
     --color-accent:#3fdb1f;
     --color-transitive:#95baff;
-    --color-intransitive:rgb(224, 75, 75);
+    --color-intransitive:#e04b4b;
     --color-border:#000;
+    --color-highlight:rgba(63, 219, 31,0.25);
 
     --fontsize-standard:1rem;
     --fontsize-h1:3rem;
@@ -123,6 +124,13 @@ b, strong{
 
 .contents__details__information__notes div{
     margin-top:0.5em;
+}
+
+.contents__details__information__notes b,
+.contents__details__information__notes strong{
+    color:white;
+    background-color:var(--color-highlight);
+    font-weight:700;
 }
 
 .card {

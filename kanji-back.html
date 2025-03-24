@@ -1,0 +1,31 @@
+{{FrontSide}}
+
+<hr id=answer>
+
+<div class="meanings" id="meanings">{{Meaning}}
+</div>
+<div class="contents">
+    <div class="contents__examples divisor-right">
+        <h2 class="contents__title">EXAMPLES</h2>
+        <div class="contents__examples__content">
+            {{Examples}}
+        </div>
+    </div>
+    <div class="contents__kunyomi divisor-right">
+        <h2 class="contents__title">KUN</h2>
+        <div class="contents__kunyomi__readings">
+            {{Kunyomi}}
+        </div>
+    </div>
+    <div class="contents__onyomi">
+        <h2 class="contents__title">ON</h2>
+        <div class="contents__onyomi__readings">
+            {{Onyomi}}
+        </div>
+    </div>
+</div>
+
+<script>
+    let content = document.getElementsByClassName("yomitan-glossary")[0].innerText
+    document.getElementById("meanings").innerText=content
+</script>

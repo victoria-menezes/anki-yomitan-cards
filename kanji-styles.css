@@ -1,0 +1,82 @@
+*{
+    margin:0;
+    padding:0;
+    text-align: center;
+}
+
+:root{
+    font-size:20px;
+    --color-accent:#3fdb1f;
+    --color-transitive:#95baff;
+    --color-intransitive:#e04b4b;
+    --color-kun:#daaa63;
+    --color-on:#d67cc7;
+    --color-border:#000;
+    --color-highlight:rgba(63, 219, 31,0.25);
+
+    --fontsize-standard:1rem;
+    --fontsize-h1:3rem;
+    --fontsize-h2:1.75rem;
+
+    --fontsize-small:1rem;
+    --lineheight-small:1.25rem;
+}
+
+#front{
+    font-size: var(--fontsize-h1);
+    color: var(--color-accent);
+    font-weight: 300;
+}
+
+.meanings{
+    font-size: var(--fontsize-h2);
+    text-align: center;
+    padding: 0.5em 0;
+    display:block;
+}
+
+.contents{
+    display:flex;
+    justify-content: center;
+}
+
+.contents > div {
+    padding: 0 1rem;
+}
+
+.divisor-right{
+    border-right: 5px solid var(--color-border);
+}
+
+.contents__examples{
+    width: 40%;
+}
+
+.contents__readings{
+    font-size: var(--fontsize-h2);
+}
+
+.contents__examples__content{
+    text-align: left;
+}
+
+.contents__examples__content b{
+    font-size: var(--fontsize-h2);
+    color:var(--color-accent);
+}
+
+.contents__title{
+    font-size:var(--fontsize-h2);
+    color: var(--color-accent);
+    border-bottom: 3px solid var(--color-accent);
+}
+
+.contents__onyomi h2{
+    color:var(--color-on);
+    border-color: var(--color-on);
+}
+
+.contents__kunyomi h2{
+    color:var(--color-kun);
+    border-color: var(--color-kun);
+}
