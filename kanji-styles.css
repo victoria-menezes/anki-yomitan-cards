@@ -21,6 +21,7 @@
 
     --fontsize-small:1rem;
     --lineheight-small:1.25rem;
+    --lineheight-big: 3rem;
 }
 
 #front{
@@ -38,7 +39,7 @@
 
 .contents{
     display:flex;
-    justify-content: center;
+    justify-content:center;
 }
 
 .contents > div {
@@ -53,6 +54,10 @@
     flex-grow:0.7;
 }
 
+.contents__examples > .contents__title{
+    text-align: left;
+}
+
 .contents__readings{
     font-size: var(--fontsize-h3);
 }
@@ -60,6 +65,7 @@
 .contents__examples__content{
     text-align: left;
     display:flex;
+
 }
 
 .contents__examples__content b{
@@ -68,23 +74,32 @@
     font-weight: 400;
 }
 
-.contents__examples__furigana{
-    width:40%;
-    text-align:right;
-    line-height:2em;
+.minor-divisor-right{
+    padding-right:1rem;
+    margin-right: 1rem;
+    border-right: 2px solid var(--color-accent);
 }
 
-.contents__examples__words{
-    width:20%;
+.contents__examples__furigana, .contents__examples__words{
+    width:auto;
+    line-height:var(--lineheight-big);
+    font-weight:300;
+    color: var(--color-accent);
+    font-size:var(--fontsize-h2)
+}
 
-    line-height:2em;
+.contents__examples__furigana u, .contents__examples__words u{
+    background-color: var(--color-highlight);
+    color: white;
+}
+.contents__examples__furigana{
+    text-align:right;
 }
 
 .contents__examples__meanings{
     width:60%;
     text-align:left;
-
-    line-height:2em;
+    line-height:var(--lineheight-big);
 }
 
 .contents__title{
