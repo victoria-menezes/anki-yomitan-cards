@@ -2,14 +2,14 @@
     <span class="front__vocab">{{Vocab-furigana}}</span>
     <br>
 <span class="sentence">{{Sentence}}</span>
- 
-<span id='here'></span>
-<br>
+
+<div class="front__button__container">
     <a class="button" href="#" onclick="
         this.style.display='none';
         document.getElementsByClassName('sentence')[0].style.display='inline-block';
         return false;">
-        Show Sentence</a>
+        Show sentences
+    </a>
 	<a class="button" href="#"  onclick="
         this.style.display='none';
 		let furiganaList = document.querySelectorAll('rt');
@@ -17,5 +17,7 @@
 			furiganaList[i].style.display='block'
 		};
         return false;">
-        Show Furigana</a>
+        Show furigana
+    </a>
+</div>
 </section>

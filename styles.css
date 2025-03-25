@@ -42,6 +42,12 @@ rt{
     display:none;
 }
 
+.front__button__container{
+    display:flex;
+    justify-content: center;
+    gap:2rem;
+margin-bottom:1em;
+}
 
 .button {
     color:var(--color-text);
@@ -50,6 +56,7 @@ rt{
     padding:0.25em;
     display:block;
     margin-top:1em;
+    width: auto;
 }
 
 
@@ -126,6 +133,9 @@ b, strong{
     line-height:var(--fontsize-h1);
 }
 
+.contents__details__longform__sentence rt{
+display:block;
+}
 
 .contents__details__information__notes{
     box-sizing: border-box;
