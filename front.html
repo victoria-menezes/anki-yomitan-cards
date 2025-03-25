@@ -1,7 +1,21 @@
 <section class='front'>
-    <span class="vocab">{{Vocab-furigana}}</span>
+    <span class="front__vocab">{{Vocab-furigana}}</span>
     <br>
-    {{Audio}}<br>
-    {{Sentence}}<br>
-    {{Sentence-Audio}}
+<span class="sentence">{{Sentence}}</span>
+ 
+<span id='here'></span>
+<br>
+    <a class="button" href="#" onclick="
+        this.style.display='none';
+        document.getElementsByClassName('sentence')[0].style.display='inline-block';
+        return false;">
+        Show Sentence</a>
+	<a class="button" href="#"  onclick="
+        this.style.display='none';
+		let furiganaList = document.querySelectorAll('rt');
+		for (let i=0; i<furiganaList.length;i++){
+			furiganaList[i].style.display='block'
+		};
+        return false;">
+        Show Furigana</a>
 </section>
