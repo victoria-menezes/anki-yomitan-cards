@@ -50,7 +50,7 @@
 }
 
 .contents__examples{
-    width: 40%;
+    flex-grow:0.7;
 }
 
 .contents__readings{
@@ -59,11 +59,32 @@
 
 .contents__examples__content{
     text-align: left;
+    display:flex;
 }
 
 .contents__examples__content b{
     font-size: var(--fontsize-h2);
     color:var(--color-accent);
+    font-weight: 400;
+}
+
+.contents__examples__furigana{
+    width:40%;
+    text-align:right;
+    line-height:2em;
+}
+
+.contents__examples__words{
+    width:20%;
+
+    line-height:2em;
+}
+
+.contents__examples__meanings{
+    width:60%;
+    text-align:left;
+
+    line-height:2em;
 }
 
 .contents__title{
