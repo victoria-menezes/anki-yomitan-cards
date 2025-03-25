@@ -31,14 +31,14 @@
 <a href="https://jisho.org/search/*{{Character}}*">jisho word search</a>
 
 <script>
-    {var content = document.getElementsByClassName("yomitan-glossary")[0].innerText
+    {let content = document.getElementsByClassName("yomitan-glossary")[0].innerText
     document.getElementById("meanings").innerText=content
 
-    var kun = document.getElementsByClassName("contents__kun--readings")[0].innerText
+    let kun = document.getElementsByClassName("contents__kun--readings")[0].innerText
     kun = kun.replaceAll(", ","<br>");
     document.getElementById("kun").innerHTML = kun
 
-    var on = document.getElementsByClassName("contents__on--readings")[0].innerText
+    let on = document.getElementsByClassName("contents__on--readings")[0].innerText
     on = on.replaceAll(", ","<br>");
     document.getElementById("on").innerHTML = on}
 </script>
