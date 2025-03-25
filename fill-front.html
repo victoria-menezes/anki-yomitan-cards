@@ -1,4 +1,20 @@
 <section class='front'>
     <span class="front__redacted">{{Sentence}}</span>
-    <br>
-{{Sentence-translated}}
+<span class='sentence'>{{Sentence-translated}}</span>
+<div class="front__button__container">
+    <a class="button" href="#" onclick="
+        this.style.display='none';
+        document.getElementsByClassName('sentence')[0].style.display='inline-block';
+        return false;">
+        Show translation
+    </a>
+	<a class="button" href="#"  onclick="
+        this.style.display='none';
+		let furiganaList = document.querySelectorAll('rt');
+		for (let i=0; i<furiganaList.length;i++){
+			furiganaList[i].style.display='block'
+		};
+        return false;">
+        Show furigana
+    </a>
+</div>

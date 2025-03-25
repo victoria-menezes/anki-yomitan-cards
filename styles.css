@@ -21,7 +21,7 @@
 }
 
 h2{
-font-size:var(--fontsize-h2);
+    font-size:var(--fontsize-h2);
     margin-top:1em;
     margin-bottom:0.5em;
     font-weight:00;
@@ -38,6 +38,10 @@ font-size:var(--fontsize-h2);
     background-color:var(--color-accent);
 }
 
+.front__redacted b > ruby > rt{
+color: rgba(1,1,1,0);
+}
+
 rt{
     display:none;
 }
@@ -46,7 +50,7 @@ rt{
     display:flex;
     justify-content: center;
     gap:2rem;
-margin-bottom:1em;
+    margin-bottom:1em;
 }
 
 .button {
