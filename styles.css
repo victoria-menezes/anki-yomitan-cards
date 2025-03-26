@@ -21,7 +21,7 @@
 }
 
 h2{
-    font-size:var(--fontsize-h2);
+font-size:var(--fontsize-h2);
     margin-top:1em;
     margin-bottom:0.5em;
     font-weight:00;
@@ -50,7 +50,7 @@ rt{
     display:flex;
     justify-content: center;
     gap:2rem;
-    margin-bottom:1em;
+margin-bottom:1em;
 }
 
 .button {
@@ -118,7 +118,7 @@ b, strong{
     line-height:1em;
 }
 
-.contents__details__information__transitivity{
+.contents__details__information__transitivity, .contents__details__information__function{
     font-size:var(--fontsize-h2);
     text-transform: uppercase;
     display:block;
