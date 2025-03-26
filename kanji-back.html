@@ -22,9 +22,6 @@
     <div class="contents__examples">
         <h2 class="contents__title">EXAMPLES</h2>
         <div class="contents__examples__content">
-            <div class="contents__examples__furigana minor-divisor-right">
-                {{Examples-Furigana}}
-            </div>
             <div class="contents__examples__words minor-divisor-right">
                 {{Examples}}
             </div>
@@ -48,7 +45,20 @@
 
     let on = document.getElementsByClassName("contents__on--readings")[0].innerText
     on = on.replaceAll(", ","<br>");
-    document.getElementById("on").innerHTML = on}
+    document.getElementById("on").innerHTML = on
+
+    let words_container = document.getElementsByClassName("contents__examples__words")[0]
+
+    replace = words_container.innerHTML
+
+    replace = replace.replaceAll("</b>", "</ruby>");
+    replace = replace.replaceAll("</u>", "</rt>");
+
+    replace = replace.replaceAll("<b>", "<ruby>");
+    replace = replace.replaceAll("<u>", "<rt>");
+    
+    words_container.innerHTML = replace;    
+    }
 </script>
 
 </body>
