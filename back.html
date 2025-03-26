@@ -1,42 +1,28 @@
 <head>
 	<link rel="stylesheet" href="styles.css">
-	<script>
-		if (document.getElementById("transitivity").textContent=='Transitive'){
-			document.getElementById("transitivity").style.color="var(--color-transitive)";
-		} else{
-			document.getElementById("transitivity").style.color="var(--color-intransitive)";
-		}
-	</script> 
 </head>
-
 
 <body>
 <section class='front'>
-    <div>{{Sentence}}</div>
-    <div class='sentence' style='display:block'>{{Sentence-translated}}</div>
-    <div class="front__button__container">
-        <a class="button" href="#"  onclick="
-            this.style.display='none';
-            let furiganaList = document.querySelectorAll('rt');
-            for (let i=0; i<furiganaList.length;i++){
-                furiganaList[i].style.display='block'
-            };
-            return false;">
-            Show furigana
-        </a>
-    </div>
+    {{FrontSide}}
+</section>
+
 <hr id=answer>
 <div class = 'contents'>
 	<div class='contents__meaning'>
+    {{Audio}}<br>
 		{{Meaning}}
 	</div>
 	<div class = 'contents__details'>
         <div class="contents__details__longform">
-            <div class="front__vocab"><b>{{Vocab-furigana}}</b></div>
-            {{Audio}}
+			<div class = 'contents__details__longform__sentence'>
+				<p class="contents__details__longform__sentence__original">{{Sentence}}</p>
+				<p class='contents__details__longform__sentence__translation'>{{Sentence-translated}}</p>
+			</div>
+			
 <div class='contents__details__information__function' id='function'>{{Function}}</div>
 <div class='contents__details__information__transitivity' id='transitivity'>{{Transitivity}}</div>
-			<div class='contents__details__information__notes'>{{Notes}}</div>
+			<div class='contents__details__information__notes' id='notes'>{{Notes}}</div>
 		</div>		
         <div class="contents__details__information">
 			<div class='contents__details__information__kanji'>{{Kanji}}</div>
@@ -48,7 +34,23 @@
 	</div>
 </div>
 
+
+
 <a href="https://bunpro.jp/vocabs/{{Vocab}}">Bunpro Vocab</a> | <a href="https://bunpro.jp/grammar_points/{{Vocab}}">Bunpro Grammar</a> | <a href="https://bunpro.jp/search?query={{Vocab}}">Bunpro Search</a><br><a>
-<a href="https://jisho.org/word/{{Vocab}}">Jisho</a><br>
+<a href="https://jisho.org/word/{{Vocab}}">Jisho</a><br><br>
 <a>{{Source-URL}}</a>
 </body>
+
+<script>
+{
+	if(document.getElementById("transitivity").textContent.toLowerCase=='transitive'){
+		document.getElementById("transitivity").style.color="var(--color-transitive)";
+	}else{
+		document.getElementById("transitivity").style.color="var(--color-intransitive)";
+	}
+	let furiganaList = document.querySelectorAll("rt");
+	for (let i=0; i<furiganaList.length;i++){
+		furiganaList[i].style.display="ruby-text"
+	}
+}
+</script> 

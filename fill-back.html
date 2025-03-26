@@ -11,7 +11,20 @@
 
 
 <body>
-{{FrontSide}}
+<section class='front'>
+    <div>{{Sentence}}</div>
+    <div class='sentence' style='display:block'>{{Sentence-translated}}</div>
+    <div class="front__button__container">
+        <a class="button" href="#"  onclick="
+            this.style.display='none';
+            let furiganaList = document.querySelectorAll('rt');
+            for (let i=0; i<furiganaList.length;i++){
+                furiganaList[i].style.display='block'
+            };
+            return false;">
+            Show furigana
+        </a>
+    </div>
 <hr id=answer>
 <div class = 'contents'>
 	<div class='contents__meaning'>
@@ -21,6 +34,7 @@
         <div class="contents__details__longform">
             <div class="front__vocab"><b>{{Vocab-furigana}}</b></div>
             {{Audio}}
+<div class='contents__details__information__function' id='function'>{{Function}}</div>
 <div class='contents__details__information__transitivity' id='transitivity'>{{Transitivity}}</div>
 			<div class='contents__details__information__notes'>{{Notes}}</div>
 		</div>		
