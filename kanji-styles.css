@@ -7,23 +7,34 @@
 :root{
     font-size:20px;
     --color-accent:#3fdb1f;
-    --color-transitive:#95baff;
-    --color-intransitive:#e04b4b;
-    --color-kun:#daaa63;
-    --color-on:#d67cc7;
+    --color-text: #fff;
     --color-border:#000;
     --color-highlight:rgba(63, 219, 31,0.25);
+
+    --color-noun:#042a70;
+    --color-verb:#682904;
+    --color-adjective:#005851;
+    --color-adverb:#5f005f;
+    --color-particle:var(--color-accent);
+    
+    --color-transitive:#74a4ff;
+    --color-intransitive:#e04b4b;
+    --color-na:#4cddbe;
+    --color-i:#e453f1;
+    --color-suru:#adb5d8;
 
     --fontsize-standard:1rem;
     --fontsize-h1:3rem;
     --fontsize-h2:1.75rem;
-    --fontsize-h3:1.5rem;
 
     --fontsize-small:1rem;
     --lineheight-small:1.25rem;
-    --lineheight-big: 3rem;
 }
 
+i {
+    font-style:normal;
+    color:var(--color-text);
+}
 #front{
     font-size: var(--fontsize-h1);
     color: var(--color-accent);

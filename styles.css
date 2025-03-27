@@ -10,10 +10,10 @@
     --color-border:#000;
     --color-highlight:rgba(63, 219, 31,0.25);
 
-    --color-noun:#b1c0db;
-    --color-verb:#d8afaf;
-    --color-adjective:#8de0d9;
-    --color-adverb:#caa8ca;
+    --color-noun:#042a70;
+    --color-verb:#682904;
+    --color-adjective:#005851;
+    --color-adverb:#5f005f;
     --color-particle:var(--color-accent);
     
     --color-transitive:#74a4ff;
@@ -143,11 +143,18 @@ b, strong{
 }
 
 .attribute_list > ul > li{
-    background-color:white;
-    color:var(--color-border);
     text-align: center;
     padding:0.5em;
     border-radius: 0 0.5em;
+}
+
+.contents__details__information__type > ul > li{
+    color:var(--color-border);
+}
+
+.contents__details__information__function > ul > li{
+    color:var(--color-text);
+    border: 2px dotted var(--color-text);
 }
 
 .contents__details__information__kanji{
