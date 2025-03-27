@@ -1,3 +1,5 @@
+/* DEPRECATED, ALL INSIDE STYLES.CSS */
+
 *{
     margin:0;
     padding:0;
@@ -47,19 +49,19 @@ i {
     font-weight: 300;
 }
 
-.meanings{
+.kanji-meanings{
     font-size: var(--fontsize-h2);
     text-align: center;
     padding: 0.5em 0;
     display:block;
 }
 
-.contents{
+.kanji-contents{
     display:flex;
     justify-content:center;
 }
 
-.contents > div {
+.kanji-contents > div {
     padding: 0 1rem;
 }
 
@@ -75,25 +77,25 @@ i {
     color:var(--color-on)
 }
 
-.contents__examples{
+.kanji-contents__examples{
     flex-grow:0.7;
 }
 
-.contents__examples > .contents__title{
+.kanji-contents__examples > .kanji-contents__title{
     text-align: left;
 }
 
-.contents__readings{
+.kanji-contents__readings{
     font-size: var(--fontsize-h2);
 }
 
-.contents__examples__content{
+.kanji-contents__examples__content{
     text-align: left;
     display:flex;
 
 }
 
-.contents__examples__content b{
+.kanji-contents__examples__content b{
     font-size: var(--fontsize-h2);
     color:var(--color-accent);
     font-weight: 400;
@@ -105,53 +107,43 @@ i {
     border-right: 2px solid var(--color-accent);
 }
 
-.contents__examples__furigana, .contents__examples__words{
+.kanji-contents__examples__furigana, .kanji-contents__examples__words{
     width:auto;
     font-weight:300;
     color: var(--color-accent);
     font-size:var(--fontsize-h2)
 }
 
-.contents__examples__words > ul,.contents__examples__meanings > ul{
+.kanji-contents__examples__words > ul,.kanji-contents__examples__meanings > ul{
     display:flex;
     flex-direction: column;
     list-style: none;
 }
 
-.contents__examples__words > ul > li, .contents__examples__meanings > ul > li{
+.kanji-contents__examples__words > ul > li, .kanji-contents__examples__meanings > ul > li{
     height: 2.5rem;
     border-bottom: 1px solid var(--color-accent);
     margin-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
 
-.contents__examples__furigana u, .contents__examples__words u{
+.kanji-contents__examples__furigana u, .kanji-contents__examples__words u{
     background-color: var(--color-highlight);
 		line-height:var(--lineheight-small);
     color: white;
 }
-.contents__examples__furigana{
+.kanji-contents__examples__furigana{
     text-align:right;
 }
 
-.contents__examples__meanings{
+.kanji-contents__examples__meanings{
     width:60%;
     text-align:left;
     line-height:var(--lineheight-big);
 }
 
-.contents__title{
+.kanji-contents__title{
     font-size:var(--fontsize-h2);
     color: var(--color-accent);
     border-bottom: 3px solid var(--color-accent);
-}
-
-.contents__onyomi h2{
-    color:var(--color-on);
-    border-color: var(--color-on);
-}
-
-.contents__kunyomi h2{
-    color:var(--color-kun);
-    border-color: var(--color-kun);
 }
