@@ -57,6 +57,9 @@
     replace = replace.replaceAll("<b>", "<ruby>");
     replace = replace.replaceAll("<u>", "<rt>");
     
+    let character = document.getElementById("character").innerText
+    replace = replace.replaceAll(character,'<i>'+character+'</i>')
+
     words_container.innerHTML = replace;    
     }
 </script>
