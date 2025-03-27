@@ -23,6 +23,9 @@
     --color-i:#e453f1;
     --color-suru:#adb5d8;
 
+    --color-on:#e660da;
+    --color-kun:#518de7;
+
     --fontsize-standard:1rem;
     --fontsize-h1:3rem;
     --fontsize-h2:1.75rem;
@@ -62,6 +65,14 @@ i {
     border-right: 5px solid var(--color-border);
 }
 
+.title-kun{
+    color:var(--color-kun)
+}
+
+.title-on{
+    color:var(--color-on)
+}
+
 .contents__examples{
     flex-grow:0.7;
 }
@@ -71,7 +82,7 @@ i {
 }
 
 .contents__readings{
-    font-size: var(--fontsize-h3);
+    font-size: var(--fontsize-h2);
 }
 
 .contents__examples__content{
