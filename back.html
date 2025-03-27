@@ -20,8 +20,8 @@
 				<p class='contents__details__longform__sentence__translation'>{{Sentence-translated}}</p>
 			</div>
 			
-<div class='contents__details__information__function' id='function'>{{Function}}</div>
-<div class='contents__details__information__transitivity' id='transitivity'>{{Transitivity}}</div>
+<div class='contents__details__information__function attribute_list' id='function'>{{Function}}</div>
+<div class='contents__details__information__type attribute_list' id='type'>{{Type}}</div>
 			<div class='contents__details__information__notes' id='notes'>{{Notes}}</div>
 		</div>		
         <div class="contents__details__information">
@@ -43,14 +43,21 @@
 
 <script>
 {
-	if(document.getElementById("transitivity").textContent.toLowerCase=='transitive'){
-		document.getElementById("transitivity").style.color="var(--color-transitive)";
-	}else{
-		document.getElementById("transitivity").style.color="var(--color-intransitive)";
+	let functionList = document.getElementById('function').getElementsByTagName('li');
+	for (var i = 0; i<functionList.length; i++){
+		newColor = "var(--color-"+functionList[i].innerText.toLowerCase()+")";
+		functionList[i].style.backgroundColor=newColor;
 	}
+
+	let typeList = document.getElementById('type').getElementsByTagName('li');
+	for (var i = 0; i<typeList.length; i++){
+		newColor = "var(--color-"+typeList[i].innerText.toLowerCase()+")";
+		typeList[i].style.backgroundColor=newColor;
+	}
+
 	let furiganaList = document.querySelectorAll("rt");
 	for (let i=0; i<furiganaList.length;i++){
-		furiganaList[i].style.display="ruby-text"
+		furiganaList[i].backgroundColor.display="ruby-text"
 	}
 }
 </script> 
