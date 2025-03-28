@@ -154,11 +154,11 @@ b, strong{
     border-radius: 0 0.5em;
 }
 
-.contents__details__information__type > ul > li{
+.contents__details__information__type li{
     color:var(--color-border);
 }
 
-.contents__details__information__function > ul > li{
+.contents__details__information__function li{
     color:var(--color-text);
     border: 2px dotted var(--color-text);
 }
@@ -176,7 +176,7 @@ b, strong{
 }
 
 .contents__details__longform__sentence rt{
-display:block;
+    display:block;
 }
 
 .contents__details__information__notes{
@@ -236,11 +236,7 @@ display:block;
 }
 
 /* KANJI STYLESHEET ------------------------------------------------------- */
-.kanji-contents__examples__words > ul > li > ruby > rt{
-    display:block;
-}
-
-.kanji-contents__examples__words > ul > li > i > ruby > rt{
+.kanji-contents__examples__words rt{
     display:block;
 }
 
@@ -330,13 +326,13 @@ i {
     font-size:var(--fontsize-h2)
 }
 
-.kanji-contents__examples__words > ul,.kanji-contents__examples__meanings > ul{
+.kanji-contents__examples__words ul,.kanji-contents__examples__meanings ul{
     display:flex;
     flex-direction: column;
     list-style: none;
 }
 
-.kanji-contents__examples__words > ul > li, .kanji-contents__examples__meanings > ul > li{
+.kanji-contents__examples__words li, .kanji-contents__examples__meanings li{
     height: 2.5rem;
     border-bottom: 1px solid var(--color-accent);
     margin-top: 0.5rem;
