@@ -236,6 +236,14 @@ display:block;
 }
 
 /* KANJI STYLESHEET ------------------------------------------------------- */
+.kanji-contents__examples__words > ul > li > ruby > rt{
+    display:block;
+}
+
+.kanji-contents__examples__words > ul > li > i > ruby > rt{
+    display:block;
+}
+
 i {
     font-style:normal;
     color:var(--color-text);
