@@ -50,12 +50,12 @@ h2{
     font-size:var(--fontsize-h2);
 }
 
-.front__redacted b, .front_redacted strong{
+.front__redacted b, .front__redacted strong{
     background-color:var(--color-accent);
 }
 
-.front__redacted b > ruby > rt{
-color: rgba(1,1,1,0);
+.front__redacted rt{
+    color: rgba(1,1,1,0);
 }
 
 rt{
@@ -203,6 +203,7 @@ b, strong{
 }
 
 .card {
+    font-family: arial;
     font-size: 20px;
     text-align: center;
     color: var(--color-border);
