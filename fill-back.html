@@ -25,10 +25,12 @@
 	</div>
 	<div class = 'contents__details'>
         <div class="contents__details__longform">
+			<div>{{Sentence}}</div>
+			<div class='sentence' style='display:block'>{{Sentence-translated}}</div>
             <div class="front__vocab"><b>{{Vocab-furigana}}</b></div>
             {{Audio}}
-<div class='contents__details__information__function attribute_list' id='function'>{{Function}}</div>
-<div class='contents__details__information__type attribute_list' id='type'>{{Type}}</div>
+			<div class='contents__details__information__function attribute_list' id='function'>{{Function}}</div>
+			<div class='contents__details__information__type attribute_list' id='type'>{{Type}}</div>
 			<div class='contents__details__information__notes'>{{Notes}}</div>
 		</div>		
         <div class="contents__details__information">
@@ -46,7 +48,7 @@
 <a>{{Source-URL}}</a>
 	<script>
 		{
-		let functionList = document.getElementById('function').getElementsByTagName('li');
+			let functionList = document.getElementById('function').getElementsByTagName('li');
 		for (var i = 0; i<functionList.length; i++){
 			newColor = "var(--color-"+functionList[i].innerText.toLowerCase()+")";
 			functionList[i].style.backgroundColor=newColor;
