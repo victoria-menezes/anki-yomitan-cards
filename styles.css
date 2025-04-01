@@ -40,7 +40,7 @@ h2{
     font-size:var(--fontsize-h2);
     margin-top:1em;
     margin-bottom:0.5em;
-    font-weight:00;
+    font-weight:700;
     color:var(--color-accent);
     padding-bottom:0.25em;
     border-bottom:2px solid var(--color-accent);
@@ -169,7 +169,10 @@ b, strong{
 }
 
 
-.contents__details__information__kanji b, .contents__details__information__kanji strong{
+.contents__details__information__kanji b,
+.contents__details__information__kanji strong,
+.kanji-lookalikes b,
+.kanji-lookalikes strong{
     font-size:var(--fontsize-h1);
 	font-weight:100;
     line-height:var(--fontsize-h1);
@@ -250,11 +253,36 @@ i {
     font-weight: 300;
 }
 
+.kanji-header{
+    display:flex;
+    justify-content: space-around;
+}
+
 .kanji-meanings{
     font-size: var(--fontsize-h2);
     text-align: center;
     padding: 0.5em 0;
     display:block;
+    width: 50%;
+}
+
+.kanji-lookalikes{
+    padding: 1em;
+    border-left: 2px solid var(--color-accent);
+}
+
+.kanji-lookalikes h2{
+    margin-top: 0.2em;
+}
+
+.kanji-lookalikes ul{
+    display:flex;
+    list-style: none;
+}
+
+.kanji-lookalikes li{
+    border-bottom: 1px solid var(--color-accent);
+    padding-bottom:0.2em;
 }
 
 .kanji-contents{
