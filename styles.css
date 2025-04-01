@@ -254,8 +254,8 @@ i {
 }
 
 .kanji-header{
-    display:flex;
-    justify-content: space-around;
+    display:grid;
+    grid-template-columns: 25% 50% 25%;
 }
 
 .kanji-meanings{
@@ -263,7 +263,7 @@ i {
     text-align: center;
     padding: 0.5em 0;
     display:block;
-    width: 50%;
+    grid-column:2;
 }
 
 .kanji-lookalikes{
