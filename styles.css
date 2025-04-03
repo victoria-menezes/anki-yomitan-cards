@@ -9,7 +9,7 @@
 
     --color-accent:#3fdb1f;
     --color-text: #fff;
-    --color-border:#000;
+    --color-border:#008a12;
     --color-highlight:rgba(63, 219, 31,0.25);
 
     --color-noun:#042a70;
@@ -261,17 +261,14 @@ i {
 .kanji-meanings{
     font-size: var(--fontsize-h2);
     text-align: center;
-    padding: 0.5em 0;
     display:block;
-    grid-column:2;
 }
 
-.kanji-lookalikes{
+.kanji-header-item{
     padding: 1em;
-    border-left: 2px solid var(--color-accent);
 }
 
-.kanji-lookalikes h2{
+.kanji-header-item h2{
     margin-top: 0.2em;
 }
 
