@@ -1,67 +1,167 @@
 <head>
-	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="new.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 
 <body>
-<section class='front'>
-    {{FrontSide}}
-</section>
+<div class="wrapper">
+    <section class="standard-front">
+        <h1 class="vocab">{{Vocab}}</h1>
+        <div class="container-buttons">
+            <button class="button" href="#" onclick="
+                showById('sentence-front');
+                this.style.display='none';">
+                Show sentences
+            </button>
+            <button class="button" href="#"  onclick="
+                this.style.display='none';
+                let furiganaList = document.querySelectorAll('rt');
+                for (let i=0; i<furiganaList.length;i++){
+                    furiganaList[i].style.display='block'
+                };
+                return false;">
+                Show furigana
+            </button>
+        </div>
+        <span class="sentence-front" id="sentence-front">{{Sentence}}</span>
+    </section>
+    <section class="standard-back">
+        <ul class="navigation">
+            <li class="navigation-item tab-button" id="button-examples" onclick="
+                hideById('tab-meaning');
+                hideById('tab-forming');
+                underline(this.id);
+                showById('tab-examples');
+                ">
+                Notes
+            </li>
+            <li class="navigation-item tab-button" id="button-meaning" onclick="
+                hideById('tab-examples');
+                hideById('tab-forming');
+                underline(this.id);
+                showById('tab-meaning');
+            ">
+                Dictionary
+            </li>
+            <li class="navigation-item tab-button" id="button-forming" onclick="
+                hideById('tab-examples');
+                hideById('tab-meaning');
+                underline(this.id);
+                showById('tab-forming');
+            ">
+                Forming
+            </li>
+        </ul>
+        <div class="tabs-container">
+            <div class="tab container-audio-meaning" id="tab-meaning">
+                <div class="audio">
+                    {{Audio}}
+                </div>
+                <div class="meaning">
+                    {{Meaning}}
 
-<hr id=answer>
-<div class = 'contents'>
-	<div class='contents__meaning'>
-    {{Audio}}<br>
-		{{Meaning}}
-	</div>
-	<div class = 'contents__details'>
-        <div class="contents__details__longform">
-			<div class = 'contents__details__longform__sentence'>
-				<p class="contents__details__longform__sentence__original">{{Sentence}}</p>
-				<p class='contents__details__longform__sentence__translation'>{{Sentence-translated}}</p>
-			</div>
-			
-<div class='contents__details__information__function attribute_list' id='function'>{{Function}}</div>
-<div class='contents__details__information__type attribute_list' id='type'>{{Type}}</div>
-			<div class='contents__details__information__notes' id='notes'>{{Notes}}</div>
-		</div>		
-        <div class="contents__details__information">
-			<div class='contents__details__information__kanji'>{{Kanji}}</div>
-            <div class="contents__details__longform__forming">
-				{{Forming}}
-			</div>
-			<div class='contents__details__information__links'>{{Related Links}}</div>
-		</div>
-	</div>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque viverra ligula pellentesque neque sollicitudin, et facilisis urna efficitur. In hac habitasse platea dictumst. Fusce accumsan, diam in dapibus lobortis, purus ipsum viverra neque, a pharetra odio ipsum eget enim. Nam suscipit diam turpis, vitae molestie purus gravida vitae. Curabitur ac congue justo. Praesent ut gravida leo. Etiam ac molestie orci, vel dignissim neque. Phasellus congue est eu est rhoncus vulputate. Nullam feugiat pretium nibh et dapibus. Aenean erat nibh, fringilla ac consectetur malesuada, suscipit in nunc. Sed maximus nulla odio, eget pretium justo tempus interdum. Sed tristique tincidunt urna nec ultricies. Nam volutpat porttitor tortor, vitae dapibus massa laoreet in. Vivamus porttitor tortor vel ligula fermentum, sit amet faucibus purus sagittis. Phasellus mi arcu, sodales nec magna nec, convallis pulvinar urna.
+                    
+                    Integer quis nisi in neque volutpat sollicitudin. Mauris est enim, luctus elementum erat non, dictum dapibus velit. Sed imperdiet tellus sed eleifend cursus. Duis sed sapien eget mauris interdum vulputate vel at urna. Cras mattis nibh nec nunc consectetur, nec tincidunt elit consequat. Integer urna augue, ullamcorper sed luctus eget, ullamcorper at mi. Aenean iaculis, ante vel dignissim mollis, tellus lorem pharetra est, a posuere augue augue ac nunc. Proin scelerisque urna vel odio iaculis hendrerit. Etiam tortor elit, tempus a mauris vitae, interdum eleifend justo. Suspendisse eget tincidunt massa, nec pulvinar magna. Praesent sagittis pulvinar felis id ultricies. Nulla condimentum dolor quam, sit amet viverra massa pellentesque molestie. Quisque fermentum est et tellus ornare, et sollicitudin tortor mollis.
+                    
+                    Suspendisse eget tortor ipsum. Vivamus pretium est elementum, ultrices ante consectetur, molestie libero. Morbi venenatis ultricies nisi, posuere molestie magna tempus vitae. Donec ullamcorper a felis condimentum volutpat. Suspendisse convallis tellus id purus tincidunt, ut ultricies neque pulvinar. Maecenas luctus metus nunc, vitae interdum turpis ultrices vitae. Praesent placerat enim nec pharetra tempor.
+                    
+                    Praesent dignissim tincidunt sapien sed congue. Proin aliquet diam at leo volutpat, in aliquam odio pellentesque. Quisque ultricies nunc eget risus congue, sed commodo tellus tempus. Pellentesque eget semper nisi. Integer maximus justo nec nibh dapibus, ut vulputate libero ornare. Donec ut tempor nulla. Nulla facilisi.
+                    
+                    Proin eleifend id libero at efficitur. Vivamus sodales et risus in consectetur. Proin vestibulum est ac tortor tristique, id fermentum eros mollis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Duis ac finibus diam, in interdum nibh. Cras et pharetra mauris. Praesent interdum, libero sed pretium lacinia, magna elit pellentesque velit, ac luctus orci turpis vel sem. Vestibulum et enim vitae leo finibus iaculis ac in turpis. Cras eleifend et enim at congue. Nunc gravida ut nulla eu varius. Nunc consequat mauris risus, ut elementum sem tempus in. 
+                </div>
+            </div>
+            <div class="tab container-examples-information border-bottom" id="tab-examples">
+                <div class="container-sentence-translation border-bottom">
+                    <div class="sentence border-bottom">
+                        {{Sentence}}
+                    </div>
+                    <div class="sentence-translation">
+                        {{Sentence-translated}}
+                    </div>
+                </div>
+                <div class="container-tags">
+                    <div class="tags tags-function" id="function">
+                        {{Function}}
+                    </div>
+                    <div class="tags tags-type" id="type">
+                        {{Type}}
+                    </div>
+                </div>
+                <div class="container-notes">
+                    {{Notes}}
+                </div>
+            </div>
+            <div class="tab container-forming-links" id="tab-forming">
+                <div class="container-forming border-bottom">
+                    {{Forming}}
+                </div>
+                <div class="container-links">
+                    <div class="container-manual-links link-list-wrapper">
+                        {{Related Links}}
+                    </div>
+                    <div class="container-generated-links link-list-wrapper">
+                        <ul class="generated-links border-bottom">
+                            <li><a href="https://bunpro.jp/vocabs/{{Vocab}}">Bunpro Vocab</a></li>
+                            <li><a href="https://bunpro.jp/grammar_points/{{Vocab}}">Bunpro Grammar</a></li>
+                            <li><a href="https://bunpro.jp/search?query={{Vocab}}">Bunpro Search</a></li>
+                            <li><a href="https://jisho.org/word/{{Vocab}}">Jisho</a></li>
+                        </ul>
+                        <div class="source-link">
+                            <a>{{Source-URL}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
-
-
-
-<a href="https://bunpro.jp/vocabs/{{Vocab}}">Bunpro Vocab</a> | <a href="https://bunpro.jp/grammar_points/{{Vocab}}">Bunpro Grammar</a> | <a href="https://bunpro.jp/search?query={{Vocab}}">Bunpro Search</a><br><a>
-<a href="https://jisho.org/word/{{Vocab}}">Jisho</a><br><br>
-<a>{{Source-URL}}</a>
-</body>
-
 <script>
 {
-	let functionList = document.getElementById('function').getElementsByTagName('li');
+    function showById(id){
+        var elem = document.getElementById(id);
+        elem.style.display = "flex";
+    }
 
-	for (var i = 0; i<functionList.length; i++){
-		newColor = "var(--color-"+functionList[i].innerText.toLowerCase()+")";
-		functionList[i].style.backgroundColor=newColor;
-	}
+    function hideById(id){
+        var elem = document.getElementById(id);
+        elem.style.display = "none";
+    }
 
+    function toggleById(id){
+        var elem = document.getElementById(id);
+        if (elem.style.display === "none"){
+            showById(id);
+        } else {
+            hideById(id);
+        }
+    }
 
+    function underline(id){
+        document.getElementById('button-examples').style.textDecoration="none";
+        document.getElementById('button-meaning').style.textDecoration="none";
+        document.getElementById('button-forming').style.textDecoration="none";
+        document.getElementById(id).style.textDecoration="underline";
+    }
 
-	let typeList = document.getElementById('type').getElementsByTagName('li');
+    let functionList = document.getElementById('function').getElementsByTagName('li');
 
-	for (var i = 0; i<typeList.length; i++){
-		newColor = "var(--color-"+typeList[i].innerText.toLowerCase()+")";
-		typeList[i].style.backgroundColor=newColor;
-	}
+    for (var i = 0; i<functionList.length; i++){
+        newColor = "var(--color-"+functionList[i].innerText.toLowerCase()+")";
+        functionList[i].style.backgroundColor=newColor;
+    }
 
-	let furiganaList = document.querySelectorAll("rt");
-	for (let i=0; i<furiganaList.length;i++){
-		furiganaList[i].backgroundColor.display="ruby-text"
-	}
+    let typeList = document.getElementById('type').getElementsByTagName('li');
+
+    for (var i = 0; i<typeList.length; i++){
+        newColor = "var(--color-"+typeList[i].innerText.toLowerCase()+")";
+        typeList[i].style.backgroundColor=newColor;
+    }
+
+    let furiganaList = document.querySelectorAll("rt");
+    for (let i=0; i<furiganaList.length;i++){
+        furiganaList[i].backgroundColor.display="ruby-text"
+    }
 }
 </script> 
+</body>
