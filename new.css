@@ -4,10 +4,9 @@
 }
 
 :root{
-    background-color:rgb(49, 49, 49);
-    font-size:16px;
-    font-family:"Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
-
+    font-size:14px;
+    --font: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
+    font-family: var(--font);
 
     --color-accent:#3fdb1f;
     --color-text: #fff;
@@ -114,11 +113,15 @@ body{
 }
 
 .button{
-    font-family: monospace;
     font-weight: 700;
-    font-size:var(--fontsize-h3);
-    text-transform:uppercase;
+    font-family: monospace;
 
+    & span{
+        font-size:var(--fontsize-h2);
+        font-family: var(--font);
+    }
+    text-transform:uppercase;
+    
     padding: 0.25em;
     width: 40%;
     background-color:var(--color-highlight);
@@ -313,4 +316,32 @@ body{
 .source-link{
     text-align: center;
     padding-top: 1rem;
+}
+
+@media screen and (min-width: 1000px){
+    body{
+        font-size: 18px;
+        background:black;
+    }
+
+    .navigation{
+        display:none;
+    }
+
+    .button{
+        font-size: var(--fontsize-h2);
+    }
+
+    .tabs-container{
+        display:grid;
+        grid-template-columns: 30% 40% 30%;
+    }
+
+    .container-audio-meaning{
+        display:flex;
+    }
+
+    .container-forming-links{
+        display:flex;
+    }
 }

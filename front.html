@@ -1,23 +1,25 @@
-<section class='front'>
-    <span class="front__vocab">{{Vocab-furigana}}</span>
-    <br>
-<span class="sentence">{{Sentence}}</span>
+<head>
+	<link rel="stylesheet" href="new.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
 
-<div class="front__button__container">
-    <a class="button" href="#" onclick="
-        this.style.display='none';
-        document.getElementsByClassName('sentence')[0].style.display='inline-block';
-        return false;">
-        Show sentences
-    </a>
-	<a class="button" href="#"  onclick="
-        this.style.display='none';
-		let furiganaList = document.querySelectorAll('rt');
-		for (let i=0; i<furiganaList.length;i++){
-			furiganaList[i].style.display='block'
-		};
-        return false;">
-        Show furigana
-    </a>
-</div>
+<section class="standard-front">
+    <h1 class="vocab">{{Vocab}}</h1>
+    <div class="container-buttons">
+        <button class="button help" href="#" onclick="
+            document.getElementById('sentence-front').style.display = 'block';
+            this.style.display='none';">
+            <span>Show sentences</span>
+        </button>
+        <button class="button" href="#"  onclick="
+            this.style.display='none';
+            let furiganaList = document.querySelectorAll('rt');
+            for (let i=0; i<furiganaList.length;i++){
+                furiganaList[i].style.display='block'
+            };
+            return false;">
+            <span>Show furigana</span>
+        </button>
+    </div>
+    <span class="sentence-front" id="sentence-front">{{Sentence}}</span>
 </section>

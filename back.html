@@ -5,26 +5,7 @@
 
 <body>
 <div class="wrapper">
-    <section class="standard-front">
-        <h1 class="vocab">{{Vocab}}</h1>
-        <div class="container-buttons">
-            <button class="button" href="#" onclick="
-                showById('sentence-front');
-                this.style.display='none';">
-                Show sentences
-            </button>
-            <button class="button" href="#"  onclick="
-                this.style.display='none';
-                let furiganaList = document.querySelectorAll('rt');
-                for (let i=0; i<furiganaList.length;i++){
-                    furiganaList[i].style.display='block'
-                };
-                return false;">
-                Show furigana
-            </button>
-        </div>
-        <span class="sentence-front" id="sentence-front">{{Sentence}}</span>
-    </section>
+    {{FrontSide}}
     <section class="standard-back">
         <ul class="navigation">
             <li class="navigation-item tab-button" id="button-examples" onclick="
