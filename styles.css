@@ -102,6 +102,7 @@ body{
 .vocab{
     border:none;
     text-indent:0;
+    text-align: center;
 }
 
 .container-buttons{
@@ -120,24 +121,28 @@ body{
         font-size:var(--fontsize-h2);
         font-family: var(--font);
     }
-    text-transform:uppercase;
-    
+    text-transform:uppercase;    
     padding: 0.25em;
     width: 40%;
     background-color:var(--color-highlight);
     color: var(--color-text);
 }
 
-.sentence-front{
-    font-size: var(--fontsize-h3);
-    display:none;
+.single-button{
+    width: 100%;
+}
 
+.sentence-front{
+    font-size: var(--fontsize-h2);
+    display:none;
+}
+
+.redacted{
     & b, & strong{
         color: var(--color-accent);
         background-color: var(--color-accent);
     }
 }
-
 
 
 /* BACK */

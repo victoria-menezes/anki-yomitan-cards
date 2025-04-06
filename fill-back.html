@@ -4,50 +4,123 @@
 
 
 <body>
-<section class='front'>
-    <div>{{Sentence}}</div>
-    <div class='sentence' style='display:block'>{{Sentence-translated}}</div>
-    <div class="front__button__container">
-        <a class="button" href="#"  onclick="
+<section class='standard-front'>
+    <div class='sentence-front redacted' style='display:block'>{{Sentence}}</div>
+    <div style='display:block'>{{Sentence-translated}}</div>
+    <div class="container-buttons">
+        <button class="button" href="#"  onclick="
             this.style.display='none';
             let furiganaList = document.querySelectorAll('rt');
             for (let i=0; i<furiganaList.length;i++){
                 furiganaList[i].style.display='block'
             };
             return false;">
-            Show furigana
-        </a>
+			<span>Show furigana</span>            
+        </button>
     </div>
+</section>
 <hr id=answer>
-<div class = 'contents'>
-	<div class='contents__meaning'>
-		{{Meaning}}
-	</div>
-	<div class = 'contents__details'>
-        <div class="contents__details__longform">
-			<div>{{Sentence}}</div>
-			<div class='sentence' style='display:block'>{{Sentence-translated}}</div>
-            <div class="front__vocab"><b>{{Vocab-furigana}}</b></div>
-            {{Audio}}
-			<div class='contents__details__information__function attribute_list' id='function'>{{Function}}</div>
-			<div class='contents__details__information__type attribute_list' id='type'>{{Type}}</div>
-			<div class='contents__details__information__notes'>{{Notes}}</div>
-		</div>		
-        <div class="contents__details__information">
-			<div class='contents__details__information__kanji'>{{Kanji}}</div>
-            <div class="contents__details__longform__forming">
+<section class="standard-back">
+	<ul class="navigation">
+		<li class="navigation-item tab-button" id="button-examples" onclick="
+			hideById('tab-meaning');
+			hideById('tab-forming');
+			underline(this.id);
+			showById('tab-examples');
+			">
+			Notes
+		</li>
+		<li class="navigation-item tab-button" id="button-meaning" onclick="
+			hideById('tab-examples');
+			hideById('tab-forming');
+			underline(this.id);
+			showById('tab-meaning');
+		">
+			Dictionary
+		</li>
+		<li class="navigation-item tab-button" id="button-forming" onclick="
+			hideById('tab-examples');
+			hideById('tab-meaning');
+			underline(this.id);
+			showById('tab-forming');
+		">
+			Forming
+		</li>
+	</ul>
+	<div class="tabs-container">
+		<div class="tab container-audio-meaning" id="tab-meaning">
+			<div class="audio">
+				{{Audio}}
+			</div>
+			<div class="meaning">
+				{{Meaning}}
+			</div>
+		</div>
+		<div class="tab container-examples-information border-bottom" id="tab-examples">
+			<h1 class="vocab">{{Vocab}}</h1>
+			<div class="container-tags">
+				<div class="tags tags-function" id="function">
+					{{Function}}
+				</div>
+				<div class="tags tags-type" id="type">
+					{{Type}}
+				</div>
+			</div>
+			<div class="container-notes">
+				{{Notes}}
+			</div>
+		</div>
+		<div class="tab container-forming-links" id="tab-forming">
+			<div class="container-forming border-bottom">
 				{{Forming}}
 			</div>
-			<div class='contents__details__information__links'>{{Related Links}}</div>
+			<div class="container-links">
+				<div class="container-manual-links link-list-wrapper">
+					{{Related Links}}
+				</div>
+				<div class="container-generated-links link-list-wrapper">
+					<ul class="generated-links border-bottom">
+						<li><a href="https://bunpro.jp/vocabs/{{Vocab}}">Bunpro Vocab</a></li>
+						<li><a href="https://bunpro.jp/grammar_points/{{Vocab}}">Bunpro Grammar</a></li>
+						<li><a href="https://bunpro.jp/search?query={{Vocab}}">Bunpro Search</a></li>
+						<li><a href="https://jisho.org/word/{{Vocab}}">Jisho</a></li>
+					</ul>
+					<div class="source-link">
+						<a>{{Source-URL}}</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
+</section>
+<script>
+	{
+			function showById(id){
+			var elem = document.getElementById(id);
+			elem.style.display = "flex";
+		}
 
-<a href="https://bunpro.jp/vocabs/{{Vocab}}">Bunpro Vocab</a> | <a href="https://bunpro.jp/grammar_points/{{Vocab}}">Bunpro Grammar</a> | <a href="https://bunpro.jp/search?query={{Vocab}}">Bunpro Search</a><br><a>
-<a href="https://jisho.org/word/{{Vocab}}">Jisho</a><br>
-<a>{{Source-URL}}</a>
-	<script>
-		{
+		function hideById(id){
+			var elem = document.getElementById(id);
+			elem.style.display = "none";
+		}
+
+		function toggleById(id){
+			var elem = document.getElementById(id);
+			if (elem.style.display === "none"){
+				showById(id);
+			} else {
+				hideById(id);
+			}
+		}
+
+		function underline(id){
+			document.getElementById('button-examples').style.textDecoration="none";
+			document.getElementById('button-meaning').style.textDecoration="none";
+			document.getElementById('button-forming').style.textDecoration="none";
+			document.getElementById(id).style.textDecoration="underline";
+		}
+			
 			let functionList = document.getElementById('function').getElementsByTagName('li');
 		for (var i = 0; i<functionList.length; i++){
 			newColor = "var(--color-"+functionList[i].innerText.toLowerCase()+")";
@@ -59,6 +132,6 @@
 			newColor = "var(--color-"+typeList[i].innerText.toLowerCase()+")";
 			typeList[i].style.backgroundColor=newColor;
 		}
-	}
-	</script> 
+}
+</script> 
 </body>
