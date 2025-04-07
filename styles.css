@@ -68,7 +68,7 @@ h3{
     line-height: var(--lineheight-h3);
 }
 
-b{
+b, strong{
     color:var(--color-accent);
 }
 
@@ -97,12 +97,21 @@ body{
     align-items: center;
     border-bottom: 3px solid var(--color-border);
     padding-bottom: 1em;
+
+    & rt{
+        display:none;
+    }
+
+    & rp{
+        display:none;
+    }
 }
 
 .vocab{
     border:none;
     text-indent:0;
     text-align: center;
+    font-weight: 500;
 }
 
 .container-buttons{
@@ -118,7 +127,7 @@ body{
     font-family: monospace;
 
     & span{
-        font-size:var(--fontsize-h2);
+        font-size:var(--fontsize-h3);
         font-family: var(--font);
     }
     text-transform:uppercase;    
