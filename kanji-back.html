@@ -4,11 +4,12 @@
 </head>
 
 <body>
+
+
 <div class="wrapper">
-<h1 class="vocab"><b>KANJI</b><br><span id='kanji-character'>{{Character}}</span></h1>
+{{FrontSide}}
 
 <hr id=answer>
-
 <div class="kanji-back">
     <div class="kanji-container kanji-container-meaning">
         <h2 class="kanji-title">MEANING</h2>
@@ -26,12 +27,12 @@
     <div class="kanji-container kanji-container-lookalikes">
         <h3 class="kanji-title">LOOKALIKES</h3>
         <div class="kanji-lookalikes kanji-content">
-            {{Lookalikes}}
-            {{Lookalikes-meaning}}
             <div class="kanji-lookalikes-list">
                 <div class="kanji-lookalikes-kanji">
+                    {{Lookalikes}}
                 </div>
                 <div class="kanji-lookalikes-meaning">
+                    {{Lookalikes-meaning}}
                 </div>
             </div>
         </div>

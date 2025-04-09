@@ -424,7 +424,7 @@ a:hover, .tab-button:hover{
     grid-column-start: 3;
     grid-column-end: 7;
     display: grid;
-    grid-template-columns: min-content auto;
+    grid-template-columns: 30% auto;
     grid-template-rows: min-content auto;
 
     .title-examples{
@@ -438,17 +438,23 @@ a:hover, .tab-button:hover{
     }
 
     .kanji-examples-jpn{
+        width:100%;
         justify-self: start;
         align-self: start;
         color: var(--color-accent);
         font-size: var(--fontsize-h3);
+
+        & ul{
+            display:flex;
+            justify-content:right;
+            border-bottom: 1px solid var(--color-border);
+        }
 
         & li{
             display:flex;
             align-items: center;
             box-sizing: border-box;
             height: 4rem;
-            border-bottom: 1px solid var(--color-border);
         }
 
         i{
@@ -461,13 +467,16 @@ a:hover, .tab-button:hover{
         text-align:left;
         justify-self: start;
         align-self: start;
+        & ul {
+            border-bottom: 1px solid var(--color-border);
+        }
+
         & li{            
             display:flex;
             align-items: center;
             box-sizing: border-box;
             padding: 0.25em;
             height: 4rem;
-            border-bottom: 1px solid var(--color-border);
         }
     }
 }
