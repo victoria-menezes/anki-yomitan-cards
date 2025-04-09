@@ -1,5 +1,4 @@
 <head>
-	<link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
 </head>
 
@@ -59,7 +58,15 @@
             </div>
 		</div>
 		<div class="tab container-examples-information border-bottom" id="tab-examples">
-			<h1 class="vocab">{{Vocab-furigana}}</h1>
+			<h1 class="vocab border-bottom">{{Vocab-furigana}}</h1>
+			<div class="container-sentence-translation border-bottom">
+				<div class="sentence">
+					{{Sentence}}
+				</div>
+				<div class="sentence-translation">
+					{{Sentence-translated}}
+				</div>
+			</div>
 			<div class="container-tags">
 				<div class="tags tags-function" id="function">
 					{{Function}}
