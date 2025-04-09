@@ -76,10 +76,19 @@ body{
     height:100vh;
 }
 
+a{
+    text-decoration: underline;
+    color:var(--color-accent);
+}
+
+a:hover, .tab-button:hover{
+    color:var(--color-border);
+}
+
 .wrapper{
     display:flex;
     flex-flow:column;
-    height:100vh;
+    height:95vh;
     overflow-y: hidden;
 }
 
@@ -209,7 +218,7 @@ body{
 .tabs-container{
     flex-shrink:1;
     width: 100%;    
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .tab{
@@ -231,6 +240,11 @@ body{
 .container-audio-meaning{
     display:none;
 }
+
+.meaning{
+	padding:1em;
+}
+
 
 /* EXAMPLES & INFORMATION */
 .container-sentence-translation{
@@ -322,7 +336,6 @@ body{
     }
 
     & a {
-        color:var(--color-accent);
         margin:auto;
     }
 }
@@ -333,9 +346,11 @@ body{
 }
 
 @media screen and (min-width: 1000px){
+    /* GENERAL */
     body{
         font-size: 18px;
-        background:black;
+        display:flex;
+        flex-direction: column;
     }
 
     .navigation{
@@ -346,16 +361,40 @@ body{
         font-size: var(--fontsize-h2);
     }
 
+    .standard-back{
+        flex-shrink:1;
+    }
+
     .tabs-container{
         display:grid;
         grid-template-columns: 30% 40% 30%;
+        height:100%;
+        box-sizing: border-box;
     }
 
+    .tab{
+        max-height:100%;
+        overflow-y: hidden;
+    }
+
+    .scrollable{
+        flex-shrink:1;
+        overflow-y: auto;
+    }
+
+
+
+
+    /* AUDIO & MEANING */
     .container-audio-meaning{
         display:flex;
+        flex-direction: column;
     }
-
     .container-forming-links{
         display:flex;
+    }
+
+    .tabs-container{
+        overflow-y: hidden;
     }
 }

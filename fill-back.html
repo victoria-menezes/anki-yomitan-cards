@@ -1,9 +1,11 @@
 <head>
 	<link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
 </head>
 
 
 <body>
+<div class="wrapper">
 <section class='standard-front'>
     <div class='sentence-front redacted' style='display:block'>{{Sentence}}</div>
     <div style='display:block'>{{Sentence-translated}}</div>
@@ -52,12 +54,12 @@
 			<div class="audio">
 				{{Audio}}
 			</div>
-			<div class="meaning">
+			<div class="meaning scrollable">
 				{{Meaning}}
-			</div>
+            </div>
 		</div>
 		<div class="tab container-examples-information border-bottom" id="tab-examples">
-			<h1 class="vocab">{{Vocab}}</h1>
+			<h1 class="vocab">{{Vocab-furigana}}</h1>
 			<div class="container-tags">
 				<div class="tags tags-function" id="function">
 					{{Function}}
@@ -66,12 +68,12 @@
 					{{Type}}
 				</div>
 			</div>
-			<div class="container-notes">
+			<div class="container-notes scrollable">
 				{{Notes}}
 			</div>
 		</div>
 		<div class="tab container-forming-links" id="tab-forming">
-			<div class="container-forming border-bottom">
+			<div class="container-forming border-bottom scrollable">
 				{{Forming}}
 			</div>
 			<div class="container-links">
@@ -86,13 +88,15 @@
 						<li><a href="https://jisho.org/word/{{Vocab}}">Jisho</a></li>
 					</ul>
 					<div class="source-link">
-						<a>{{Source-URL}}</a>
-					</div>
+
 				</div>
 			</div>
 		</div>
 	</div>
+<a>{{Source-URL}}</a>
+</div>
 </section>
+</div>
 <script>
 	{
 			function showById(id){
