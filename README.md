@@ -18,4 +18,4 @@ Description in progress
 - Fix kanji font on mobile
 
 ## Minor
-- Swap {{Vocab}} for {{Vocab-furigana}} 
+- 

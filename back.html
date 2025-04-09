@@ -1,138 +1,138 @@
 <head>
-	<link rel="stylesheet" href="new.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="styles.css">
 </head>
 
+
 <body>
-<div class="wrapper">
-    {{FrontSide}}
-    <section class="standard-back">
-        <ul class="navigation">
-            <li class="navigation-item tab-button" id="button-examples" onclick="
-                hideById('tab-meaning');
-                hideById('tab-forming');
-                underline(this.id);
-                showById('tab-examples');
-                ">
-                Notes
-            </li>
-            <li class="navigation-item tab-button" id="button-meaning" onclick="
-                hideById('tab-examples');
-                hideById('tab-forming');
-                underline(this.id);
-                showById('tab-meaning');
-            ">
-                Dictionary
-            </li>
-            <li class="navigation-item tab-button" id="button-forming" onclick="
-                hideById('tab-examples');
-                hideById('tab-meaning');
-                underline(this.id);
-                showById('tab-forming');
-            ">
-                Forming
-            </li>
-        </ul>
-        <div class="tabs-container">
-            <div class="tab container-audio-meaning" id="tab-meaning">
-                <div class="audio">
-                    {{Audio}}
-                </div>
-                <div class="meaning">
-                    {{Meaning}}
-                </div>
-            </div>
-            <div class="tab container-examples-information border-bottom" id="tab-examples">
-                <div class="container-sentence-translation border-bottom">
-                    <div class="sentence border-bottom">
-                        {{Sentence}}
-                    </div>
-                    <div class="sentence-translation">
-                        {{Sentence-translated}}
-                    </div>
-                </div>
-                <div class="container-tags">
-                    <div class="tags tags-function" id="function">
-                        {{Function}}
-                    </div>
-                    <div class="tags tags-type" id="type">
-                        {{Type}}
-                    </div>
-                </div>
-                <div class="container-notes">
-                    {{Notes}}
-                </div>
-            </div>
-            <div class="tab container-forming-links" id="tab-forming">
-                <div class="container-forming border-bottom">
-                    {{Forming}}
-                </div>
-                <div class="container-links">
-                    <div class="container-manual-links link-list-wrapper">
-                        {{Related Links}}
-                    </div>
-                    <div class="container-generated-links link-list-wrapper">
-                        <ul class="generated-links border-bottom">
-                            <li><a href="https://bunpro.jp/vocabs/{{Vocab}}">Bunpro Vocab</a></li>
-                            <li><a href="https://bunpro.jp/grammar_points/{{Vocab}}">Bunpro Grammar</a></li>
-                            <li><a href="https://bunpro.jp/search?query={{Vocab}}">Bunpro Search</a></li>
-                            <li><a href="https://jisho.org/word/{{Vocab}}">Jisho</a></li>
-                        </ul>
-                        <div class="source-link">
-                            <a>{{Source-URL}}</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class='standard-front'>
+    <div class='sentence-front redacted' style='display:block'>{{Sentence}}</div>
+    <div style='display:block'>{{Sentence-translated}}</div>
+    <div class="container-buttons">
+        <button class="button" href="#"  onclick="
+            this.style.display='none';
+            let furiganaList = document.querySelectorAll('rt');
+            for (let i=0; i<furiganaList.length;i++){
+                furiganaList[i].style.display='block'
+            };
+            return false;">
+			<span>Show furigana</span>            
+        </button>
+    </div>
+</section>
+<hr id=answer>
+<section class="standard-back">
+	<ul class="navigation">
+		<li class="navigation-item tab-button" id="button-examples" onclick="
+			hideById('tab-meaning');
+			hideById('tab-forming');
+			underline(this.id);
+			showById('tab-examples');
+			">
+			Notes
+		</li>
+		<li class="navigation-item tab-button" id="button-meaning" onclick="
+			hideById('tab-examples');
+			hideById('tab-forming');
+			underline(this.id);
+			showById('tab-meaning');
+		">
+			Dictionary
+		</li>
+		<li class="navigation-item tab-button" id="button-forming" onclick="
+			hideById('tab-examples');
+			hideById('tab-meaning');
+			underline(this.id);
+			showById('tab-forming');
+		">
+			Forming
+		</li>
+	</ul>
+	<div class="tabs-container">
+		<div class="tab container-audio-meaning" id="tab-meaning">
+			<div class="audio">
+				{{Audio}}
+			</div>
+			<div class="meaning">
+				{{Meaning}}
+			</div>
+		</div>
+		<div class="tab container-examples-information border-bottom" id="tab-examples">
+			<h1 class="vocab">{{Vocab-furigana}}</h1>
+			<div class="container-tags">
+				<div class="tags tags-function" id="function">
+					{{Function}}
+				</div>
+				<div class="tags tags-type" id="type">
+					{{Type}}
+				</div>
+			</div>
+			<div class="container-notes">
+				{{Notes}}
+			</div>
+		</div>
+		<div class="tab container-forming-links" id="tab-forming">
+			<div class="container-forming border-bottom">
+				{{Forming}}
+			</div>
+			<div class="container-links">
+				<div class="container-manual-links link-list-wrapper">
+					{{Related Links}}
+				</div>
+				<div class="container-generated-links link-list-wrapper">
+					<ul class="generated-links border-bottom">
+						<li><a href="https://bunpro.jp/vocabs/{{Vocab}}">Bunpro Vocab</a></li>
+						<li><a href="https://bunpro.jp/grammar_points/{{Vocab}}">Bunpro Grammar</a></li>
+						<li><a href="https://bunpro.jp/search?query={{Vocab}}">Bunpro Search</a></li>
+						<li><a href="https://jisho.org/word/{{Vocab}}">Jisho</a></li>
+					</ul>
+					<div class="source-link">
+
+				</div>
+			</div>
+		</div>
+	</div>
+<a>{{Source-URL}}</a>
 </div>
+</section>
 <script>
-{
-    function showById(id){
-        var elem = document.getElementById(id);
-        elem.style.display = "flex";
-    }
+	{
+			function showById(id){
+			var elem = document.getElementById(id);
+			elem.style.display = "flex";
+		}
 
-    function hideById(id){
-        var elem = document.getElementById(id);
-        elem.style.display = "none";
-    }
+		function hideById(id){
+			var elem = document.getElementById(id);
+			elem.style.display = "none";
+		}
 
-    function toggleById(id){
-        var elem = document.getElementById(id);
-        if (elem.style.display === "none"){
-            showById(id);
-        } else {
-            hideById(id);
-        }
-    }
+		function toggleById(id){
+			var elem = document.getElementById(id);
+			if (elem.style.display === "none"){
+				showById(id);
+			} else {
+				hideById(id);
+			}
+		}
 
-    function underline(id){
-        document.getElementById('button-examples').style.textDecoration="none";
-        document.getElementById('button-meaning').style.textDecoration="none";
-        document.getElementById('button-forming').style.textDecoration="none";
-        document.getElementById(id).style.textDecoration="underline";
-    }
+		function underline(id){
+			document.getElementById('button-examples').style.textDecoration="none";
+			document.getElementById('button-meaning').style.textDecoration="none";
+			document.getElementById('button-forming').style.textDecoration="none";
+			document.getElementById(id).style.textDecoration="underline";
+		}
+			
+			let functionList = document.getElementById('function').getElementsByTagName('li');
+		for (var i = 0; i<functionList.length; i++){
+			newColor = "var(--color-"+functionList[i].innerText.toLowerCase()+")";
+			functionList[i].style.backgroundColor=newColor;
+		}
 
-    let functionList = document.getElementById('function').getElementsByTagName('li');
-
-    for (var i = 0; i<functionList.length; i++){
-        newColor = "var(--color-"+functionList[i].innerText.toLowerCase()+")";
-        functionList[i].style.backgroundColor=newColor;
-    }
-
-    let typeList = document.getElementById('type').getElementsByTagName('li');
-
-    for (var i = 0; i<typeList.length; i++){
-        newColor = "var(--color-"+typeList[i].innerText.toLowerCase()+")";
-        typeList[i].style.backgroundColor=newColor;
-    }
-
-    let furiganaList = document.querySelectorAll("rt");
-    for (let i=0; i<furiganaList.length;i++){
-        furiganaList[i].backgroundColor.display="ruby-text"
-    }
+		let typeList = document.getElementById('type').getElementsByTagName('li');
+		for (var i = 0; i<typeList.length; i++){
+			newColor = "var(--color-"+typeList[i].innerText.toLowerCase()+")";
+			typeList[i].style.backgroundColor=newColor;
+		}
 }
 </script> 
 </body>
