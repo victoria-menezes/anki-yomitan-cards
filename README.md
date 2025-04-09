@@ -1,6 +1,9 @@
 # About
 Description in progress
 
+## Card fields
+Description in progress
+
 # To-do
 ## Major
 - Reformat kanji cards for mobile-first
