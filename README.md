@@ -17,8 +17,7 @@ Files in the 'debugging' folder are for testing and styling purposes, they are t
 - Improve formatting in the dictionary section 
     - Fix scrolling
     - Add padding
-- Fix scrolling in notes section
-- Add translated sentences to back of fill-in
+- Add uncensored sentences to back of fill-in
 - Fix source link
 - Fix kanji font on mobile
 
