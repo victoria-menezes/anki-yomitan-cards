@@ -19,6 +19,8 @@ Files in the 'debugging' folder are for testing and styling purposes, they are t
 ## Medium
 - Fix source link
 - Fix kanji font on mobile
+- Grammar: Hide translations
+- Grammar: 'Attach to' field
 
 ## Minor
 - 
