@@ -85,10 +85,15 @@ a:hover, .tab-button:hover{
     color:var(--color-border);
 }
 
+i{
+    color: var(--color-text);
+}
+    
+
 .wrapper{
     display:flex;
     flex-flow:column;
-    height:95vh;
+    height:100%;
     overflow-y: hidden;
 }
 
@@ -416,7 +421,6 @@ a:hover, .tab-button:hover{
     }
 }
 
-
 .kanji-container-examples{    
     padding: 0.5rem;
     gap: 0.75rem;
@@ -426,58 +430,53 @@ a:hover, .tab-button:hover{
     display: grid;
     grid-template-columns: 30% auto;
     grid-template-rows: min-content auto;
-
-    .title-examples{
-        grid-column-start: 1;
-        grid-column-end: 3;
-        align-self: start;
-    }
     
     & ul{
         list-style: none;
     }
+}
 
-    .kanji-examples-jpn{
-        width:100%;
-        justify-self: start;
-        align-self: start;
-        color: var(--color-accent);
-        font-size: var(--fontsize-h3);
+.title-examples{
+    grid-column-start: 1;
+    grid-column-end: 3;
+    align-self: start;
+}
 
-        & ul{
-            display:flex;
-            justify-content:right;
-            border-bottom: 1px solid var(--color-border);
-        }
+.kanji-examples-jpn{
+    width:fit-content;
+    color: var(--color-accent);
+    font-size: var(--fontsize-h3);
 
-        & li{
-            display:flex;
-            align-items: center;
-            box-sizing: border-box;
-            height: 4rem;
-        }
+    justify-self:end;
+    align-self:start;
 
-        i{
-            color: var(--color-text);
-        }
+    & ul{
+        width:fit-content;
+        justify-content:right;
     }
 
-    .kanji-examples-meaning{
-        flex-grow:1;
-        text-align:left;
-        justify-self: start;
-        align-self: start;
-        & ul {
-            border-bottom: 1px solid var(--color-border);
-        }
+    & li{
+        display:flex;
+        align-items: center;
+        box-sizing: border-box;
+        height: 4rem;
+        border-bottom: 1px solid var(--color-border);
+    }
+}
 
-        & li{            
-            display:flex;
-            align-items: center;
-            box-sizing: border-box;
-            padding: 0.25em;
-            height: 4rem;
-        }
+.kanji-examples-meaning{
+    flex-grow:1;
+    text-align:left;
+    justify-self: start;
+    align-self: start;
+
+    & li{            
+        display:flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0.25em;
+        height: 4rem;
+        border-bottom: 1px solid var(--color-border);
     }
 }
 
@@ -586,4 +585,12 @@ a:hover, .tab-button:hover{
     .tabs-container{
         overflow-y: hidden;
     }
+
+
+
+    /* KANJI */
+    .kanji-container,
+    .kanji-examples-jpn{
+        font-size: var(--fontsize-h2);
+    }    
 }
