@@ -13,8 +13,8 @@ Files in the 'debugging' folder are for testing and styling purposes, they are t
 # To-do
 ## Major
 - Mobile-first:
-    - Kanji cards
     - Comparison cards
+- Grammar cards
 
 ## Medium
 - Fix source link

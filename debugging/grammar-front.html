@@ -1,0 +1,92 @@
+<head>
+	<link rel="stylesheet" href="..\styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body style="background-color: black;">
+    <div class="wrapper">
+        <section class="front">
+            <h1 class="vocab">
+                {{Grammar}}
+            </h1>
+            <ul id="list-final" class="sentence-list"></ul>
+        </section>
+        <section class="hidden">
+            <div id="list-sentences">
+                <!-- DELETE START -->
+                <!--{{Sentence}}-->
+                <ul>
+                    <li>ひとみ、早く<b>起きて</b>。もう七時よ。</li>
+                    <li>A2</li>
+                    <li>A3</li>
+                </ul>
+                <!-- DELETE END-->
+            </div>
+            <div id="list-guides">
+                <!-- DELETE START -->
+                <!--{{Sentence-guide}}-->
+                <ul>
+                    <li><span class="guide-element">起きる</span></li>
+                    <li>B2</li>
+                    <li>B3</li>
+                </ul>
+                <!-- DELETE END -->
+            </div>
+            <div id="list-translations">
+                <!-- DELETE START -->
+                <!--{{Sentence-translation}}-->
+                <ul>
+                    <li>Hitomi, wake up soon! It's already 7 o'clock.</li>
+                    <li>C2</li>
+                    <li>C3</li>
+                </ul>
+                <!-- DELETE END -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        {
+            let finalList = document.getElementById('list-final');
+
+            let sentences = document.getElementById('list-sentences').getElementsByTagName('li');
+            let translations = document.getElementById('list-translations').getElementsByTagName('li');            
+            let guides = document.getElementById('list-guides').getElementsByTagName('li');
+
+            function showById(id){
+                var elem = document.getElementById(id);
+                elem.style.display = "block";
+            }
+
+            function hideById(id){
+                var elem = document.getElementById(id);
+                elem.style.display = "none";
+            }
+
+            function setActive(id, id_tab, ids_other_buttons, ids_other_tabs){
+                var btn = document.getElementById(id);
+                btn.classList.add("tab-button-active");
+                
+                showById(id_tab);
+                
+                for(i=0; i<ids_other_buttons.length;i++){
+                    document.getElementById(ids_other_buttons[i]).classList.remove('tab-button-active');
+                }
+                for(i=0; i<ids_other_tabs.length;i++){
+                    hideById(ids_other_tabs[i])
+                }
+            }
+
+            for (i=0;i<sentences.length;i++){
+                finalList.innerHTML+='<li class="sentence"><div class="sentence-guide-container"><div class="redacted">'
+                    + sentences[i].innerHTML
+                    + '</div> <div>(<span class="guide-element">'
+                    + guides[i].innerHTML
+                    + '</span>)</div></div>'
+                    + '<div class="sentence-translation">'
+                    + translations[i].innerHTML
+                    + '</div></li>';
+            }
+        }
+    </script>
+</body>
+
