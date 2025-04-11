@@ -272,6 +272,10 @@ i{
     padding: 0.25em;
 }
 
+.sentence-translation{
+    display:none;
+}
+
 .sentence{
     & b, & strong{
         color: var(--color-accent);
