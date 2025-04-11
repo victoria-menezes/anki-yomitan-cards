@@ -8,6 +8,7 @@
             <h1 class="vocab">
                 {{Grammar}}
             </h1>
+            <button class="button single-button" onclick="showByClass('sentence-translation'); this.style.display='none'">Show Sentences</button>
             <ul id="list-final" class="sentence-list"></ul>
         </section>
         <section class="hidden">
@@ -65,6 +66,13 @@
                 elem.style.display = "block";
             }
 
+            function showByClass(class_name){
+                var elem_list = document.getElementsByClassName(class_name);
+                for(i=0;i<elem_list.length;i++){
+                    elem_list[i].style.display='block';
+                }
+            }
+
             function hideById(id){
                 var elem = document.getElementById(id);
                 elem.style.display = "none";
@@ -85,9 +93,9 @@
             }
 
             for (i=0;i<sentences.length;i++){
-                finalList.innerHTML+='<li class="sentence"><div class="sentence-guide-container"><div>'
+                finalList.innerHTML+='<li class="sentence"><div class="sentence-guide-container"><div class="">'
                     + sentences[i].innerHTML
-                    + '</div> <div>(<span class="guide-element">'
+                    + '</div> <div class="guide-element-container">(<span class="guide-element">'
                     + guides[i].innerHTML
                     + '</span>)</div></div>'
                     + '<div class="sentence-translation">'
