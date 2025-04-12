@@ -13,7 +13,7 @@
     --color-text-dark:#181818;
     --color-border:#00aa17;
     --color-highlight:rgb(11, 65, 18);
-    --color-background:#161616;
+    --color-background:#2b2b2b;
 
     --color-noun:#323233;
     --color-verb:#6b2700;
@@ -45,6 +45,10 @@
     --lineheight-h3:2rem;
 
     color: var(--color-text);
+}
+
+body {
+    color:var(--color-text);
 }
 
 a{
@@ -144,7 +148,16 @@ li{
     text-align:center;
     padding:0.25em;
     font-size:var(--fontsize-h3);
-    display:none;
+}
+
+.redacted{
+    & .highlighted{
+        background-color: var(--color-accent);
+    }
+
+    & .highlighted rt {
+        display:none;
+    }
 }
 
 .buttons-container{
@@ -222,7 +235,7 @@ li{
     text-decoration: underline;
     background-color:var(--color-highlight);
     color:var(--color-accent);
-    
+
     & a:hover {
         color:var(--color-accent);
     }
@@ -265,7 +278,6 @@ li{
 }
 
 .sentence-translated{
-    display:none;
     border-bottom: 3px solid var(--color-highlight);
     margin-bottom: 0.5em;
 }
