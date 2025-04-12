@@ -1,3 +1,4 @@
+
 {
     
     // ## CONSTANTS
@@ -6,6 +7,8 @@
     const SENTENCEDATAPREFIX = 'example-sentence';
     const ATTRIBUTECONTENT = 'data-sc-content';
     const ATTRIBUTETAGS = 'data-sc-code';
+
+    const STYLE = 'style.css';
 
     const CLASSSENTENCE = 'sentence';
     const CLASSTRANSLATED = 'sentence-translated';
@@ -57,7 +60,7 @@
         newHtml = html;
         newHtml = newHtml.replaceAll('{{Vocab}}', '職場');
         newHtml = newHtml.replaceAll('{{Vocab-furigana}}','<ruby>職場<rt>しょくば</rt></ruby>');
-        // newHtml = newHtml.replaceAll('{{Meaning}}', '...'); // comment this out when in anki
+        // newHtml = newHtml.replaceAll('{{Meaning}}', '...'); // comment this out when putting into anki
         newHtml = newHtml.replaceAll('{{Sentence}}', 'コートをハンガーに<b><ruby>掛<rt>か</rt></ruby>けて</b>おきなさい。<br>ウエートレスはテーブルの上に白いテーブルクロスを<b>かけた</b>。<br>１０円で電話が<b>かけられます</b>か。')
         newHtml = newHtml.replaceAll('{{Sentence-translated}}','Put your coat on a hanger.<br>The waitress spread a white cloth over the table. <br>Can I make a phone call for ten yen?')
         newHtml = newHtml.replaceAll('{{Function}}', '<ul><li>noun</li><li>adjective</li></ul>');
@@ -71,15 +74,13 @@
 
     function importStyle(){
         let head = document.querySelector('head');
-        head.innerHTML+='<link rel="stylesheet" href="../styles-2.css">'
+        head.innerHTML+='<link rel="stylesheet" href="../'+STYLE+'">'
     }
 
     function debugMode(){
         replaceWithFiller();
         importStyle();
     }
-
-    //debugMode();
 
     // ## FUNCTIONS
     function changeDisplayById(id, display_text){
@@ -289,33 +290,35 @@
         populateSentences(IDFRONTSENTENCECONTAINER, sentenceCollection, translatedCollection, true, true);
         populateSentences(IDBACKSENTENCECONTAINER,  sentenceCollection, translatedCollection, true, false);
 
+        // 
 
-
-        // ## TAGS
         
         let tagsCollection = document.getElementsByClassName('yomitan-glossary')[0].querySelectorAll('['+ATTRIBUTETAGS+']');
+        let addedTags = [];
         for (let i = 0; i < tagsCollection.length; i++){
             let attribute = tagsCollection[i].getAttribute(ATTRIBUTETAGS);
             let tagList = TAGS[attribute][0].split(" ");
             let superTag = TAGS[attribute][1];
-
-            if(tagList.length>1){
-                for (let i = tagList.length-1; i >= 0; i--){    
-                    let newTag = document.createElement('div');
-                    newTag.innerHTML = tagList[i];
-                    newTag.classList.add('tag');
-                    if(i < tagList.length-1){
-                        newTag.classList.add(attribute); // don't add specific class in the parent tag
+            if(!(addedTags.includes(attribute))){
+                if(tagList.length>1){
+                    for (let i = tagList.length-1; i >= 0; i--){    
+                        let newTag = document.createElement('div');
+                        newTag.innerHTML = tagList[i];
+                        newTag.classList.add('tag');
+                        if(i < tagList.length-1){
+                            newTag.classList.add(attribute); // don't add specific class in the parent tag
+                        }
+                        newTag.classList.add(superTag);
+                        document.getElementById(IDTAGSCONTAINER).appendChild(newTag);
                     }
+                } else {
+                    let newTag = document.createElement('div');
+                    newTag.innerHTML = TAGS[attribute][0];
+                    newTag.classList.add('tag');
                     newTag.classList.add(superTag);
                     document.getElementById(IDTAGSCONTAINER).appendChild(newTag)   
                 }
-            } else {
-                let newTag = document.createElement('div');
-                newTag.innerHTML = TAGS[attribute][0];
-                newTag.classList.add('tag');
-                newTag.classList.add(superTag);
-                document.getElementById(IDTAGSCONTAINER).appendChild(newTag)   
+                addedTags.push(attribute);
             }
         }
     }
@@ -323,4 +326,5 @@
 
 
     // #### CALLING FUNCTION
+    debugMode();
 }
