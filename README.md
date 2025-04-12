@@ -12,9 +12,6 @@ Files in the 'debugging' folder are for testing and styling purposes, they are t
 
 # To-do
 ## Major
-- Automate sentence-fetching on vocab cards
-    - Fetch
-    - Apply correct styles
 - Automate tag-fetching on vocab cards
 - Mobile-first:
     - Comparison cards
@@ -23,6 +20,7 @@ Files in the 'debugging' folder are for testing and styling purposes, they are t
 ## Medium
 - Fix source link
 - Fix kanji font on mobile
+- Fix dictionary padding
 - Grammar: 'Attach to' field
 
 ## Minor
