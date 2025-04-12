@@ -15,11 +15,13 @@
     --color-highlight:rgb(11, 65, 18);
     --color-background:#161616;
 
-    --color-noun:#042a70;
-    --color-verb:#682904;
+    --color-noun:#323233;
+    --color-verb:#6b2700;
     --color-adjective:#005851;
     --color-adverb:#5f005f;
     --color-particle:#2f8100;
+    --color-suprefix:#572c70;
+    --color-misc:#2b2b2b;
     
     --color-transitive:#74a4ff;
     --color-intransitive:#e04b4b;
@@ -131,6 +133,10 @@ li{
     width:100%;
     text-align: center;
     margin:0.25em 0;
+
+    rt{
+        display:none;
+    }
 }
 
 .front-sentences{
@@ -139,6 +145,39 @@ li{
     text-align:center;
     padding:0.25em;
     font-size:var(--fontsize-h3);
+    display:none;
+
+    rt{
+        display:none;
+    }
+}
+
+.buttons-container{
+    display:flex;
+    justify-content: center;
+    gap: 1em;
+    margin-bottom:1em;
+}
+
+.button{
+    font-size:var(--fontsize-h3);
+    text-transform: uppercase;
+    font-family: monospace;
+
+    background-color:var(--color-highlight);
+    color:var(--color-text);
+    border:1px solid var(--color-border);
+    padding: 0.5em;
+}
+
+.button:hover{
+    background-color:var(--color-border);
+    border-color:var(--color-accent);
+    text-decoration: underline;
+}
+
+.button:active{
+    background-color:var(--color-accent);
 }
 
 .link-list{
@@ -156,6 +195,7 @@ li{
 .link-list-item{
     font-family:monospace;
     text-transform: uppercase;
+    font-size: var(--fontsize-h3);
     
     text-align:center;
     align-self: center;
@@ -174,10 +214,26 @@ li{
     color: var(--color-border);
 }
 
-.link-active, .link-list-item:hover{
+.link-list-item:hover{
     text-decoration: underline;
     color:var(--color-accent);
     background-color:var(--color-highlight);
+}
+
+.link-list-item:active{
+    color:var(--color-text);
+    background-color:var(--color-accent)
+}
+
+.link-active{
+    text-decoration: underline;
+    color:var(--color-text);
+    background-color:var(--color-border);
+}
+
+.link-active:hover{
+    background-color:var(--color-border);
+    color:var(--color-text);
 }
 
 .tab{
@@ -190,6 +246,10 @@ li{
 .tab-container{
     flex: 1 1;
     overflow-y: hidden;
+}
+
+.tab-dictionary, .tab-forming{
+    display:none;
 }
 
 .footer{
@@ -214,7 +274,9 @@ li{
 
 .notes-tags{
     display:flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 1em;
+    flex-wrap: wrap;
 }
 
 .tag{
@@ -223,6 +285,83 @@ li{
     padding: 0.5em;
     font-size:var(--fontsize-h3);
     text-transform: uppercase;
+    border:3px dotted var(--color-text);
+
+    font-weight: 900;
 }
 
 /* TAG STYLING */
+
+.adj{
+    background-color: var(--color-adjective);
+}
+.adj-no{
+    background-color: var(--color-no);
+    color:var(--color-text-dark);
+    border: 1px solid var(--color-text-dark);
+}
+.adj-na{
+    background-color: var(--color-na);
+    color:var(--color-text-dark);
+    border: 1px solid var(--color-text-dark);
+}
+.adj-i{
+    background-color: var(--color-i);
+    color:var(--color-text-dark);
+    border: 1px solid var(--color-text-dark);
+}
+
+.adv{
+    background-color: var(--color-adverb);
+}
+
+.misc{
+    background-color: var(--color-misc);    
+}
+
+.noun{
+    background-color:var(--color-noun);
+}
+
+.verb{
+    background-color:var(--color-verb);
+}
+
+.vi{
+    background-color: var(--color-intransitive);
+    color:var(--color-text-dark);
+    border: 1px solid var(--color-text-dark);
+}
+
+.vt{
+    background-color: var(--color-transitive);
+    color:var(--color-text-dark);
+    border: 1px solid var(--color-text-dark);
+}
+
+.vs-s{
+    background-color: var(--color-na);
+    color:var(--color-text-dark);
+    border: 1px solid var(--color-text-dark);
+}
+
+
+.v1{
+    background-color: var(--color-na);
+    color:var(--color-text-dark);
+    border: 1px solid var(--color-text-dark);
+}
+
+.v5r{
+    background-color: var(--color-na);
+    color:var(--color-text-dark);
+    border: 1px solid var(--color-text-dark);
+}
+
+.su-prefix{
+    background-color:var(--color-suprefix);
+}
+
+.particle{
+    background-color: var(--color-particle);
+}

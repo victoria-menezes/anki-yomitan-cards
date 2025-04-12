@@ -8,6 +8,10 @@
     <section class="front border-bottom">
         <div class="vocab">{{Vocab}}</div>
         <div class="front-sentences" id="front-sentences-container"></div>
+        <div class="buttons-container">
+            <button class="button" onclick="showByClass('front-sentences','block')">Sentences</button>
+            <button class="button" onclick="showByTag('rt','ruby-text')">Furigana</button>
+        </div>
         <div class="hidden">
             <div id="hidden-sentences">{{Sentence}}</div>
             <div id="hidden-translated">{{Sentence-translated}}</div>
@@ -15,9 +19,9 @@
     </section>
     <section class="back border-bottom" id="answer">
         <ul class="link-list border-bottom">
-            <li class="link-list-item link-active" id="btn-dictionary"
+            <li class="link-list-item" id="btn-dictionary"
             onclick="chooseTab(this.id, 'block')">Dictionary</li>
-            <li class="link-list-item" id="btn-notes"
+            <li class="link-list-item link-active" id="btn-notes"
             onclick="chooseTab(this.id, 'block')">Notes</li>
             <li class="link-list-item" id="btn-forming"
             onclick="chooseTab(this.id, 'block')">Forming</li>
@@ -40,9 +44,9 @@
         </div>
     </section>
     <ul class="link-list footer">
-        <li class="link-list-item">Bunpro search</li>
-        <li class="link-list-item">Bunpro grammar</li>
-        <li class="link-list-item">Bunpro vocab</li>
+        <li class="link-list-item">B. search</li>
+        <li class="link-list-item">B. grammar</li>
+        <li class="link-list-item">B. vocab</li>
         <li class="link-list-item">Jisho</li>
     </ul>
 </div>
@@ -76,20 +80,21 @@
     }
 
     const TAGS = {
-        'adj-no':'の adjective',
-        'adj-na':'な adjective',
-        'adj-i':'い adjective',
-        'adv':'adverb',
-        'uk':'kana',
-        'n':'noun',
-        'exp':'expression',
-        'v1':'1-dan verb',
-        'vi':'intranstive verb',
-        'vs-s':'suru verb',
-        'v5r':'5-dan',
-        'col':'colloquial',
-        'n-suf':'suffix',
-        'prt':'particle'
+        'adj-no':['の adjective','adj'],
+        'adj-na':['な adjective','adj'],
+        'adj-i':['い adjective','adj'],
+        'adv':['adverb','adv'],
+        'uk':['kana','misc'],
+        'n':['noun','noun'],
+        'exp':['expression','misc'],
+        'v1':['1-dan verb','verb'],
+        'vi':['intranstive verb','verb'],
+        'vt':['transtive verb','verb'],
+        'vs-s':['suru verb','verb'],
+        'v5r':['5-dan','verb'],
+        'col':['colloquial','misc'],
+        'n-suf':['suffix','su-prefix'],
+        'prt':['particle','particle']
     }
 
     // ## DEBUGGING TOOLS
@@ -97,7 +102,7 @@
         let html = document.body.innerHTML;
         let lorem = '<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>';
         newHtml = html;
-        newHtml = newHtml.replaceAll('{{Meaning}}', '<div style="text-align: left;" class="yomitan-glossary"><ol><li data-dictionary="Jitendex.org [2025-02-11]"><i>(★, Jitendex.org [2025-02-11])</i> <span><div><span data-sc-code="n" style="font-weight: bold; font-size: 0.8em; color: white; background-color: rgb(86, 86, 86); vertical-align: text-bottom; border-radius: 0.3em; margin-right: 0.25em; padding: 0.2em 0.3em; word-break: keep-all; cursor: help;" title="noun (common) (futsuumeishi)">noun</span><div><ul data-sc-content="glossary"><li>one\'s post</li><li>place of work</li><li>workplace</li></ul><div data-sc-content="extra-info" style="margin-left: 0.5em;"><div><div data-sc-content="example-sentence" data-sc-source="155796" style="background-color: color-mix(in srgb, var(--text-color, var(--fg, #333)) 5%, transparent); border-color: var(--text-color, var(--fg, #333)); border-style: none none none solid; border-radius: 0.4rem; border-width: calc(3em / var(--font-size-no-units, 14)); margin-top: 0.5rem; margin-bottom: 0.5rem; padding: 0.5rem;"><div data-sc-content="example-sentence-a" style="font-size: 1.3em;" lang="ja"><ruby lang="ja">私<rt lang="ja">わたし</rt></ruby>は<span data-sc-content="example-keyword" style="color: color-mix(in srgb, lime, var(--text-color, var(--fg, #333)));"><ruby lang="ja">職<rt lang="ja">しょく</rt></ruby><ruby lang="ja">場<rt lang="ja">ば</rt></ruby></span>から<ruby lang="ja">１<rt lang="ja">いち</rt></ruby><ruby lang="ja">時<rt lang="ja">じ</rt></ruby><ruby lang="ja">間<rt lang="ja">かん</rt></ruby>の<ruby lang="ja">所<rt lang="ja">ところ</rt></ruby>に<ruby lang="ja">住<rt lang="ja">す</rt></ruby>んでいる。</div><div data-sc-content="example-sentence-b" style="font-size: 0.8em;">I live an hour away from work.</div></div></div></div></div></div><div data-sc-content="attribution" style="font-size: 0.7em; text-align: right;"><a href="https://www.edrdg.org/jmwsgi/entr.py?svc=jmdict&amp;q=1357540"><span>JMdict</span><span style="display:none;"></span></a> | <a href="https://tatoeba.org/en/sentences/show/155796"><span>Tatoeba</span><span style="display:none;"></span></a></div></span></li><li data-dictionary="JMdict (English)"><i>(n, JMdict (English))</i> one\'s post | place of work | workplace</li></ol></div>');
+        newHtml = newHtml.replaceAll('{{Meaning}}', '<div style="text-align: left;" class="yomitan-glossary"><ol><li data-dictionary="Jitendex.org [2025-02-11]"><i>(★, Jitendex.org [2025-02-11])</i> <span><div><span data-sc-code="adj-na" style="font-weight: bold; font-size: 0.8em; color: white; background-color: rgb(86, 86, 86); vertical-align: text-bottom; border-radius: 0.3em; margin-right: 0.25em; padding: 0.2em 0.3em; word-break: keep-all; cursor: help;" title="noun (common) (futsuumeishi)">noun</span><div><ul data-sc-content="glossary"><li>one\'s post</li><li>place of work</li><li>workplace</li></ul><div data-sc-content="extra-info" style="margin-left: 0.5em;"><div><div data-sc-content="example-sentence" data-sc-source="155796" style="background-color: color-mix(in srgb, var(--text-color, var(--fg, #333)) 5%, transparent); border-color: var(--text-color, var(--fg, #333)); border-style: none none none solid; border-radius: 0.4rem; border-width: calc(3em / var(--font-size-no-units, 14)); margin-top: 0.5rem; margin-bottom: 0.5rem; padding: 0.5rem;"><div data-sc-content="example-sentence-a" style="font-size: 1.3em;" lang="ja"><ruby lang="ja">私<rt lang="ja">わたし</rt></ruby>は<span data-sc-content="example-keyword" style="color: color-mix(in srgb, lime, var(--text-color, var(--fg, #333)));"><ruby lang="ja">職<rt lang="ja">しょく</rt></ruby><ruby lang="ja">場<rt lang="ja">ば</rt></ruby></span>から<ruby lang="ja">１<rt lang="ja">いち</rt></ruby><ruby lang="ja">時<rt lang="ja">じ</rt></ruby><ruby lang="ja">間<rt lang="ja">かん</rt></ruby>の<ruby lang="ja">所<rt lang="ja">ところ</rt></ruby>に<ruby lang="ja">住<rt lang="ja">す</rt></ruby>んでいる。</div><div data-sc-content="example-sentence-b" style="font-size: 0.8em;">I live an hour away from work.</div></div></div></div></div></div><div data-sc-content="attribution" style="font-size: 0.7em; text-align: right;"><a href="https://www.edrdg.org/jmwsgi/entr.py?svc=jmdict&amp;q=1357540"><span>JMdict</span><span style="display:none;"></span></a> | <a href="https://tatoeba.org/en/sentences/show/155796"><span>Tatoeba</span><span style="display:none;"></span></a></div></span></li><li data-dictionary="JMdict (English)"><i>(n, JMdict (English))</i> one\'s post | place of work | workplace</li></ol></div>');
         newHtml = newHtml.replaceAll('{{Sentence}}', 'コートをハンガーに<b><ruby>掛<rt>か</rt></ruby>けて</b>おきなさい。<br>ウエートレスはテーブルの上に白いテーブルクロスを<b>かけた</b>。<br>１０円で電話が<b>かけられます</b>か。')
         newHtml = newHtml.replaceAll('{{Sentence-translated}}','Put your coat on a hanger.<br>The waitress spread a white cloth over the table. <br>Can I make a phone call for ten yen?')
         newHtml = newHtml.replaceAll('{{Function}}', '<ul><li>noun</li><li>adjective</li></ul>');
@@ -106,10 +111,10 @@
         newHtml = newHtml.replaceAll('{{Forming}}',lorem);
         
         document.body.innerHTML = newHtml;
-        //console.log('FILLER TEXT ACTIVATED')
+        console.log('FILLER TEXT ACTIVATED')
     }
 
-    replaceWithFiller();
+    //replaceWithFiller();
 
     // ## FUNCTIONS
     function changeDisplayById(id, display_text){
@@ -176,14 +181,21 @@
     function hideByClass(class_name){
         let list = document.getElementsByClassName(class_name);
         for (let i = 0; i < list.length; i++){
-            list[i].display='none';
+            list[i].style.display='none';
         }
     }
 
     function showByClass(class_name, display_text){
         let list = document.getElementsByClassName(class_name);
         for (let i = 0; i < list.length; i++){
-            list[i].display=display_text;
+            list[i].style.display=display_text;
+        }
+    }
+
+    function showByTag(tag, display_text){
+        let list = document.querySelectorAll('rt');
+        for (let i = 0; i < list.length; i++){
+            list[i].style.display=display_text;
         }
     }
 
@@ -212,6 +224,7 @@
     }
 
 
+    
 
     
 
@@ -265,13 +278,28 @@
     let tagsCollection = document.getElementsByClassName('yomitan-glossary')[0].querySelectorAll('['+ATTRIBUTETAGS+']');
     for (let i = 0; i < tagsCollection.length; i++){
         let attribute = tagsCollection[i].getAttribute(ATTRIBUTETAGS);
-        let newTag = document.createElement('div');
-        newTag.innerHTML = TAGS[attribute];
-        newTag.classList.add('tag');
-        newTag.classList.add(attribute);
-        document.getElementById(IDTAGSCONTAINER).appendChild(newTag)
+        let tagList = TAGS[attribute][0].split(" ");
+        let superTag = TAGS[attribute][1];
+
+        if(tagList.length>1){
+            for (let i = tagList.length-1; i >= 0; i--){    
+                let newTag = document.createElement('div');
+                newTag.innerHTML = tagList[i];
+                newTag.classList.add('tag');
+                if(i < tagList.length-1){
+                    newTag.classList.add(attribute); // don't add specific class in the parent tag
+                }
+                newTag.classList.add(superTag);
+                document.getElementById(IDTAGSCONTAINER).appendChild(newTag)   
+            }
+        } else {
+            let newTag = document.createElement('div');
+            newTag.innerHTML = TAGS[attribute];
+            newTag.classList.add('tag');
+            newTag.classList.add(superTag);
+            document.getElementById(IDTAGSCONTAINER).appendChild(newTag)   
+        }
     }
-    console.log(tagsCollection)
 }
 </script> 
 </body>
