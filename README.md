@@ -15,6 +15,7 @@ Files in the 'debugging' folder are for testing and styling purposes, they are t
 - Automate sentence-fetching on vocab cards
     - Fetch
     - Apply correct styles
+- Automate tag-fetching on vocab cards
 - Mobile-first:
     - Comparison cards
 - Grammar cards

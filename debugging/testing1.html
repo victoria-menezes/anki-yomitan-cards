@@ -881,9 +881,6 @@ JMdict</span>
 </div>
 <script>
     {
-        //console.log(document.getElementsByTagName('div')[1].dataset.scContent)
-        // <div><ol><li><span><ul><li><ol><div><div><div "example-sentence">
-
         const IDFINAL = 'final';
         const SENTENCEMAX = 4;
         const SENTENCEDATAPREFIX = 'example-sentence';
@@ -892,6 +889,7 @@ JMdict</span>
         const CLASSSENTENCE = 'sentence';
         const CLASSTRANSLATED = 'sentence-translated';
         const CLASSVOCAB = 'sentence-vocab';
+        const CLASSHIGHLIGHT = 'highlighted';
         // example-sentence-a is the untranslated sentence
         // example-sentence-b is the translated sentence
         // example-sentence is the container with both
@@ -914,34 +912,39 @@ JMdict</span>
 
         // get sentence containers
         let containerCollection = document.querySelectorAll('['+ATTRIBUTENAME+'='+SENTENCEDATAPREFIX+']')
-        console.log(containerCollection)
 
-        // from the sentence containers, get the original sentences
-        tempFragment = document.createDocumentFragment()
-        for (let i = 0; i < containerCollection.length; i++){
+        // from the sentence containers, get the original sentences and the translated sentences
+        let sentenceFragment = document.createDocumentFragment()
+        let translatedFragment = document.createDocumentFragment()
+        for (let i = 0; i < Math.min(containerCollection.length,SENTENCEMAX); i++){
             // since HTMLCollections can't be edited directly,
             // create a documentFragment and append the children to it and later make a HTMLCollection from that
-            tempFragment.append(getChildrenByAttribute(containerCollection[i].children, ATTRIBUTENAME, SENTENCEDATAPREFIX+'-a')[0]);
+            sentenceFragment.append(getChildrenByAttribute(containerCollection[i].children, ATTRIBUTENAME, SENTENCEDATAPREFIX+'-a')[0]);
+            translatedFragment.append(getChildrenByAttribute(containerCollection[i].children, ATTRIBUTENAME, SENTENCEDATAPREFIX+'-b')[0]);
         }
-        let sentenceCollection = tempFragment.children;
+        let sentenceCollection = sentenceFragment.children;
+        let translatedCollection = translatedFragment.children;
 
-        // from the sentence containers, get the translated sentences
-        tempFragment = document.createDocumentFragment()
-        for (let i = 0; i < containerCollection.length; i++){
-            tempFragment.append(getChildrenByAttribute(containerCollection[i].children, ATTRIBUTENAME, SENTENCEDATAPREFIX+'-b')[0]);
-        }
-        let translatedCollection = tempFragment.children;
+        // fix the styling with the correct tags
 
         // now to build the new HTML:
         let newContainer = document.getElementById(IDFINAL)
-        for(let i = 0; i < Math.min(sentenceCollection.length,SENTENCEMAX); i++){
+        let highlightedText ="";
+        for(let i = 0; i < sentenceCollection.length; i++){
+            // replace span tag with the correct tags for the anki style
+            let span = sentenceCollection[i].getElementsByTagName('span')[0];
+            highlightedText = document.createElement('b')
+            highlightedText.classList.add(CLASSHIGHLIGHT);
+            highlightedText.innerHTML = span.innerHTML;
+            sentenceCollection[i].replaceChild(highlightedText, span);
+
             newContainer.innerHTML+=
                 '<div class="'+CLASSSENTENCE+'">'+
                 sentenceCollection[i].innerHTML+
                 '</div>'+
                 '<div class="'+CLASSTRANSLATED+'">'+
                 translatedCollection[i].innerHTML+
-                '</div>'
+                '</div>';
         }
     }
     </script>
