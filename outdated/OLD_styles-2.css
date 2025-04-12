@@ -1,0 +1,691 @@
+*{
+    margin:0;
+    padding:0;
+}
+
+:root{
+    font-size:14px;
+    --font: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
+    font-family: var(--font);
+
+    --color-accent:#3fdb1f;
+    --color-text: #fff;
+    --color-text-dark:#181818;
+    --color-border:#008a12;
+    --color-highlight:rgba(0, 138, 18, 0.5);
+
+    --color-noun:#042a70;
+    --color-verb:#682904;
+    --color-adjective:#005851;
+    --color-adverb:#5f005f;
+    --color-particle:#2f8100;
+    
+    --color-transitive:#74a4ff;
+    --color-intransitive:#e04b4b;
+    --color-na:#4cddbe;
+    --color-i:#e453f1;
+    --color-no:#8f87ff;
+    --color-suru:#adb5d8;
+
+    --color-on:#e660da;
+    --color-kun:#518de7;
+
+    --fontsize:1rem;
+    --fontsize-h1:3rem;
+    --fontsize-h2:2rem;
+    --fontsize-h3:1.5rem;
+    --fontsize-small:0.75rem;
+    
+    --lineheight-small:1.25rem;
+    --lineheight-h1:3rem;
+    --lineheight-h2:2.5rem;
+    --lineheight-h3:2rem;
+
+    color: var(--color-text);
+}
+
+h1, h2, h3{
+    color: var(--color-accent);
+    display:inline-block;
+    width:100%;
+    border-bottom: 3px solid var(--color-accent);
+    margin: 0.5rem 0 0.25rem 0;
+    text-indent: 2rem;
+}
+
+h1{
+    font-size: var(--fontsize-h1);
+    line-height: var(--lineheight-h1);
+}
+
+h2{
+    font-size: var(--fontsize-h2);
+    line-height: var(--lineheight-h2);
+}
+
+h3{
+    font-size: var(--fontsize-h3);
+    line-height: var(--lineheight-h3);
+}
+
+b, strong{
+    color:var(--color-accent);
+}
+
+body{
+    height:100vh;
+}
+
+a{
+    text-decoration: underline;
+    color:var(--color-accent);
+}
+
+a:hover, .tab-button:hover{
+    color:var(--color-border);
+}
+
+i{
+    color: var(--color-text);
+}
+    
+
+.wrapper{
+    display:flex;
+    flex-flow:column;
+    height:840px;
+    overflow-y: hidden;
+}
+
+.border-bottom {
+    border-bottom: 3px solid var(--color-border);
+}
+
+
+/* FRONT */
+.standard-front{
+    display:flex;
+    flex-flow: column;
+    text-align:center;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 3px solid var(--color-border);
+    padding-bottom: 1em;
+
+    & rt{
+        display:none;
+    }
+
+    & rp{
+        display:none;
+    }
+}
+
+.vocab{
+    border:none;
+    text-indent:0;
+    text-align: center;
+    font-weight: 500;
+}
+
+.container-buttons{
+    width:100%;
+    
+    display:flex;
+    justify-content: space-around;
+    margin: 0.5em 0;
+}
+
+.button{
+    font-weight: 700;
+    font-family: monospace;
+
+    & span{
+        font-size:var(--fontsize-h3);
+        font-family: var(--font);
+    }
+    text-transform:uppercase;    
+    padding: 0.25em;
+    width: 40%;
+    background-color:var(--color-highlight);
+    color: var(--color-text);
+}
+
+.single-button{
+    width: 100%;
+}
+
+.sentence-front{
+    font-size: var(--fontsize-h2);
+    display:none;
+}
+
+.redacted{
+    & b, & strong{
+        color: var(--color-accent);
+        background-color: var(--color-accent);
+    }
+}
+
+.hidden{
+    display:none;
+}
+
+/* BACK */
+
+
+
+/* HEADER */
+.standard-back{
+    display:flex;
+    width:100%;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: hidden;
+}
+
+.navigation{
+    width:100%;
+    border-bottom: 3px solid var(--color-border);
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom:0.5em;
+}
+
+.navigation-item{
+    list-style: none;
+    flex:auto;
+    text-align: center;
+    border:none;
+    border-right: 3px solid var(--color-border);
+    padding: 0.25em 0;
+}
+
+#button-examples{
+    text-decoration:underline;
+}
+
+.navigation-item:last-child{
+    border:none;
+}
+
+.tab-button{
+    font-family: monospace;
+    font-weight: 700;
+    font-size:var(--fontsize-h3);
+    text-transform:uppercase;
+
+    color:var(--color-border);
+
+    background:none;
+}
+
+.tab-button-active{
+    text-decoration: underline;
+    color:var(--color-accent);
+}
+
+
+/* GENERAL */
+.tabs-container{
+    flex:1 1;
+    width: 100%;    
+    overflow-y: auto;
+}
+
+.tab{
+    width:100%;
+    display:flex;
+    flex-flow:column;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    flex: 1 1;
+}
+
+
+
+/* AUDIO & MEANING */
+.audio{
+    padding: 0.25em;
+}
+
+.container-audio-meaning{
+    display:none;
+}
+
+.meaning{
+	padding:1em;
+}
+
+
+/* EXAMPLES & INFORMATION */
+.container-sentence-translation{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.sentence, .sentence-translation{
+    padding: 0.25em;
+}
+
+.sentence-translation{
+    display:none;
+}
+
+.sentence{
+    & b, & strong{
+        color: var(--color-accent);
+    }
+}
+
+.container-tags{
+    display:flex;
+    flex-flow: column;
+    align-items: center;
+    width:100%;
+}
+
+.tags{
+    font-weight:900;
+    text-transform: uppercase;
+    display:block;
+    margin:0.75em 0;
+
+    & ul{
+        list-style-type:none;
+        width: 100%;
+        display:flex;
+        justify-content: space-around;
+        gap:0.5em;
+    }
+
+    & li{
+        text-align: center;
+        padding:0.5em;
+        border-radius: 0 0.5em;
+    }
+}
+
+#function{
+    & li{
+        color:var(--color-text);
+        border: 2px dotted var(--color-text);
+    }
+}
+
+#type{
+    & li{
+        color:var(--color-text-dark);
+    }
+}
+
+.container-notes{
+    text-align:left;
+}
+
+
+
+/* FORMING & LINKS */
+.container-forming-links{
+    display:none;
+}
+
+.container-forming{
+    padding-bottom: 0.5em;
+}
+
+.link-list-wrapper{
+    & ul{
+        display:flex;
+        justify-content: space-around;
+    }
+
+    & li{
+        flex:0 0 0;
+        list-style: none;
+        text-align: center;
+        font-weight: 900;
+        width:auto;
+        display:flex;
+    }
+
+    & a {
+        margin:auto;
+    }
+}
+
+.source-link{
+    text-align: center;
+    padding-top: 1rem;
+}
+
+
+
+/* KANJI CARDS*/
+
+.kanji-container{
+    text-align: center;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    width:100%;
+}
+
+.kanji-title{
+    text-indent: 0;
+}
+
+.kanji-meanings{
+    font-size: var(--fontsize-h3);
+}
+
+
+.kanji-container{
+    box-sizing: border-box;
+    width:100%;
+}
+
+.kanji-content{
+    padding: 1rem;
+}
+
+
+.kanji-back{
+    width:100%;
+    display:grid;
+    grid-template-columns: repeat(6, 16.7%);
+    grid-template-rows: auto auto auto;
+    box-sizing: border-box;
+}
+
+.kanji-container{
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.kanji-container-meaning{
+    grid-column-start:1;
+    grid-column-end: 7;
+}
+
+.kanji-container-readings{
+    box-sizing: border-box;
+    padding: 0.5rem;
+    border-right: 3px solid var(--color-border);
+    text-align: center;
+}
+
+.kanji-container-kun{
+    & h3{
+        color:var(--color-kun);
+        border-color: var(--color-kun)
+    }
+
+}
+
+.kanji-container-on{
+    & h3{
+        color:var(--color-on);
+        border-color: var(--color-on)
+    }
+}
+
+.kanji-container-examples{    
+    padding: 0.5rem;
+    gap: 0.75rem;
+
+    grid-column-start: 3;
+    grid-column-end: 7;
+    display: grid;
+    grid-template-columns: 30% auto;
+    grid-template-rows: min-content auto;
+    
+    & ul{
+        list-style: none;
+    }
+}
+
+.title-examples{
+    grid-column-start: 1;
+    grid-column-end: 3;
+    align-self: start;
+}
+
+.kanji-examples-jpn{
+    width:fit-content;
+    color: var(--color-accent);
+    font-size: var(--fontsize-h3);
+
+    justify-self:end;
+    align-self:start;
+
+    & ul{
+        width:fit-content;
+        justify-content:right;
+    }
+
+    & li{
+        display:flex;
+        align-items: center;
+        box-sizing: border-box;
+        height: 4rem;
+        border-bottom: 1px solid var(--color-border);
+    }
+}
+
+.kanji-examples-meaning{
+    flex-grow:1;
+    text-align:left;
+    justify-self: start;
+    align-self: start;
+
+    & li{            
+        display:flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0.25em;
+        height: 4rem;
+        border-bottom: 1px solid var(--color-border);
+    }
+}
+
+.kanji-container-notes{
+    grid-row-start: 3;
+    grid-column-start:1;
+    grid-column-end:4;
+}
+
+.kanji-container-lookalikes{
+    grid-row-start: 3;
+    grid-column-start:4;
+    grid-column-end:7;
+}
+
+.kanji-lookalikes{
+    height:100%;
+    border-left: 3px solid var(--color-border);
+}
+
+.kanji-lookalikes-list{
+    display:flex;
+    gap: 0.75rem;
+    
+    & ul{
+        list-style: none;
+    }
+
+    .kanji-lookalikes-kanji{
+        color: var(--color-accent);
+        font-size: 2rem;
+
+        & li{
+            display:flex;
+            align-items: center;
+            box-sizing: border-box;
+            height: 4rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+    }
+
+    .kanji-lookalikes-meaning{
+        flex-grow:1;
+        text-align:left;
+        & li{            
+            display:flex;
+            align-items: center;
+            box-sizing: border-box;
+            padding: 0.25em;
+            height: 4rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+    }
+}
+
+
+
+/* GRAMMAR */
+.front{
+    width:100%;
+    height:fit-content;
+}
+
+.grammar-container-sentence{
+    text-align: center;
+    font-size:var(--fontsize-h3);
+}
+
+.guide-element{
+    color:var(--color-accent);
+	display:inline-block;
+}
+
+.guide-element-container{
+    width:fit-content;
+}
+
+.sentence-guide-container{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.sentence-list{
+    font-size:var(--fontsize-h3);
+    text-align: center;
+    
+    .sentence-translation{
+        font-size: var(--fontsize);
+        text-align:center;
+    }
+
+    .sentence{
+        border-bottom: 3px solid var(--color-border);
+    }
+}
+
+.back{
+    display:flex;
+    flex-flow: column;
+    overflow-y: hidden;
+}
+
+.tab-notes, .tab-forming{
+    display:block;
+    height:100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.tab-forming{
+    display:none;
+}
+
+/* DESKTOP */
+@media screen and (min-width: 1000px){
+    /* GENERAL */
+    body{
+        font-size: 18px;
+        display:flex;
+        flex-direction: column;
+    }
+
+    .navigation{
+        display:none;
+    }
+
+    .button{
+        font-size: var(--fontsize-h2);
+    }
+
+    .standard-back{
+        flex-shrink:1;
+    }
+
+    .tabs-container{
+        display:grid;
+        grid-template-columns: 30% 40% 30%;
+        height:100%;
+        box-sizing: border-box;
+    }
+
+    .tab{
+        max-height:100%;
+        overflow-y: hidden;
+    }
+
+    .scrollable{
+        flex-shrink:1;
+        overflow-y: auto;
+    }
+
+
+
+
+    /* AUDIO & MEANING */
+    .container-audio-meaning{
+        display:flex;
+        flex-direction: column;
+    }
+    .container-forming-links{
+        display:flex;
+    }
+
+    .tabs-container{
+        overflow-y: hidden;
+    }
+
+
+
+    /* KANJI */
+    .kanji-container,
+    .kanji-examples-jpn{
+        font-size: var(--fontsize-h2);
+    }    
+
+
+
+    /* GRAMMAR */
+
+    .tabs-container-grammar{
+        display:grid;
+        grid-template-columns: 50% auto;
+        flex-shrink:1;
+        overflow-y: hidden;        
+    }
+    .container-generated-links{
+        flex-grow:1;
+    }
+
+    .tab-notes{
+       border-right: 3px solid var(--color-border); 
+    }
+
+    .tab-forming{
+        display:block;
+    }
+}

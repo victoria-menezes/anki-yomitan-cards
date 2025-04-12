@@ -1,4 +1,55 @@
-{
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+
+<body>
+<div class="wrapper">
+    <section class="front border-bottom">
+        <div class="vocab" id="vocab">{{Vocab-furigana}}</div>
+        <div class="front-sentences" id="front-sentences-container"></div>
+        <div class="buttons-container">
+            <button class="button" onclick="showByClass('front-sentences','block')"><span>Sentences</span></button>
+            <button class="button" onclick="removeClassByTag('rt','hidden')"><span>Furigana</span></button>
+        </div>
+        <div class="hidden">
+            <div id="hidden-sentences">{{Sentence}}</div>
+            <div id="hidden-translated">{{Sentence-translated}}</div>
+        </div>
+    </section>
+    <section class="back" id="answer">
+        <ul class="link-list tab-list border-bottom">
+            <li class="link-list-item" id="btn-dictionary"
+            onclick="chooseTab(this.id, 'block')">Dictionary</li>
+            <li class="link-list-item link-active" id="btn-notes"
+            onclick="chooseTab(this.id, 'block')">Notes</li>
+            <li class="link-list-item" id="btn-forming"
+            onclick="chooseTab(this.id, 'block')">Forming</li>
+        </ul>
+        <div class="tab-container">
+            <div class="tab tab-dictionary" id="tab-dictionary">
+                <div id="dictionary">
+                    {{Meaning}}
+                </div>
+                {{Audio}}
+            </div>
+            <div class="tab tab-notes" id="tab-notes">
+                <div class="notes-sentences" id="back-sentences-container"></div>
+                <div class="notes-tags" id="back-attributes-container"></div>
+                <div class="notes">
+                    {{Notes}}
+                </div>
+            </div>
+            <div class="tab tab-forming" id="tab-forming">{{Forming}}</div>
+        </div>
+    <ul class="link-list footer border-top">
+        <li class="link-list-item"><a href="https://bunpro.jp/vocabs/{{Vocab}}">Bp. Vocab</a></li>
+        <li class="link-list-item"><a href="https://bunpro.jp/grammar_points/{{Vocab}}">Bp. Grammar</a></li>
+        <li class="link-list-item"><a href="https://bunpro.jp/search?query={{Vocab}}">Bp. Search</a></li>
+        <li class="link-list-item"><a href="https://jisho.org/word/{{Vocab}}">Jisho</a></li>
+    </ul>
+    </section>
+</div>
+<script>{
     
     // ## CONSTANTS
     const IDDICTIONARYCONTAINER = 'dictionary';
@@ -294,28 +345,31 @@
         // ## TAGS
         
         let tagsCollection = document.getElementsByClassName('yomitan-glossary')[0].querySelectorAll('['+ATTRIBUTETAGS+']');
+        let addedTags = [];
         for (let i = 0; i < tagsCollection.length; i++){
             let attribute = tagsCollection[i].getAttribute(ATTRIBUTETAGS);
             let tagList = TAGS[attribute][0].split(" ");
             let superTag = TAGS[attribute][1];
-
-            if(tagList.length>1){
-                for (let i = tagList.length-1; i >= 0; i--){    
-                    let newTag = document.createElement('div');
-                    newTag.innerHTML = tagList[i];
-                    newTag.classList.add('tag');
-                    if(i < tagList.length-1){
-                        newTag.classList.add(attribute); // don't add specific class in the parent tag
+            if(!(addedTags.includes(attribute))){
+                if(tagList.length>1){
+                    for (let i = tagList.length-1; i >= 0; i--){    
+                        let newTag = document.createElement('div');
+                        newTag.innerHTML = tagList[i];
+                        newTag.classList.add('tag');
+                        if(i < tagList.length-1){
+                            newTag.classList.add(attribute); // don't add specific class in the parent tag
+                        }
+                        newTag.classList.add(superTag);
+                        document.getElementById(IDTAGSCONTAINER).appendChild(newTag);
                     }
+                } else {
+                    let newTag = document.createElement('div');
+                    newTag.innerHTML = TAGS[attribute][0];
+                    newTag.classList.add('tag');
                     newTag.classList.add(superTag);
                     document.getElementById(IDTAGSCONTAINER).appendChild(newTag)   
                 }
-            } else {
-                let newTag = document.createElement('div');
-                newTag.innerHTML = TAGS[attribute][0];
-                newTag.classList.add('tag');
-                newTag.classList.add(superTag);
-                document.getElementById(IDTAGSCONTAINER).appendChild(newTag)   
+                addedTags.push(attribute);
             }
         }
     }
@@ -323,4 +377,7 @@
 
 
     // #### CALLING FUNCTION
+    buildStandardCard(false);
 }
+</script> 
+</body>
