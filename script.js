@@ -45,13 +45,14 @@
         'adj-na':['な adjective','adj'],
         'adj-i':['い adjective','adj'],
         'adv':['adverb','adv'],
-        'uk':['kana','misc'],
+        'uk':['かな','misc'],
         'n':['noun','noun'],
         'exp':['expression','misc'],
         'v1':['1-dan verb','verb'],
         'vi':['intranstive verb','verb'],
         'vt':['transtive verb','verb'],
-        'vs-s':['suru verb','verb'],
+        'vs':['する verb','verb'],
+        'vs-s':['する verb','verb'],
         'v5r':['5-dan','verb'],
         'col':['colloquial','misc'],
         'n-suf':['suffix','su-prefix'],
@@ -85,6 +86,11 @@
         'nai stem':['ない stem', 'nai-stem'],
         'misc':['misc', 'misc'],
         'particle':['particle','particle'],
+        'nominalized':['nominalized','nominalized'],
+        'o':['お', 'o'],
+        'お':['お', 'o'],
+        'ou':['おう', 'ou'],
+        'おう':['おう', 'ou'],
         undefined:[undefined,undefined]
     }
 
