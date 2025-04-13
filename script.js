@@ -39,7 +39,7 @@
         'btn-notes':'tab-notes',
         'btn-forming':'tab-forming'
     }
-
+    
     const TAGS = {
         'adj-no':['の adjective','adj'],
         'adj-na':['な adjective','adj'],
@@ -55,7 +55,9 @@
         'v5r':['5-dan','verb'],
         'col':['colloquial','misc'],
         'n-suf':['suffix','su-prefix'],
-        'prt':['particle','particle']
+        'prt':['particle','particle'],
+        'conj':['conjunction', 'misc'],
+        'forms':['hidden','hidden']
     }
 
     const FUNCTIONCLASS = {
