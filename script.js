@@ -1,3 +1,4 @@
+
 {
         
     // ## CONSTANTS
@@ -17,10 +18,11 @@
 
     const IDVOCAB = 'vocab';
     const IDBACK = 'answer';
+    const IDAUDIO = 'audio';
 
     const IDHIDDENSENTENCECONTAINER = 'hidden-sentences';
     const IDHIDDENGUIDESCONTAINER =  'hidden-guides';
-    const IDHIDDENACTSCONTAINER = 'hidden-actsAs';
+    const IDHIDDENFUNCTIONCONTAINER = 'hidden-function';
     const IDHIDDENATTACHCONTAINER = 'hidden-attachTo';
     const IDHIDDENTRANSLATEDCONTAINER = 'hidden-translated';
 
@@ -87,7 +89,7 @@
         newHtml = html;
         newHtml = newHtml.replaceAll('{{Vocab}}', '職場');
         newHtml = newHtml.replaceAll('{{Vocab-furigana}}','<ruby>職場<rt>しょくば</rt></ruby>');
-        // newHtml = newHtml.replaceAll('{{Meaning}}', '<div style="text-align: left;" class="yomitan-glossary"><ol><li data-dictionary="Jitendex.org [2025-02-11]"><i>(★, Jitendex.org [2025-02-11])</i> <span><div><span data-sc-code="n" style="font-weight: bold; font-size: 0.8em; color: white; background-color: rgb(86, 86, 86); vertical-align: text-bottom; border-radius: 0.3em; margin-right: 0.25em; padding: 0.2em 0.3em; word-break: keep-all; cursor: help;" title="noun (common) (futsuumeishi)">noun</span><span data-sc-code="adj-no" style="font-weight: bold; font-size: 0.8em; color: white; background-color: rgb(86, 86, 86); vertical-align: text-bottom; border-radius: 0.3em; margin-right: 0.25em; padding: 0.2em 0.3em; word-break: keep-all; cursor: help;" title="nouns which may take the genitive case particle \'no\'">no-adj</span><span data-sc-code="adv" style="font-weight: bold; font-size: 0.8em; color: white; background-color: rgb(86, 86, 86); vertical-align: text-bottom; border-radius: 0.3em; margin-right: 0.25em; padding: 0.2em 0.3em; word-break: keep-all; cursor: help;" title="adverb (fukushi)">adverb</span><div><ul data-sc-content="glossary"><li>all</li><li>entire</li><li>whole</li><li>altogether</li></ul><div data-sc-content="extra-info" style="margin-left: 0.5em;"><div><div data-sc-content="example-sentence" data-sc-source="226243" style="background-color: color-mix(in srgb, var(--text-color, var(--fg, #333)) 5%, transparent); border-color: var(--text-color, var(--fg, #333)); border-style: none none none solid; border-radius: 0.4rem; border-width: calc(3em / var(--font-size-no-units, 14)); margin-top: 0.5rem; margin-bottom: 0.5rem; padding: 0.5rem;"><div data-sc-content="example-sentence-a" style="font-size: 1.3em;" lang="ja">かばん<span data-sc-content="example-keyword" style="color: color-mix(in srgb, lime, var(--text-color, var(--fg, #333)));"><ruby lang="ja">全<rt lang="ja">ぜん</rt></ruby><ruby lang="ja">部<rt lang="ja">ぶ</rt></ruby></span>に<ruby lang="ja">荷<rt lang="ja">に</rt></ruby><ruby lang="ja">札<rt lang="ja">ふだ</rt></ruby>をつけなさい。</div><div data-sc-content="example-sentence-b" style="font-size: 0.8em;">Attach labels to all the bags.</div></div></div></div></div></div><div data-sc-content="attribution" style="font-size: 0.7em; text-align: right;"><a href="https://www.edrdg.org/jmwsgi/entr.py?svc=jmdict&amp;q=1396130"><span>JMdict</span><span style="display:none;"></span></a> | <a href="https://tatoeba.org/en/sentences/show/226243"><span>Tatoeba</span><span style="display:none;"></span></a></div></span></li><li data-dictionary="JMdict (English)"><i>(adj-no, n-adv, n-t, JMdict (English))</i> all | entire | whole | altogether</li></ol></div>'); // comment this out when putting into anki
+        newHtml = newHtml.replaceAll('{{Meaning}}', '<div style="text-align: left;" class="yomitan-glossary"><ol><li data-dictionary="Jitendex.org [2025-02-11]"><i>(★, Jitendex.org [2025-02-11])</i> <span><div><span data-sc-code="n" style="font-weight: bold; font-size: 0.8em; color: white; background-color: rgb(86, 86, 86); vertical-align: text-bottom; border-radius: 0.3em; margin-right: 0.25em; padding: 0.2em 0.3em; word-break: keep-all; cursor: help;" title="noun (common) (futsuumeishi)">noun</span><span data-sc-code="adj-no" style="font-weight: bold; font-size: 0.8em; color: white; background-color: rgb(86, 86, 86); vertical-align: text-bottom; border-radius: 0.3em; margin-right: 0.25em; padding: 0.2em 0.3em; word-break: keep-all; cursor: help;" title="nouns which may take the genitive case particle \'no\'">no-adj</span><span data-sc-code="adv" style="font-weight: bold; font-size: 0.8em; color: white; background-color: rgb(86, 86, 86); vertical-align: text-bottom; border-radius: 0.3em; margin-right: 0.25em; padding: 0.2em 0.3em; word-break: keep-all; cursor: help;" title="adverb (fukushi)">adverb</span><div><ul data-sc-content="glossary"><li>all</li><li>entire</li><li>whole</li><li>altogether</li></ul><div data-sc-content="extra-info" style="margin-left: 0.5em;"><div><div data-sc-content="example-sentence" data-sc-source="226243" style="background-color: color-mix(in srgb, var(--text-color, var(--fg, #333)) 5%, transparent); border-color: var(--text-color, var(--fg, #333)); border-style: none none none solid; border-radius: 0.4rem; border-width: calc(3em / var(--font-size-no-units, 14)); margin-top: 0.5rem; margin-bottom: 0.5rem; padding: 0.5rem;"><div data-sc-content="example-sentence-a" style="font-size: 1.3em;" lang="ja">かばん<span data-sc-content="example-keyword" style="color: color-mix(in srgb, lime, var(--text-color, var(--fg, #333)));"><ruby lang="ja">全<rt lang="ja">ぜん</rt></ruby><ruby lang="ja">部<rt lang="ja">ぶ</rt></ruby></span>に<ruby lang="ja">荷<rt lang="ja">に</rt></ruby><ruby lang="ja">札<rt lang="ja">ふだ</rt></ruby>をつけなさい。</div><div data-sc-content="example-sentence-b" style="font-size: 0.8em;">Attach labels to all the bags.</div></div></div></div></div></div><div data-sc-content="attribution" style="font-size: 0.7em; text-align: right;"><a href="https://www.edrdg.org/jmwsgi/entr.py?svc=jmdict&amp;q=1396130"><span>JMdict</span><span style="display:none;"></span></a> | <a href="https://tatoeba.org/en/sentences/show/226243"><span>Tatoeba</span><span style="display:none;"></span></a></div></span></li><li data-dictionary="JMdict (English)"><i>(adj-no, n-adv, n-t, JMdict (English))</i> all | entire | whole | altogether</li></ol></div>');
         newHtml = newHtml.replaceAll('{{Sentence}}', '<ruby>彼女<rt>かのじょ</rt></ruby>はピアノが<b><ruby>弾<rt>ひ</rt></ruby>けるし</b>、スポーツができるし、<ruby>彼女<rt>かのじょ</rt></ruby>に<ruby>出来<rt>でき</rt></ruby>ないことはないと<ruby>思<rt>おも</rt></ruby>う。')
         newHtml = newHtml.replaceAll('{{Sentence-translated}}','Put your coat on a hanger.<br>The waitress spread a white cloth over the table. <br>Can I make a phone call for ten yen?')
         newHtml = newHtml.replaceAll('{{Sentence-guide}}','<b><ruby>弾<rt>ひ</rt></ruby>ける、できる</b><br><b><b><ruby>高<rt>たか</rt></ruby>い、まずい</b></b>')
@@ -189,10 +191,10 @@
             //console.log(collectionTranslated[i])
 
             sentencesContainer.innerHTML+=
-            '<div class="'+CLASSSENTENCE+'">'+
+            '<div class="'+classSentence+'">'+
             collectionSentencesCopy[i].innerHTML+
             '</div>'+
-            '<div class="'+CLASSTRANSLATED+'">'+
+            '<div class="'+classTranslated+'">'+
             collectionTranslatedCopy[i].innerHTML+
             '</div>'
             
@@ -289,7 +291,9 @@
     }
 
     function hideBack(){
-        document.getElementById(IDBACK).classList.add(CLASSHIDDEN);}
+        document.getElementById(IDBACK).classList.add(CLASSHIDDEN);
+        document.getElementById(IDAUDIO).innerHTML='';
+    }
 
     // #### BY CARD TYPE
     function buildStandardCard(){
@@ -309,8 +313,21 @@
         translatedContainer.innerHTML = '<ul><li>'+translatedHtml.replaceAll('<br>','<li>')+'</li></ul>';
         let translatedList = translatedContainer.getElementsByTagName('li');
         
-        populateSentences(IDFRONTSENTENCECONTAINER, sentenceList, translatedList, false, true);
-        populateSentences(IDBACKSENTENCECONTAINER, sentenceList, translatedList, false, false);
+        populateSentences(
+            IDFRONTSENTENCECONTAINER, 
+            sentenceList, 
+            translatedList, 
+            false, 
+            true,
+            CLASSHIDDEN,
+            CLASSSENTENCE,
+            CLASSTRANSLATED+' hidden');
+        populateSentences(
+            IDBACKSENTENCECONTAINER, 
+            sentenceList, 
+            translatedList, 
+            false, 
+            false);
         
         // ## SENTENCE FETCHING: FROM DICTIONARY
         // example-sentence-a is the untranslated sentence
@@ -335,8 +352,21 @@
         let sentenceCollection = sentenceFragment.children;
         let translatedCollection = translatedFragment.children;
 
-        populateSentences(IDFRONTSENTENCECONTAINER, sentenceCollection, translatedCollection, true, true);
-        populateSentences(IDBACKSENTENCECONTAINER,  sentenceCollection, translatedCollection, true, false);
+        populateSentences(
+            IDFRONTSENTENCECONTAINER, 
+            sentenceCollection, 
+            translatedCollection, 
+            true, 
+            true,
+            CLASSHIDDEN,
+            CLASSSENTENCE,
+            CLASSTRANSLATED+' hidden');
+        populateSentences(
+            IDBACKSENTENCECONTAINER,  
+            sentenceCollection, 
+            translatedCollection, 
+            true, 
+            false);
 
         // 
 
@@ -496,29 +526,36 @@
         let functionList = document.getElementById(IDHIDDENFUNCTIONCONTAINER);
         functionList = linebreaksToItems(functionList);
 
-        for(let i = 0; i < functionList.length; i++){
-            let tag = document.createElement('div').innerHTML=functionList[i];
-            tag.classList.add('tag');
-            tag.classList.add(FUNCTIONCLASS[tag.innerHTML]);
-            document.getElementById(IDTAGSCONTAINER).appendChild(tag);
+        if (functionList[0].innerHTML != ''){
+            for(let i = 0; i < functionList.length; i++){
+                let tag = document.createElement('div');
+                console.log(functionList[i].innerHTML)
+                tag.innerHTML=functionList[i].innerHTML;
+                tag.classList.add('tag');
+                tag.classList.add(FUNCTIONCLASS[tag.innerHTML]);
+                document.getElementById(IDTAGSCONTAINER).appendChild(tag);
+            }
         }
+        
 
         let attachList = document.getElementById(IDHIDDENATTACHCONTAINER);
         attachList = linebreaksToItems(attachList);
 
-        for(let i = 0; i < attachList.length; i++){
-            let text = ATTACHCLASS[attachList[i].innerHTML][0];
-            let tag = document.createElement('div');
-            tag.innerHTML=text;
-            tag.classList.add('tag');
-            tag.classList.add('tag-attach');
-            tag.classList.add(ATTACHCLASS[attachList[i].innerHTML][1]);
-            document.getElementById(IDATTACHTOCONTAINER).appendChild(tag);
+        if (attachList[0].innerHTML != ''){
+            for(let i = 0; i < attachList.length; i++){
+                let text = ATTACHCLASS[attachList[i].innerHTML][0];
+                let tag = document.createElement('div');
+                tag.innerHTML=text;
+                tag.classList.add('tag');
+                tag.classList.add('tag-attach');
+                tag.classList.add(ATTACHCLASS[attachList[i].innerHTML][1]);
+                document.getElementById(IDATTACHTOCONTAINER).appendChild(tag);
+            }
         }
     }
 
     // #### CALLING FUNCTION
-    //debugMode();
-    
-    // true for front, false for back
+
+    buildStandardCard();
+    //hideBack(); // uncomment if front
 }

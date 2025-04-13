@@ -27,12 +27,10 @@
         </ul>
         <div class="tab-container">
             <div class="tab tab-dictionary" id="tab-dictionary">
-                <div id="audio">
-                    {{Audio}}
-                </div>
                 <div id="dictionary">
                     {{Meaning}}
                 </div>
+                {{Audio}}
             </div>
             <div class="tab tab-notes" id="tab-notes">
                 <div class="notes-sentences" id="back-sentences-container"></div>
@@ -51,7 +49,7 @@
     </ul>
     </section>
 </div>
-<script>
+<script>    
     {
         
         // ## CONSTANTS
@@ -64,18 +62,17 @@
         const STYLE = 'styles.css';
     
         const CLASSSENTENCE = 'sentence';
-        const CLASSTRANSLATED = 'sentence-translated';
+        const CLASSTRANSLATED = 'sentence-translated hidden';
         const CLASSVOCAB = 'sentence-vocab';
         const CLASSHIGHLIGHT = 'highlighted';
         const CLASSHIDDEN = 'hidden'
     
         const IDVOCAB = 'vocab';
         const IDBACK = 'answer';
-        const IDAUDIO = 'audio';
     
         const IDHIDDENSENTENCECONTAINER = 'hidden-sentences';
         const IDHIDDENGUIDESCONTAINER =  'hidden-guides';
-        const IDHIDDENFUNCTIONCONTAINER = 'hidden-function';
+        const IDHIDDENACTSCONTAINER = 'hidden-actsAs';
         const IDHIDDENATTACHCONTAINER = 'hidden-attachTo';
         const IDHIDDENTRANSLATEDCONTAINER = 'hidden-translated';
     
@@ -133,7 +130,7 @@
             'particle':['particle','particle'],
             undefined:[undefined,undefined]
         }
-
+    
         // ## FUNCTIONS
         function changeDisplayById(id, display_text){
             document.getElementById(id).style.display=display_text;
@@ -211,10 +208,10 @@
                 //console.log(collectionTranslated[i])
     
                 sentencesContainer.innerHTML+=
-                '<div class="'+classSentence+'">'+
+                '<div class="'+CLASSSENTENCE+'">'+
                 collectionSentencesCopy[i].innerHTML+
                 '</div>'+
-                '<div class="'+classTranslated+'">'+
+                '<div class="'+CLASSTRANSLATED+'">'+
                 collectionTranslatedCopy[i].innerHTML+
                 '</div>'
                 
@@ -310,15 +307,18 @@
             document.getElementById(HEADERBUTTONSTAB[btn_id]).style.display=display_text;
         }
     
-        function hideBack(){
-            document.getElementById(IDBACK).classList.add(CLASSHIDDEN);
-            document.getElementById(IDAUDIO).innerHTML='';
-        }
+    
     
         // #### BY CARD TYPE
-        function buildStandardCard(){
+        function buildStandardCard(front=false){
             // ## HIDING VOCAB FURIGANA
             document.getElementById(IDVOCAB).querySelector('rt').classList.add(CLASSHIDDEN);
+    
+            // ## HIDING BACK SIDE
+            if(front){
+                document.getElementById(IDBACK).classList.add(CLASSHIDDEN);
+            }
+    
     
             // ## SENTENCE FETCHING
             // ## SENTENCE FETCHING: FROM FIELDS
@@ -333,21 +333,8 @@
             translatedContainer.innerHTML = '<ul><li>'+translatedHtml.replaceAll('<br>','<li>')+'</li></ul>';
             let translatedList = translatedContainer.getElementsByTagName('li');
             
-            populateSentences(
-                IDFRONTSENTENCECONTAINER, 
-                sentenceList, 
-                translatedList, 
-                false, 
-                true,
-                CLASSHIDDEN,
-                CLASSSENTENCE,
-                CLASSTRANSLATED+' hidden');
-            populateSentences(
-                IDBACKSENTENCECONTAINER, 
-                sentenceList, 
-                translatedList, 
-                false, 
-                false);
+            populateSentences(IDFRONTSENTENCECONTAINER, sentenceList, translatedList, false, true);
+            populateSentences(IDBACKSENTENCECONTAINER, sentenceList, translatedList, false, false);
             
             // ## SENTENCE FETCHING: FROM DICTIONARY
             // example-sentence-a is the untranslated sentence
@@ -372,21 +359,8 @@
             let sentenceCollection = sentenceFragment.children;
             let translatedCollection = translatedFragment.children;
     
-            populateSentences(
-                IDFRONTSENTENCECONTAINER, 
-                sentenceCollection, 
-                translatedCollection, 
-                true, 
-                true,
-                CLASSHIDDEN,
-                CLASSSENTENCE,
-                CLASSTRANSLATED+' hidden');
-            populateSentences(
-                IDBACKSENTENCECONTAINER,  
-                sentenceCollection, 
-                translatedCollection, 
-                true, 
-                false);
+            populateSentences(IDFRONTSENTENCECONTAINER, sentenceCollection, translatedCollection, true, true);
+            populateSentences(IDBACKSENTENCECONTAINER,  sentenceCollection, translatedCollection, true, false);
     
             // 
     
@@ -421,7 +395,11 @@
             }
         }
     
-        function buildFillInCard(){
+        function buildFillInCard(front=false){
+            if(front){
+                document.getElementById(IDBACK).classList.add(CLASSHIDDEN);
+            }
+    
             // ## SENTENCE FETCHING
             // ## SENTENCE FETCHING: FROM FIELDS
             let sentenceContainer = document.getElementById(IDHIDDENSENTENCECONTAINER);
@@ -489,36 +467,6 @@
                 translatedCollection, 
                 true, 
                 false);
-
-                
-            let tagsCollection = document.getElementsByClassName('yomitan-glossary')[0].querySelectorAll('['+ATTRIBUTETAGS+']');
-            let addedTags = [];
-            for (let i = 0; i < tagsCollection.length; i++){
-                let attribute = tagsCollection[i].getAttribute(ATTRIBUTETAGS);
-                let tagList = TAGS[attribute][0].split(" ");
-                let superTag = TAGS[attribute][1];
-                if(!(addedTags.includes(attribute))){
-                    if(tagList.length>1){
-                        for (let i = tagList.length-1; i >= 0; i--){    
-                            let newTag = document.createElement('div');
-                            newTag.innerHTML = tagList[i];
-                            newTag.classList.add('tag');
-                            if(i < tagList.length-1){
-                                newTag.classList.add(attribute); // don't add specific class in the parent tag
-                            }
-                            newTag.classList.add(superTag);
-                            document.getElementById(IDTAGSCONTAINER).appendChild(newTag);
-                        }
-                    } else {
-                        let newTag = document.createElement('div');
-                        newTag.innerHTML = TAGS[attribute][0];
-                        newTag.classList.add('tag');
-                        newTag.classList.add(superTag);
-                        document.getElementById(IDTAGSCONTAINER).appendChild(newTag)   
-                    }
-                    addedTags.push(attribute);
-                }
-            }
        
         }
     
@@ -527,7 +475,11 @@
             return element.querySelectorAll('li');
         }
     
-        function buildGrammarCard(){
+        function buildGrammarCard(front=false){
+            if(front){
+                document.getElementById(IDBACK).classList.add(CLASSHIDDEN);
+            }
+    
             let grammarSentences = document.getElementById(IDHIDDENSENTENCECONTAINER);
             grammarSentences = linebreaksToItems(grammarSentences);
             let grammarSentencesGuides = document.getElementById(IDHIDDENGUIDESCONTAINER);
@@ -558,56 +510,34 @@
             addClassByTag('rt', 'hidden', container);
             addClassByClass('sentence-translated', 'hidden');
             
-            container = document.getElementById(IDBACKSENTENCECONTAINER);
-            for (let i = 0; i < grammarSentences.length; i++){
-                container.innerHTML+=
-                    '<div class="notes-sentences border-top">'+
-                    '<div class="'+CLASSSENTENCE+'">'+
-                    '<div class="">'+
-                    grammarSentences[i].innerHTML +
-                    '</div>'+
-                    '</div>'+
-                    '<div class="sentence-translated">'+
-                    grammarSentencesTranslated[i].innerHTML+
-                    '</div>'+
-                    '</div>';
-            }
-    
-            let functionList = document.getElementById(IDHIDDENFUNCTIONCONTAINER);
+            let functionList = document.getElementById(IDHIDDENACTSCONTAINER);
             functionList = linebreaksToItems(functionList);
     
-            if (functionList[0].innerHTML != ''){
-                for(let i = 0; i < functionList.length; i++){
-                    let tag = document.createElement('div');
-                    console.log(functionList[i].innerHTML)
-                    tag.innerHTML=functionList[i].innerHTML;
-                    tag.classList.add('tag');
-                    tag.classList.add(FUNCTIONCLASS[tag.innerHTML]);
-                    document.getElementById(IDTAGSCONTAINER).appendChild(tag);
-                }
+            for(let i = 0; i < functionList.length; i++){
+                let tag = document.createElement('div').innerHTML=functionList[i];
+                tag.classList.add('tag');
+                tag.classList.add(FUNCTIONCLASS[tag.innerHTML]);
+                document.getElementById(IDTAGSCONTAINER).appendChild(tag);
             }
-            
     
             let attachList = document.getElementById(IDHIDDENATTACHCONTAINER);
             attachList = linebreaksToItems(attachList);
-
-            if (attachList[0].innerHTML != ''){
-                for(let i = 0; i < attachList.length; i++){
-                    let text = ATTACHCLASS[attachList[i].innerHTML][0];
-                    let tag = document.createElement('div');
-                    tag.innerHTML=text;
-                    tag.classList.add('tag');
-                    tag.classList.add('tag-attach');
-                    tag.classList.add(ATTACHCLASS[attachList[i].innerHTML][1]);
-                    document.getElementById(IDATTACHTOCONTAINER).appendChild(tag);
-                }
+    
+            for(let i = 0; i < attachList.length; i++){
+                let text = ATTACHCLASS[attachList[i].innerHTML][0];
+                let tag = document.createElement('div');
+                tag.innerHTML=text;
+                tag.classList.add('tag');
+                tag.classList.add('tag-attach');
+                tag.classList.add(ATTACHCLASS[attachList[i].innerHTML][1]);
+                document.getElementById(IDATTACHTOCONTAINER).appendChild(tag);
             }
         }
     
         // #### CALLING FUNCTION
-
-        buildStandardCard();
-        //hideBack(); // uncomment if front
+        //debugMode();
+        buildStandardCard(false);
+        // true for front, false for back
     }
 </script> 
 </body>

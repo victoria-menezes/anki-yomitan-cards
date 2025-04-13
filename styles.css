@@ -4,7 +4,7 @@
 }
 
 :root{
-    font-size:14px;
+    font-size:12px;
     --font: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
     font-family: var(--font);
 
@@ -37,7 +37,7 @@
     --fontsize-h1:3rem;
     --fontsize-h2:2rem;
     --fontsize-h3:1.5rem;
-    --fontsize-small:0.75rem;
+    --fontsize-small:0.85rem;
     
     --lineheight-small:1.25rem;
     --lineheight-h1:3rem;
@@ -103,11 +103,23 @@ li{
 .wrapper{
     display:flex;
     flex-flow:column;
-    height:100%;
+    height:100vh;
     width:100%;
     max-height:840px;
-    overflow-y: hidden;
+    overflow-y: auto;
     box-sizing: border-box;
+}
+
+.front{
+    min-height:100%;
+    overflow-y: auto;
+}
+
+.back{
+    display:flex;
+    flex-direction: column;
+    overflow-y: hidden;
+    min-height: 100%;
 }
 
 .border-bottom {
@@ -116,17 +128,6 @@ li{
 
 .border-top {
     border-top: 3px solid var(--color-border);
-}
-
-.front{
-    height:fit-content;
-}
-
-.back{
-    flex:1 1;
-    display:flex;
-    flex-direction: column;
-    overflow-y: hidden;
 }
 
 .hidden{
@@ -210,7 +211,6 @@ li{
 .link-list-item{
     font-family:monospace;
     text-transform: uppercase;
-    font-size: var(--fontsize-h3);
     
     text-align:center;
     align-self: center;
@@ -266,11 +266,14 @@ li{
     overflow-y: auto;
     box-sizing: border-box;
     padding: 0.5em;
+    flex-shrink: 1;
 }
 
 .tab-container{
     flex: 1 1;
     overflow-y: hidden;
+    display:flex;
+    flex-flow: column;
 }
 
 .tab-list-two{
@@ -292,6 +295,7 @@ li{
 
 .sentence-translated{
     margin-bottom: 0.5em;
+    font-size:var(--fontsize-small);
 }
 
 .sentence-guides{
@@ -324,7 +328,6 @@ li{
     background-color:var(--color-highlight);
     border-radius: 1em 0;
     padding: 0.5em;
-    font-size:var(--fontsize-h3);
     text-transform: uppercase;
     border:3px dotted var(--color-text);
 
@@ -415,6 +418,10 @@ li{
 
 /* DESKTOP */
 @media screen and (min-width: 1000px){
+    .back{
+        flex:1 1;
+    }
+
     .tab-container{
         display:grid;
         grid-template-columns: repeat(3, 1fr);
