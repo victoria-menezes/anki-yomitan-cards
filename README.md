@@ -4,7 +4,9 @@ Description in progress
 ## Preview
 Description in progress
 
-## Card fields
+## Card types
+Description in progress
+### Card fields
 Description in progress
 
 ## Debugging
@@ -12,16 +14,14 @@ Files in the 'debugging' folder are for testing and styling purposes, they are t
 
 # To-do
 ## Major
-- Automate tag-fetching on vocab cards
 - Mobile-first:
     - Comparison cards
-- Grammar cards
 
 ## Medium
 - Fix source link
 - Fix kanji font on mobile
 - Fix dictionary padding
-- Grammar: 'Attach to' field
+- Audio playing when hidden
 
 ## Minor
 - 

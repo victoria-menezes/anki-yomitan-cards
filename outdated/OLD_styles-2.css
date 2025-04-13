@@ -165,6 +165,11 @@ i{
         color: var(--color-accent);
         background-color: var(--color-accent);
     }
+
+    & b rt{
+        color: var(--color-accent);
+        background-color: var(--color-accent);
+    }
 }
 
 .hidden{

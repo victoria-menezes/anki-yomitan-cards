@@ -1,6 +1,5 @@
-
 {
-    
+        
     // ## CONSTANTS
     const IDDICTIONARYCONTAINER = 'dictionary';
     const SENTENCEMAX = 4;
@@ -11,7 +10,7 @@
     const STYLE = 'styles.css';
 
     const CLASSSENTENCE = 'sentence';
-    const CLASSTRANSLATED = 'sentence-translated hidden';
+    const CLASSTRANSLATED = 'sentence-translated';
     const CLASSVOCAB = 'sentence-vocab';
     const CLASSHIGHLIGHT = 'highlighted';
     const CLASSHIDDEN = 'hidden'
@@ -20,13 +19,17 @@
     const IDBACK = 'answer';
 
     const IDHIDDENSENTENCECONTAINER = 'hidden-sentences';
-    const IDFRONTSENTENCECONTAINER = 'front-sentences-container';
-    const IDBACKSENTENCECONTAINER = 'back-sentences-container';
-    
+    const IDHIDDENGUIDESCONTAINER =  'hidden-guides';
+    const IDHIDDENACTSCONTAINER = 'hidden-actsAs';
+    const IDHIDDENATTACHCONTAINER = 'hidden-attachTo';
     const IDHIDDENTRANSLATEDCONTAINER = 'hidden-translated';
+
+    const IDFRONTSENTENCECONTAINER = 'front-sentences-container';
+    const IDBACKSENTENCECONTAINER = 'back-sentences-container';    
     const IDTRANSLATEDCONTAINER = 'translated-container';
     
     const IDTAGSCONTAINER = 'back-attributes-container';
+    const IDATTACHTOCONTAINER = 'back-attachto-container';
 
     
     const HEADERBUTTONSTAB = {
@@ -53,7 +56,31 @@
         'prt':['particle','particle']
     }
 
+    const FUNCTIONCLASS = {
+        'adverb':'adv',
+        'adjective':'adj',
+        'verb':'verb',
+        'particle':'particle',
+        'expression':'misc',
+        'noun':'noun'
+    }
+
+    const ATTACHCLASS = {
+        'as-is':['as is', 'as-is'],
+        'as is':['as is', 'as-is'],
+        'stem':['stem', 'stem'],
+        'attributive':['attributive', 'attributive'],
+        'a':['た', 'a'],
+        'た':['た', 'a'],
+        'て':['て', 'te'],
+        'te':['て', 'te'],
+        'misc':['misc', 'misc'],
+        'particle':['particle','particle'],
+        undefined:[undefined,undefined]
+    }
+
     // ## DEBUGGING TOOLS
+    // ironically, the debugging tools tend to cause problems when present in anki, so remove them from the final card javascript
     function replaceWithFiller(){
         let html = document.body.innerHTML;
         let lorem = '<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>';
@@ -61,10 +88,13 @@
         newHtml = newHtml.replaceAll('{{Vocab}}', '職場');
         newHtml = newHtml.replaceAll('{{Vocab-furigana}}','<ruby>職場<rt>しょくば</rt></ruby>');
         // newHtml = newHtml.replaceAll('{{Meaning}}', '<div style="text-align: left;" class="yomitan-glossary"><ol><li data-dictionary="Jitendex.org [2025-02-11]"><i>(★, Jitendex.org [2025-02-11])</i> <span><div><span data-sc-code="n" style="font-weight: bold; font-size: 0.8em; color: white; background-color: rgb(86, 86, 86); vertical-align: text-bottom; border-radius: 0.3em; margin-right: 0.25em; padding: 0.2em 0.3em; word-break: keep-all; cursor: help;" title="noun (common) (futsuumeishi)">noun</span><span data-sc-code="adj-no" style="font-weight: bold; font-size: 0.8em; color: white; background-color: rgb(86, 86, 86); vertical-align: text-bottom; border-radius: 0.3em; margin-right: 0.25em; padding: 0.2em 0.3em; word-break: keep-all; cursor: help;" title="nouns which may take the genitive case particle \'no\'">no-adj</span><span data-sc-code="adv" style="font-weight: bold; font-size: 0.8em; color: white; background-color: rgb(86, 86, 86); vertical-align: text-bottom; border-radius: 0.3em; margin-right: 0.25em; padding: 0.2em 0.3em; word-break: keep-all; cursor: help;" title="adverb (fukushi)">adverb</span><div><ul data-sc-content="glossary"><li>all</li><li>entire</li><li>whole</li><li>altogether</li></ul><div data-sc-content="extra-info" style="margin-left: 0.5em;"><div><div data-sc-content="example-sentence" data-sc-source="226243" style="background-color: color-mix(in srgb, var(--text-color, var(--fg, #333)) 5%, transparent); border-color: var(--text-color, var(--fg, #333)); border-style: none none none solid; border-radius: 0.4rem; border-width: calc(3em / var(--font-size-no-units, 14)); margin-top: 0.5rem; margin-bottom: 0.5rem; padding: 0.5rem;"><div data-sc-content="example-sentence-a" style="font-size: 1.3em;" lang="ja">かばん<span data-sc-content="example-keyword" style="color: color-mix(in srgb, lime, var(--text-color, var(--fg, #333)));"><ruby lang="ja">全<rt lang="ja">ぜん</rt></ruby><ruby lang="ja">部<rt lang="ja">ぶ</rt></ruby></span>に<ruby lang="ja">荷<rt lang="ja">に</rt></ruby><ruby lang="ja">札<rt lang="ja">ふだ</rt></ruby>をつけなさい。</div><div data-sc-content="example-sentence-b" style="font-size: 0.8em;">Attach labels to all the bags.</div></div></div></div></div></div><div data-sc-content="attribution" style="font-size: 0.7em; text-align: right;"><a href="https://www.edrdg.org/jmwsgi/entr.py?svc=jmdict&amp;q=1396130"><span>JMdict</span><span style="display:none;"></span></a> | <a href="https://tatoeba.org/en/sentences/show/226243"><span>Tatoeba</span><span style="display:none;"></span></a></div></span></li><li data-dictionary="JMdict (English)"><i>(adj-no, n-adv, n-t, JMdict (English))</i> all | entire | whole | altogether</li></ol></div>'); // comment this out when putting into anki
-        newHtml = newHtml.replaceAll('{{Sentence}}', 'コートをハンガーに<b><ruby>掛<rt>か</rt></ruby>けて</b>おきなさい。<br>ウエートレスはテーブルの上に白いテーブルクロスを<b>かけた</b>。<br>１０円で電話が<b>かけられます</b>か。')
+        newHtml = newHtml.replaceAll('{{Sentence}}', '<ruby>彼女<rt>かのじょ</rt></ruby>はピアノが<b><ruby>弾<rt>ひ</rt></ruby>けるし</b>、スポーツができるし、<ruby>彼女<rt>かのじょ</rt></ruby>に<ruby>出来<rt>でき</rt></ruby>ないことはないと<ruby>思<rt>おも</rt></ruby>う。')
         newHtml = newHtml.replaceAll('{{Sentence-translated}}','Put your coat on a hanger.<br>The waitress spread a white cloth over the table. <br>Can I make a phone call for ten yen?')
+        newHtml = newHtml.replaceAll('{{Sentence-guide}}','<b><ruby>弾<rt>ひ</rt></ruby>ける、できる</b><br><b><b><ruby>高<rt>たか</rt></ruby>い、まずい</b></b>')
         newHtml = newHtml.replaceAll('{{Function}}', '<ul><li>noun</li><li>adjective</li></ul>');
         newHtml = newHtml.replaceAll('{{Type}}', '<ul><li>no</li></ul>');
+        newHtml = newHtml.replaceAll('{{Attach to}}','te');
+        newHtml = newHtml.replaceAll('{{Acts as}}','particle');
         newHtml = newHtml.replaceAll('{{Notes}}',lorem);
         newHtml = newHtml.replaceAll('{{Forming}}',lorem);
         
@@ -206,15 +236,22 @@
         }
     }
 
-    function addClassByTag(tag, className){
-        let list = document.querySelectorAll(tag);
+    function addClassByTag(tag, className, searchIn=document){
+        let list = searchIn.querySelectorAll(tag);
         for (let i = 0; i < list.length; i++){
             list[i].classList.add(className);
         }
     }
 
-    function removeClassByTag(tag, className){
-        let list = document.querySelectorAll(tag);
+    function addClassByClass(classReference, className){     
+        let list = document.getElementsByClassName(classReference);
+        for (let i = 0; i < list.length; i++){
+            list[i].classList.add(className);
+        }
+    }
+
+    function removeClassByTag(tag, className, searchIn=document){
+        let list = searchIn.querySelectorAll(tag);
         for (let i = 0; i < list.length; i++){
             list[i].classList.remove(className);
         }
@@ -251,18 +288,13 @@
         document.getElementById(HEADERBUTTONSTAB[btn_id]).style.display=display_text;
     }
 
-
+    function hideBack(){
+        document.getElementById(IDBACK).classList.add(CLASSHIDDEN);}
 
     // #### BY CARD TYPE
-    function buildStandardCard(front=false){
+    function buildStandardCard(){
         // ## HIDING VOCAB FURIGANA
         document.getElementById(IDVOCAB).querySelector('rt').classList.add(CLASSHIDDEN);
-
-        // ## HIDING BACK SIDE
-        if(front){
-            document.getElementById(IDBACK).classList.add(CLASSHIDDEN);
-        }
-
 
         // ## SENTENCE FETCHING
         // ## SENTENCE FETCHING: FROM FIELDS
@@ -339,11 +371,7 @@
         }
     }
 
-    function buildFillInCard(front=false){
-        if(front){
-            document.getElementById(IDBACK).classList.add(CLASSHIDDEN);
-        }
-
+    function buildFillInCard(){
         // ## SENTENCE FETCHING
         // ## SENTENCE FETCHING: FROM FIELDS
         let sentenceContainer = document.getElementById(IDHIDDENSENTENCECONTAINER);
@@ -414,6 +442,83 @@
    
     }
 
+    function linebreaksToItems(element, tag=""){
+        element.innerHTML = '<ul><li>'+ element.innerHTML.replaceAll('<br>', '<li>') + '</li></ul>';
+        return element.querySelectorAll('li');
+    }
+
+    function buildGrammarCard(){
+        let grammarSentences = document.getElementById(IDHIDDENSENTENCECONTAINER);
+        grammarSentences = linebreaksToItems(grammarSentences);
+        let grammarSentencesGuides = document.getElementById(IDHIDDENGUIDESCONTAINER);
+        grammarSentencesGuides = linebreaksToItems(grammarSentencesGuides);
+        let grammarSentencesTranslated = document.getElementById(IDHIDDENTRANSLATEDCONTAINER);
+        grammarSentencesTranslated = linebreaksToItems(grammarSentencesTranslated);
+
+        let container = document.getElementById(IDFRONTSENTENCECONTAINER);
+        for (let i = 0; i < grammarSentences.length; i++){
+            container.innerHTML+=
+                '<div class="border-top">'+
+                '<div class="'+CLASSSENTENCE+'">'+
+                '<div class="redacted">'+
+                grammarSentences[i].innerHTML +
+                '</div>'+
+                '<div class="sentence-guides">'+
+                '(<b>'+
+                grammarSentencesGuides[i].innerHTML +
+                '</b>)'+
+                '</div>'+
+                '</div>'+
+                '<div class="sentence-translated">'+
+                grammarSentencesTranslated[i].innerHTML+
+                '</div>'+
+                '</div>';
+        }
+        addClassByTag('b', 'highlighted', container);
+        addClassByTag('rt', 'hidden', container);
+        addClassByClass('sentence-translated', 'hidden');
+        
+        container = document.getElementById(IDBACKSENTENCECONTAINER);
+        for (let i = 0; i < grammarSentences.length; i++){
+            container.innerHTML+=
+                '<div class="notes-sentences border-top">'+
+                '<div class="'+CLASSSENTENCE+'">'+
+                '<div class="">'+
+                grammarSentences[i].innerHTML +
+                '</div>'+
+                '</div>'+
+                '<div class="sentence-translated">'+
+                grammarSentencesTranslated[i].innerHTML+
+                '</div>'+
+                '</div>';
+        }
+
+        let functionList = document.getElementById(IDHIDDENFUNCTIONCONTAINER);
+        functionList = linebreaksToItems(functionList);
+
+        for(let i = 0; i < functionList.length; i++){
+            let tag = document.createElement('div').innerHTML=functionList[i];
+            tag.classList.add('tag');
+            tag.classList.add(FUNCTIONCLASS[tag.innerHTML]);
+            document.getElementById(IDTAGSCONTAINER).appendChild(tag);
+        }
+
+        let attachList = document.getElementById(IDHIDDENATTACHCONTAINER);
+        attachList = linebreaksToItems(attachList);
+
+        for(let i = 0; i < attachList.length; i++){
+            let text = ATTACHCLASS[attachList[i].innerHTML][0];
+            let tag = document.createElement('div');
+            tag.innerHTML=text;
+            tag.classList.add('tag');
+            tag.classList.add('tag-attach');
+            tag.classList.add(ATTACHCLASS[attachList[i].innerHTML][1]);
+            document.getElementById(IDATTACHTOCONTAINER).appendChild(tag);
+        }
+    }
+
     // #### CALLING FUNCTION
-    debugMode();
+    //debugMode();
+    
+    // true for front, false for back
 }

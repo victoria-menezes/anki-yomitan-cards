@@ -150,6 +150,10 @@ li{
     font-size:var(--fontsize-h3);
 }
 
+.highlighted{
+    font-weight:300;
+}
+
 .redacted{
     & .highlighted{
         background-color: var(--color-accent);
@@ -269,6 +273,10 @@ li{
     overflow-y: hidden;
 }
 
+.tab-list-two{
+    grid-template-columns: repeat(2, 1fr);
+}
+
 .tab-dictionary, .tab-forming{
     display:none;
 }
@@ -277,10 +285,22 @@ li{
     grid-template-columns: repeat(4, 1fr);
 }
 
+.sentence{
+    display:block;
+    padding-top: 0.5em;
+}
+
 .sentence-translated{
-    border-bottom: 3px solid var(--color-highlight);
     margin-bottom: 0.5em;
 }
+
+.sentence-guides{
+    display:flex;
+    justify-content: center;
+    align-items: end;
+}
+
+
 
 .notes-sentences{
     text-align:center;
@@ -301,14 +321,19 @@ li{
 }
 
 .tag{
-    background-color:var(--color-accent);
-    border-radius: 25% 0;
+    background-color:var(--color-highlight);
+    border-radius: 1em 0;
     padding: 0.5em;
     font-size:var(--fontsize-h3);
     text-transform: uppercase;
     border:3px dotted var(--color-text);
 
     font-weight: 900;
+}
+
+.tag-attach{
+    border: 3px solid var(--color-border);
+    border-radius: 0 1em;
 }
 
 /* TAG STYLING */
@@ -393,6 +418,10 @@ li{
     .tab-container{
         display:grid;
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    .tab-container-grammar{
+        grid-template-columns:repeat(2,1fr);
     }
 
     .tab-dictionary, 
