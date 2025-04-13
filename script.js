@@ -55,11 +55,13 @@
         'v5r':['5-dan','verb'],
         'col':['colloquial','misc'],
         'n-suf':['suffix','su-prefix'],
+        'suf':['suffix','su-prefix'],
         'prt':['particle','particle'],
         'conj':['conjunction', 'misc'],
-        'forms':['hidden','hidden']
+        'forms':['hidden','hidden'],
+        'auxiliary':['auxiliary', 'misc']
     }
-
+    
     const FUNCTIONCLASS = {
         'adverb':'adv',
         'adjective':'adj',
@@ -79,6 +81,8 @@
         'た':['た', 'ta'],
         'て':['て', 'te'],
         'te':['て', 'te'],
+        'nai':['ない', 'nai'],
+        'nai stem':['ない stem', 'nai-stem'],
         'misc':['misc', 'misc'],
         'particle':['particle','particle'],
         undefined:[undefined,undefined]
@@ -267,7 +271,10 @@
     // #### BY CARD TYPE
     function buildStandardCard(){
         // ## HIDING VOCAB FURIGANA
-        document.getElementById(IDVOCAB).querySelector('rt').classList.add(CLASSHIDDEN);
+        vocabRuby = document.getElementById(IDVOCAB).querySelector('rt')
+        if (vocabRuby != null){
+            vocabRuby.classList.add(CLASSHIDDEN);
+        }
 
         // ## SENTENCE FETCHING
         // ## SENTENCE FETCHING: FROM FIELDS
