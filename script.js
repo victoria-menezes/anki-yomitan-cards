@@ -142,44 +142,48 @@
         //console.log('populating');
 
         // cloning it because otherwise changes will apply to the source
-        collectionSentencesCopy = cloneCollection(collectionSentences)[1]; 
-        collectionTranslatedCopy = cloneCollection(collectionTranslated)[1];
+        let collectionSentencesCopy = cloneCollection(collectionSentences)[1]; 
+        let collectionTranslatedCopy = cloneCollection(collectionTranslated)[1];
         
 
         // container that will receive the sentences
         let sentencesContainer = document.getElementById(idNewContainer)
+
         for(let i = 0; i < collectionSentencesCopy.length; i++){
-
-            // converts <span> to <b>
-            if(convertSpan){
-                let span = collectionSentencesCopy[i].getElementsByTagName('span')[0];
-                let highlightedText ="";
-                highlightedText = document.createElement('b')
-                //highlightedText.classList.add(CLASSHIGHLIGHT);
-                highlightedText.innerHTML = span.innerHTML;
-                collectionSentencesCopy[i].replaceChild(highlightedText, span);
-            }
-
-            // adds a class to all ruby text
-            if(addClassToRt){
-                let rtCollection = collectionSentencesCopy[i].getElementsByTagName('rt');
-                for (let i = 0; i < rtCollection.length; i++){
-                    rtCollection[i].classList.add(rtClass);
-                }
-            }
-            //console.log('ADDING:')
-            //console.log(collectionTranslated[i])
-
-            sentencesContainer.innerHTML+=
-            '<div class="'+classSentence+'">'+
-            collectionSentencesCopy[i].innerHTML+
-            '</div>'+
-            '<div class="'+classTranslated+'">'+
-            collectionTranslatedCopy[i].innerHTML+
-            '</div>'
+            let span = collectionSentencesCopy[i].getElementsByTagName('span')[0];
+            let fetchable = (convertSpan && span !== undefined) || (!convertSpan);
             
-            //console.log(i)
-            //console.log(newContainer.innerHTML)
+            // converts <span> to <b>
+            if(fetchable){
+                if(convertSpan){
+                    let highlightedText ="";
+                    highlightedText = document.createElement('b')
+                    //highlightedText.classList.add(CLASSHIGHLIGHT);
+                    highlightedText.innerHTML = span.innerHTML;
+                    collectionSentencesCopy[i].replaceChild(highlightedText, span);
+                }
+    
+                // adds a class to all ruby text
+                if(addClassToRt){
+                    let rtCollection = collectionSentencesCopy[i].getElementsByTagName('rt');
+                    for (let i = 0; i < rtCollection.length; i++){
+                        rtCollection[i].classList.add(rtClass);
+                    }
+                }
+                //console.log('ADDING:')
+                //console.log(collectionTranslated[i])
+    
+                sentencesContainer.innerHTML+=
+                '<div class="'+classSentence+'">'+
+                collectionSentencesCopy[i].innerHTML+
+                '</div>'+
+                '<div class="'+classTranslated+'">'+
+                collectionTranslatedCopy[i].innerHTML+
+                '</div>'
+                
+                //console.log(i)
+                //console.log(newContainer.innerHTML)
+            }
         }
 
         // applying the highlight tag
