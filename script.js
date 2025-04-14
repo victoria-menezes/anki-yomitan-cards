@@ -52,14 +52,31 @@
         'vi':['intranstive verb','verb'],
         'vt':['transtive verb','verb'],
         'vs':['する verb','verb'],
+        'vs-i':['する verb','verb'],
         'vs-s':['する verb','verb'],
+        'v5s':['5-dan','verb'],
         'v5r':['5-dan','verb'],
+        'v5y':['5-dan','verb'],
+        'v5m':['5-dan','verb'],
+        'v5h':['5-dan','verb'],
+        'v5f':['5-dan','verb'],
+        'v5b':['5-dan','verb'],
+        'v5n':['5-dan','verb'],
+        'v5t':['5-dan','verb'],
+        'v5s':['5-dan','verb'],
+        'v5k':['5-dan','verb'],
+        'v5u':['5-dan','verb'],
+        'aux-v':['auxiliary verb','verb'],
         'col':['colloquial','misc'],
         'n-suf':['suffix','su-prefix'],
         'suf':['suffix','su-prefix'],
+        'pref':['prefix','su-prefix'],
         'prt':['particle','particle'],
         'conj':['conjunction', 'misc'],
         'forms':['hidden','hidden'],
+        'int':['interjection','misc'],
+        'adj-pn':['adjectival','adj'],
+        'aux':['auxiliary', 'misc'],
         'auxiliary':['auxiliary', 'misc']
     }
     
@@ -79,9 +96,13 @@
         'attributive':['attributive', 'attributive'],
         'a':['あ', 'a'],
         'ta':['た', 'ta'],
+        'da':['だ', 'da'],
+        'だ':['だ', 'da'],
         'た':['た', 'ta'],
         'て':['て', 'te'],
         'te':['て', 'te'],
+        'e':['え', 'e'],
+        'え':['え', 'e'],
         'nai':['ない', 'nai'],
         'nai stem':['ない stem', 'nai-stem'],
         'misc':['misc', 'misc'],
@@ -151,10 +172,9 @@
 
         for(let i = 0; i < collectionSentencesCopy.length; i++){
             let span = collectionSentencesCopy[i].getElementsByTagName('span')[0];
-            let fetchable = (convertSpan && span !== undefined) || (!convertSpan);
             
             // converts <span> to <b>
-            if(fetchable){
+            try{
                 if(convertSpan){
                     let highlightedText ="";
                     highlightedText = document.createElement('b')
@@ -183,6 +203,17 @@
                 
                 //console.log(i)
                 //console.log(newContainer.innerHTML)
+            } catch (error){
+                console.log('FAILED TO POPULATE');
+                try {
+                    console.log('SENTENCES: '+ collectionSentencesCopy[i].innerHTML);
+                    console.log('TRANSLATION: '+ collectionTranslatedCopy[i].innerHTML);
+                    console.log('Possible causes: No <span> tag on dictionary');
+                } catch (error) {
+                    console.log('NO INNER HTML ON LIST ITEM')
+                }
+                console.log(error)
+                console.log('---')
             }
         }
 
@@ -278,6 +309,49 @@
         document.getElementById(IDBACK).classList.add(CLASSHIDDEN);
     }
 
+    function addTagsFromDictionary(){
+        try {
+            let tagsCollection = document.getElementsByClassName('yomitan-glossary')[0].querySelectorAll('['+ATTRIBUTETAGS+']');
+            let addedTags = [];
+            for (let i = 0; i < tagsCollection.length; i++){
+                try{
+                    let attribute = tagsCollection[i].getAttribute(ATTRIBUTETAGS);
+                    let tagList = TAGS[attribute][0].split(" ");
+                    let superTag = TAGS[attribute][1];
+                    if(!(addedTags.includes(attribute))){
+                        if(tagList.length>1){
+                            for (let i = tagList.length-1; i >= 0; i--){    
+                                let newTag = document.createElement('div');
+                                newTag.innerHTML = tagList[i];
+                                newTag.classList.add('tag');
+                                if(i < tagList.length-1){
+                                    newTag.classList.add(attribute); // don't add specific class in the parent tag
+                                }
+                                newTag.classList.add(superTag);
+                                document.getElementById(IDTAGSCONTAINER).appendChild(newTag);
+                            }
+                        } else {
+                            let newTag = document.createElement('div');
+                            newTag.innerHTML = TAGS[attribute][0];
+                            newTag.classList.add('tag');
+                            newTag.classList.add(superTag);
+                            document.getElementById(IDTAGSCONTAINER).appendChild(newTag)   
+                        }
+                        addedTags.push(attribute);
+                    }
+                } catch (error) {
+                    console.log('FAILED TO FETCH OR ADD TAG FROM DICTIONARY');
+                    console.log('TAG:' + tagsCollection[i]);
+                    console.log('TAG ATTRIBUTE:' + tagsCollection[i].getAttribute(ATTRIBUTETAGS));
+                    console.log(error);
+                    console.log('---')
+                }
+            }
+        } catch (error){
+            console.log('FAILED TO FIND ATTRIBUTE TAGS');
+        }
+    }
+
     // #### BY CARD TYPE
     function buildStandardCard(){
         // ## HIDING VOCAB FURIGANA
@@ -354,37 +428,7 @@
             true, 
             false);
 
-        // 
-
-        
-        let tagsCollection = document.getElementsByClassName('yomitan-glossary')[0].querySelectorAll('['+ATTRIBUTETAGS+']');
-        let addedTags = [];
-        for (let i = 0; i < tagsCollection.length; i++){
-            let attribute = tagsCollection[i].getAttribute(ATTRIBUTETAGS);
-            let tagList = TAGS[attribute][0].split(" ");
-            let superTag = TAGS[attribute][1];
-            if(!(addedTags.includes(attribute))){
-                if(tagList.length>1){
-                    for (let i = tagList.length-1; i >= 0; i--){    
-                        let newTag = document.createElement('div');
-                        newTag.innerHTML = tagList[i];
-                        newTag.classList.add('tag');
-                        if(i < tagList.length-1){
-                            newTag.classList.add(attribute); // don't add specific class in the parent tag
-                        }
-                        newTag.classList.add(superTag);
-                        document.getElementById(IDTAGSCONTAINER).appendChild(newTag);
-                    }
-                } else {
-                    let newTag = document.createElement('div');
-                    newTag.innerHTML = TAGS[attribute][0];
-                    newTag.classList.add('tag');
-                    newTag.classList.add(superTag);
-                    document.getElementById(IDTAGSCONTAINER).appendChild(newTag)   
-                }
-                addedTags.push(attribute);
-            }
-        }
+        addTagsFromDictionary();
     }
 
     function buildFillInCard(){
@@ -457,34 +501,8 @@
             false);
 
             
-        let tagsCollection = document.getElementsByClassName('yomitan-glossary')[0].querySelectorAll('['+ATTRIBUTETAGS+']');
-        let addedTags = [];
-        for (let i = 0; i < tagsCollection.length; i++){
-            let attribute = tagsCollection[i].getAttribute(ATTRIBUTETAGS);
-            let tagList = TAGS[attribute][0].split(" ");
-            let superTag = TAGS[attribute][1];
-            if(!(addedTags.includes(attribute))){
-                if(tagList.length>1){
-                    for (let i = tagList.length-1; i >= 0; i--){    
-                        let newTag = document.createElement('div');
-                        newTag.innerHTML = tagList[i];
-                        newTag.classList.add('tag');
-                        if(i < tagList.length-1){
-                            newTag.classList.add(attribute); // don't add specific class in the parent tag
-                        }
-                        newTag.classList.add(superTag);
-                        document.getElementById(IDTAGSCONTAINER).appendChild(newTag);
-                    }
-                } else {
-                    let newTag = document.createElement('div');
-                    newTag.innerHTML = TAGS[attribute][0];
-                    newTag.classList.add('tag');
-                    newTag.classList.add(superTag);
-                    document.getElementById(IDTAGSCONTAINER).appendChild(newTag)   
-                }
-                addedTags.push(attribute);
-            }
-        }
+        
+        addTagsFromDictionary();
    
     }
 
@@ -544,12 +562,19 @@
 
         if (functionList[0].innerHTML != ''){
             for(let i = 0; i < functionList.length; i++){
-                let tag = document.createElement('div');
-                console.log(functionList[i].innerHTML)
-                tag.innerHTML=functionList[i].innerHTML;
-                tag.classList.add('tag');
-                tag.classList.add(FUNCTIONCLASS[tag.innerHTML]);
-                document.getElementById(IDTAGSCONTAINER).appendChild(tag);
+                try{
+                    let tag = document.createElement('div');
+                    tag.innerHTML=functionList[i].innerHTML;
+                    tag.classList.add('tag');
+                    tag.classList.add(FUNCTIONCLASS[tag.innerHTML]);
+                    document.getElementById(IDTAGSCONTAINER).appendChild(tag);
+                } catch(error){
+                    console.log('FAILED TO ADD FUNCTION TAG');
+                    try {console.log('TAG:' + functionList[i].innerHTML);}
+                    catch (error){console.log('FAILED TO READ TAG HTML.')}
+                    console.log(error);
+                    console.log('---')
+                }
             }
         }
         
@@ -559,18 +584,35 @@
 
         if (attachList[0].innerHTML != ''){ 
             for(let i = 0; i < attachList.length; i++){
-                let text = ATTACHCLASS[attachList[i].innerHTML][0];
-                let tag = document.createElement('div');
-                tag.innerHTML=text;
-                tag.classList.add('tag');
-                tag.classList.add('tag-attach');
-                tag.classList.add(ATTACHCLASS[attachList[i].innerHTML][1]);
-                document.getElementById(IDATTACHTOCONTAINER).appendChild(tag);
+                try{
+                    let text = ATTACHCLASS[attachList[i].innerHTML][0];
+                    let tag = document.createElement('div');
+                    tag.innerHTML=text;
+                    tag.classList.add('tag');
+                    tag.classList.add('tag-attach');
+                    tag.classList.add(ATTACHCLASS[attachList[i].innerHTML][1]);
+                    document.getElementById(IDATTACHTOCONTAINER).appendChild(tag);
+                } catch (error){
+                    console.log('FAILED TO ADD ATTACH TAG');
+                    console.log('ITEM: '+attachList[i])
+                    try{console.log('TAG: '+attachList[i].innerHTML)}
+                    catch (error){
+                        console.log('NO INNER HTML')
+                    }
+                    console.log(error);
+                    console.log('---')
+                }
             }
         }
     }
 
     // #### CALLING FUNCTION
-    
-    //hideBack(); // uncomment if front
+
+    // CALL ONLY THE RELEVANT CARD, COMMENT THE REST
+    //buildStandardCard();
+    //buildFillInCard();
+    //buildGrammarCard;
+
+    // UNCOMMENT BELOW LINE IF FRONT-SIDE
+    // hideBack(); 
 }
