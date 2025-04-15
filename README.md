@@ -24,7 +24,6 @@ Files in the 'debugging' folder are for testing and styling purposes, they are t
 - Audio playing when hidden
 - Audio playing twice
 - Duplicate tags
-- Add vocab back into back of fill-in cards
 - Do proper error handling
 
 ## Minor
