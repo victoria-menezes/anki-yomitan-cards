@@ -18,9 +18,9 @@ function replaceWithFiller(){
     newHtml = newHtml.replaceAll('{{Meaning}}', '<div style="text-align: left;" class="yomitan-glossary"><ol><li>acid</li><li>bitterness</li><li>sour</li><li>tart</li>aa<br>aaa<br></ol></div>');
     newHtml = newHtml.replaceAll('{{Kunyomi}}', 'よわい, は, よわ.い, よわい.する');
     newHtml = newHtml.replaceAll('{{Onyomi}}', 'は, よわ.い, よわい.する');
-    newHtml = newHtml.replaceAll('{{Examples}}', '<ul><li><ruby>歯<rt>は</rt></ruby></li></ul><div>A1</div><div>B1</div><div>C1</div>');
+    newHtml = newHtml.replaceAll('{{Examples}}', '<ul><li><ruby>歯<rt>は</rt></ruby>わ</li></ul><div>A1</div><div>B1</div><div>C1</div>');
     newHtml = newHtml.replaceAll('{{Examples-Meaning}}', '<ul><li>teeth</li></ul><div>A</div><div>B</div><div>C</div>');
-    newHtml = newHtml.replaceAll('{{Character}}', '座');
+    newHtml = newHtml.replaceAll('{{Character}}', '歯');
     newHtml = newHtml.replaceAll('{{Lookalikes}}', '<ul><li><ruby>歯<rt>は</rt></ruby></li></ul><div>A1</div><div>B1</div><div>C1</div>');
     newHtml = newHtml.replaceAll('{{Lookalikes-meaning}}', '<ul><li>teeth</li></ul><div>A</div><div>B</div><div>C</div>');
 

@@ -273,29 +273,33 @@
 
     function addClassByTag(tag, className, searchIn=document) {
         let list = searchIn.querySelectorAll(tag);
+        let classes = className.split(' ');
         for (let i = 0; i < list.length; i++) {
-            list[i].classList.add(className);
+            classes.forEach(classItem => list[i].classList.add(classItem))
         }
     }
 
     function addClassByClass(classReference, className) {     
         let list = document.getElementsByClassName(classReference);
+        let classes = className.split(' ');
         for (let i = 0; i < list.length; i++) {
-            list[i].classList.add(className);
+            classes.forEach(classItem => list[i].classList.add(classItem))
         }
     }
 
     function removeClassByTag(tag, className, searchIn=document) {
         let list = searchIn.querySelectorAll(tag);
+        let classes = className.split(' ');
         for (let i = 0; i < list.length; i++) {
-            list[i].classList.remove(className);
+            classes.forEach(classItem => list[i].classList.remove(classItem))
         }
     }
 
     function removeClassByClass(classReference, className) {     
         let list = document.getElementsByClassName(classReference);
+        let classes = className.split(' ');
         for (let i = 0; i < list.length; i++) {
-            list[i].classList.remove(className);
+            classes.forEach(classItem => list[i].classList.remove(classItem))
         }
     }
 
@@ -722,7 +726,7 @@
 
         const populateFromArray = (array, newContainer, wrapUl=false, clone=true) =>{
             let receptor = newContainer;
-            
+
             if(wrapUl) {
                 let newUl = document.createElement('ul');
                 newContainer.appendChild(newUl);
@@ -734,12 +738,19 @@
 
         /**
          * Goes through every element in the array and adds a class
-         * @param {Array} array Array of elements
-         * @param {String} tag 
+         * @param {Array.<Object>} array Array of elements
+         * @param {String} className Classes separated by spaces
          * @returns {Array}
          */
-        const addClassToArrayItems = (array, tag) => {
-            array.forEach(item => item.classList.add(tag));
+        const addClassToArrayItems = (array, className) => {
+            
+            // console.log(className);
+            // console.log(typeof className)
+            let classes = className.split(' ');
+            
+            array.forEach(item => 
+                classes.forEach(classItem => item.classList.add(classItem))
+            );
             return array;
         }
 
@@ -826,27 +837,27 @@
         /**
          * Populates the target grid with a list of elements from the source, split by line breaks, divs or lis
          * @param {Object} target Element to populate
-         * @param {Array} sources Array of objects to draw items from, in the desired order
-         * @param {Boolean} rows
-         * @param {String} className Class to be added to list items, will be skipped if left blank
+         * @param {Array.<Object>} sources Array of objects to draw items from, in the desired order
+         * @param {Array.<String>} className Class to be added to list items, will be skipped if left blank
          * @param {String} elemType Type of elements to be made from items drawn from source, default div
+         * @param {Boolean} rows Transpose the grid (currently not functional), default false
          */
         const populateGridFromElement = (
             target,
             sources,
-            rows = false,
-            className = 'test',
-            elemType = 'div'
+            className,
+            elemType = 'div',
+            rows = false
             ) => 
         {
             if (sources.length < 2){
                 throw new TypeError('sources must be an array with length > 1')
             }
 
-            let listOfElementArrays = [];
-            const filesAmount = sources.length;
+            const listOfElementArrays = [];
+            const fileAmount = sources.length;
             
-            // let cellsAmount = filesAmount*Math.max()
+            // 'file' refers to either column or row, depending on bool rows
 
             sources.forEach(item => {
                 listOfElementArrays.push(nodeListToArray(getItemsFromElement(item)));
@@ -855,18 +866,63 @@
             for (let i = 0; i < listOfElementArrays.length; i++) {
                 // for each array in the list of arrays, convert its items to elemType
                 listOfElementArrays[i] = convertArrayItems(listOfElementArrays[i], elemType);
-                if (className !== '') { // if there is a class to be added
-                    listOfElementArrays[i] = addClassToArrayItems(listOfElementArrays[i], className);
+                if ((className[i] !== undefined) & className[i] !== '') { // if there is a class to be added
+                    listOfElementArrays[i] = addClassToArrayItems(listOfElementArrays[i], className[i]);
                 }
             }
+
 
             let transversalAmount = 0;
             listOfElementArrays.forEach(array => {
                 transversalAmount = Math.max(transversalAmount, array.length);
             });
 
-            // grid will be of size filexAmount x transversalAmount
+            // grid will be of size fileAmount x transversalAmount
+            const cellAmount = fileAmount * transversalAmount;
+            let filePosition = 0;
+            let transversalPosition = 0;
+            let item;
 
+            for (let i = 0; i < cellAmount; i++){
+                filePosition = i % fileAmount; // refers to the current file
+                transversalPosition = Math.floor(i / fileAmount);
+                item = listOfElementArrays[filePosition][transversalPosition];
+                
+                // console.log(item);
+                // console.log('row ' + transversalPosition + ' | column ' + filePosition);
+                target.appendChild(item);
+            }
+        }
+
+        /**
+         * Searches for a word in an element and wraps every instance of that word in a span tag 
+         * @param {String} word Word to wrap inside span
+         * @param {Object} searchIn Element to search in
+         * @param {Array.<String>} className Classes to be added to the span, separated by spaces
+         */
+        const addClassAroundWord = (
+            word,
+            searchIn,
+            className=''
+        ) => {
+            // adding span tag:
+            let innerContent = searchIn;
+            innerContent.innerHTML = innerContent.innerHTML.replaceAll(word, '<span>'+word+'</span>');
+
+            // selecting ALL span tags
+            let spanList = innerContent.querySelectorAll('span');
+            
+            // narrowing it down to only the ones with the right content
+            let elementList = [];
+            spanList.forEach(span => {
+                if (span.innerHTML === word){
+                    elementList.push(span);
+                }
+            })
+
+            if (className !== ''){
+                addClassToArrayItems(elementList, className);
+            }
         }
         
         populateFromElement(
@@ -878,42 +934,36 @@
         populateFromCSV(
             target = document.getElementById(ID_CONTAINER_KANJI_ON),
             source = document.getElementById(ID_HIDDENCONTAINER_KANJI_ON),
-            className = 'kanji-readings-item'
+            className = 'kanji-readings-item',
+            elemType= 'div',
+            wrapUl = false,
         )
         
         populateFromCSV(
             target = document.getElementById(ID_CONTAINER_KANJI_KUN),
             source = document.getElementById(ID_HIDDENCONTAINER_KANJI_KUN),
-            className = 'kanji-readings-item'
+            className = 'kanji-readings-item',
+            elemType= 'div',
+            wrapUl = false,
         )
         
-        populateFromElement(
-            target =  document.getElementById(ID_CONTAINER_KANJI_EXAMPLES),
-            source = document.getElementById(ID_HIDDENCONTAINER_KANJI_EXAMPLES),
-            className = 'kanji-example'
-        )
-        populateFromElement(
-            target =  document.getElementById(ID_CONTAINER_KANJI_EXAMPLES_TRANSLATED),
-            source = document.getElementById(ID_HIDDENCONTAINER_KANJI_EXAMPLES_TRANSLATED),
-            className = 'kanji-example-translated'
-        )
-
-        populateFromElement(
-            target =  document.getElementById(ID_CONTAINER_KANJI_LOOKALIKES),
-            source = document.getElementById(ID_HIDDENCONTAINER_KANJI_LOOKALIKES),
-            className = 'kanji-lookalikes'
-        )
-        populateFromElement(
-            target =  document.getElementById(ID_CONTAINER_KANJI_LOOKALIKES_MEANING),
-            source = document.getElementById(ID_HIDDENCONTAINER_KANJI_LOOKALIKES_MEANING),
-            className = 'kanji-lookalikes'
-        )
-
         populateGridFromElement(            
-            target =  document.getElementById(ID_CONTAINER_KANJI_LOOKALIKES_MEANING),
-            source = [document.getElementById(ID_HIDDENCONTAINER_KANJI_LOOKALIKES), document.getElementById(ID_HIDDENCONTAINER_KANJI_LOOKALIKES_MEANING), document.getElementById(ID_HIDDENCONTAINER_KANJI_LOOKALIKES_MEANING)],
-            classNames = ['kanji-lookalikes']
+            target =  document.getElementById(ID_CONTAINER_KANJI_EXAMPLES),
+            source = [document.getElementById(ID_HIDDENCONTAINER_KANJI_EXAMPLES), 
+                document.getElementById(ID_HIDDENCONTAINER_KANJI_EXAMPLES_TRANSLATED)],
+            classNames = ['kanji-examples-item example border-bottom border-thin', 'kanji-examples-item translated border-bottom border-thin']
         )
+
+        populateGridFromElement(
+            target= document.getElementById(ID_CONTAINER_KANJI_LOOKALIKES),
+            source= [document.getElementById(ID_HIDDENCONTAINER_KANJI_LOOKALIKES), 
+                document.getElementById(ID_HIDDENCONTAINER_KANJI_LOOKALIKES_MEANING)],
+            className = ['kanji-examples-item example', 'kanji-examples-item translated']
+        )
+
+
+        let character = document.getElementById(ID_VOCAB).innerHTML;
+        addClassAroundWord(character, document.getElementById('kanji-examples'), 'highlight')
     }
 
     // #### CALLING FUNCTION

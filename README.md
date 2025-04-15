@@ -25,6 +25,8 @@ Files in the 'debugging' folder are for testing and styling purposes, they are t
 - Audio playing twice
 - Duplicate tags
 - Do proper error handling
+- Better attach-to field
 
 ## Minor
-- 
+- Make vocab bigger on desktop
+- Jisho link not working on vocab

@@ -5,12 +5,7 @@
 
 <body>
     
-    <div id="dictionary"></div>
-    <div id="kanji-kun"></div>
-    <div id="kanji-on"></div>
-    <div id="kanji-examples"></div>
     <div id="kanji-examples-translated"></div>
-    <div id="kanji-lookalikes"></div>
     <div id="kanji-lookalikes-meaning"></div>
 <div class="wrapper">
     
@@ -27,18 +22,35 @@
         </div>
     </section>
     <section class="back" id="answer">
-        <ul class="link-list tab-list border-bottom">
-            <li class="link-list-item" id="btn-dictionary"
-            onclick="chooseTab(this.id, 'block')">Dictionary</li>
-            <li class="link-list-item link-active" id="btn-notes"
-            onclick="chooseTab(this.id, 'block')">Notes</li>
-            <li class="link-list-item" id="btn-forming"
-            onclick="chooseTab(this.id, 'block')">Forming</li>
+        <ul class="link-list tab-list tab-list-two border-bottom">
+            <li class="link-list-item link-active" id="btn-main"
+            onclick="chooseTab(this.id, 'block')">Main</li>
+            <li class="link-list-item" id="btn-lookalikes"
+            onclick="chooseTab(this.id, 'block')">Lookalikes</li>
         </ul>
-        <div class="tab-container">
-            <div class="tab tab-dictionary" id="tab-dictionary">
+        <div class="tab-container kanji">
+            <div class="tab tab-main" id="tab-main">
+                <div class="kanji-meaning" id="dictionary"></div>
+                <div class="kanji-readings-container">
+                    <div class="kanji-readings kun border-right">
+                        <div class="kanji-readings-title title">kun</div>
+                        <div class="kanji-readings-content"  id="kanji-kun"></div>
+                    </div>
+                    <div class="kanji-readings on">
+                        <div class="title">on</div>
+                        <div class="kanji-readings-content"  id="kanji-on"></div>
+                    </div>
+                </div>
+                <div class="kanji-examples" id="kanji-examples">
+                    <div class="title">Vocab</div>
+                    <div class="title">Meaning</div>
+                </div>
             </div>
-            <div class="tab tab-notes" id="tab-notes">
+            <div class="tab tab-lookalikes" id="tab-lookalikes">
+                <div class="kanji-lookalikes" id="kanji-lookalikes">
+                    <div class="title">Vocab</div>
+                    <div class="title">Meaning</div>
+                </div>
                 <div class="notes-sentences" id="back-sentences-container"></div>
                 <div class="notes-tags" id="back-attributes-container"></div>
                 <div class="notes">
