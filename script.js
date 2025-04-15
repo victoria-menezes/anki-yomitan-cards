@@ -39,7 +39,7 @@
     const ID_CONTAINER_KANJI_KUN = 'kanji-kun';
     const ID_CONTAINER_KANJI_ON = 'kanji-on';
     const ID_CONTAINER_KANJI_LOOKALIKES = 'kanji-lookalikes';
-    const ID_CONTAINER_KANJI_MEANING = 'kanji-lookalikes-meaning';
+    const ID_CONTAINER_KANJI_LOOKALIKES_MEANING = 'kanji-lookalikes-meaning';
 
     const ID_CONTAINER_SENTENCE_FRONT = 'front-sentences-container';
     const ID_CONTAINER_SENTENCE_BACK = 'back-sentences-container';    
@@ -53,7 +53,9 @@
     const HEADER_BUTTONS_TAB = {
         'btn-dictionary':'tab-dictionary',
         'btn-notes':'tab-notes',
-        'btn-forming':'tab-forming'
+        'btn-forming':'tab-forming',
+        'btn-main':'tab-main',
+        'btn-lookalikes':'tab-lookalikes'
     }
     
     const TAGS = {
@@ -132,23 +134,23 @@
     }
 
     // ## FUNCTIONS
-    function changeDisplayById(id, display_text){
+    function changeDisplayById(id, display_text) {
         document.getElementById(id).style.display=display_text;
     }
 
-    function changeDisplayByClass(class_name, display_text){
+    function changeDisplayByClass(class_name, display_text) {
         let list = document.getElementsByClassName(class_name);
-        for (let i = 0; i < list.length; i++){
+        for (let i = 0; i < list.length; i++) {
             list[i].style.display=display_text;
         }
     }
 
-    function getChildrenByAttribute(searchIn, attributeName, attributeValue){
+    function getChildrenByAttribute(searchIn, attributeName, attributeValue) {
         let docFragment = document.createDocumentFragment();
-        for (let i = 0; i<searchIn.length; i++){
+        for (let i = 0; i<searchIn.length; i++) {
             let elem = searchIn[i];
-            if (elem.hasAttribute(attributeName)){
-                if(elem.dataset.scContent==attributeValue){
+            if (elem.hasAttribute(attributeName)) {
+                if(elem.dataset.scContent==attributeValue) {
                     docFragment.appendChild(elem.cloneNode(true));
                     // .cloneNode(true) means it wont move the element, it'll clone it elsewhere
                 }  
@@ -157,9 +159,9 @@
         return [docFragment, docFragment.children] // DocFragment, HTMLCollection
     }
 
-    function cloneCollection(collection){
+    function cloneCollection(collection) {
         let docFragment = document.createDocumentFragment();
-        for (let i = 0; i < collection.length; i++){
+        for (let i = 0; i < collection.length; i++) {
             let elem = collection[i];
             docFragment.appendChild(elem.cloneNode(true));
         }
@@ -186,12 +188,12 @@
         // container that will receive the sentences
         let sentencesContainer = document.getElementById(idNewContainer)
 
-        for(let i = 0; i < collectionSentencesCopy.length; i++){
+        for(let i = 0; i < collectionSentencesCopy.length; i++) {
             let span = collectionSentencesCopy[i].getElementsByTagName('span')[0];
             
             // converts <span> to <b>
             try{
-                if(convertSpan){
+                if(convertSpan) {
                     let highlightedText ="";
                     highlightedText = document.createElement('b')
                     //highlightedText.classList.add(CLASSHIGHLIGHT);
@@ -200,9 +202,9 @@
                 }
     
                 // adds a class to all ruby text
-                if(addClassToRt){
+                if(addClassToRt) {
                     let rtCollection = collectionSentencesCopy[i].getElementsByTagName('rt');
-                    for (let i = 0; i < rtCollection.length; i++){
+                    for (let i = 0; i < rtCollection.length; i++) {
                         rtCollection[i].classList.add(rtClass);
                     }
                 }
@@ -219,7 +221,7 @@
                 
                 //console.log(i)
                 //console.log(newContainer.innerHTML)
-            } catch (error){
+            } catch (error) {
                 console.log('FAILED TO POPULATE');
                 try {
                     console.log('SENTENCES: '+ collectionSentencesCopy[i].innerHTML);
@@ -235,112 +237,120 @@
 
         // applying the highlight tag
         let boldList = sentencesContainer.querySelectorAll('b');
-        for (var i = 0; i < boldList.length; i++){
+        for (var i = 0; i < boldList.length; i++) {
             boldList[i].classList.add(CLASS_HIGHLIGHT);
         }
     }
 
-    function hideById(id){
+    function hideById(id) {
         document.getElementById(id).style.display='none';
     }
 
-    function showById(id, display_text){
+    function showById(id, display_text) {
         document.getElementById(id).style.display=display_text;
     }
 
-    function hideByClass(class_name){
+    function hideByClass(class_name) {
         let list = document.getElementsByClassName(class_name);
-        for (let i = 0; i < list.length; i++){
+        for (let i = 0; i < list.length; i++) {
             list[i].style.display='none';
         }
     }
 
-    function showByClass(className, displayText){
+    function showByClass(className, displayText) {
         let list = document.getElementsByClassName(className);
-        for (let i = 0; i < list.length; i++){
+        for (let i = 0; i < list.length; i++) {
             list[i].style.display=displayText;
         }
     }
 
-    function showByTag(tag, displayText){
+    function showByTag(tag, displayText) {
         let list = document.querySelectorAll(tag);
-        for (let i = 0; i < list.length; i++){
+        for (let i = 0; i < list.length; i++) {
             list[i].style.display=displayText;
         }
     }
 
-    function addClassByTag(tag, className, searchIn=document){
+    function addClassByTag(tag, className, searchIn=document) {
         let list = searchIn.querySelectorAll(tag);
-        for (let i = 0; i < list.length; i++){
+        for (let i = 0; i < list.length; i++) {
             list[i].classList.add(className);
         }
     }
 
-    function addClassByClass(classReference, className){     
+    function addClassByClass(classReference, className) {     
         let list = document.getElementsByClassName(classReference);
-        for (let i = 0; i < list.length; i++){
+        for (let i = 0; i < list.length; i++) {
             list[i].classList.add(className);
         }
     }
 
-    function removeClassByTag(tag, className, searchIn=document){
+    function removeClassByTag(tag, className, searchIn=document) {
         let list = searchIn.querySelectorAll(tag);
-        for (let i = 0; i < list.length; i++){
+        for (let i = 0; i < list.length; i++) {
             list[i].classList.remove(className);
         }
     }
 
-    function removeClassByClass(classReference, className){     
+    function removeClassByClass(classReference, className) {     
         let list = document.getElementsByClassName(classReference);
-        for (let i = 0; i < list.length; i++){
+        for (let i = 0; i < list.length; i++) {
             list[i].classList.remove(className);
         }
     }
 
-    function setActive(id){
+    function setActive(id) {
         document.getElementById(id).classList.add('link-active');
     }
     
-    function setInactive(id){
+    function setInactive(id) {
         document.getElementById(id).classList.remove('link-active')
     }
     
 
-    function setOnlyActive(id){
-        for (let i = 0; i<Object.keys(HEADER_BUTTONS_TAB).length; i++){
-            setInactive(Object.keys(HEADER_BUTTONS_TAB)[i]);
+    function setOnlyActive(id) {
+        for (let i = 0; i<Object.keys(HEADER_BUTTONS_TAB).length; i++) {
+            try{
+                setInactive(Object.keys(HEADER_BUTTONS_TAB)[i]);
+            } catch (error) {
+                console.log('Did not find button '+Object.keys(HEADER_BUTTONS_TAB)[i]);
+            }
         }
         setActive(id);
     }
 
-    function chooseTab(btn_id, display_text){
+    function chooseTab(btn_id, display_text) {
         setOnlyActive(btn_id);
-        for (let i = 0; i<Object.values(HEADER_BUTTONS_TAB).length; i++){
-            hideById(Object.values(HEADER_BUTTONS_TAB)[i]);
+        for (let i = 0; i<Object.values(HEADER_BUTTONS_TAB).length; i++) {
+            try {
+                hideById(Object.values(HEADER_BUTTONS_TAB)[i]);
+            } catch (error) {
+                console.log('Did not find tab '+Object.values(HEADER_BUTTONS_TAB)[i])
+            }
         }
         document.getElementById(HEADER_BUTTONS_TAB[btn_id]).style.display=display_text;
     }
 
-    function hideBack(){
+    function hideBack() {
         document.getElementById(ID_BACK).classList.add(CLASS_HIDDEN);
     }
 
-    function addTagsFromDictionary(){
+    function addTagsFromDictionary() {
         try {
             let tagsCollection = document.getElementsByClassName('yomitan-glossary')[0].querySelectorAll('['+ATTRIBUTE_TAG+']');
             let addedTags = [];
-            for (let i = 0; i < tagsCollection.length; i++){
+            for (let i = 0; i < tagsCollection.length; i++) {
                 try{
                     let attribute = tagsCollection[i].getAttribute(ATTRIBUTE_TAG);
                     let tagList = TAGS[attribute][0].split(" ");
                     let superTag = TAGS[attribute][1];
-                    if(!(addedTags.includes(attribute))){
-                        if(tagList.length>1){
-                            for (let i = tagList.length-1; i >= 0; i--){    
+                    if(!(addedTags.includes(attribute))) {
+                        if(tagList.length>1) {
+                            for (let i = tagList.length-1; i >= 0; i--) {    
                                 let newTag = document.createElement('div');
                                 newTag.innerHTML = tagList[i];
                                 newTag.classList.add('tag');
-                                if(i < tagList.length-1){
+                                if(i < tagList.length-1) {
                                     newTag.classList.add(attribute); // don't add specific class in the parent tag
                                 }
                                 newTag.classList.add(superTag);
@@ -363,16 +373,16 @@
                     console.log('---')
                 }
             }
-        } catch (error){
+        } catch (error) {
             console.log('FAILED TO FIND ATTRIBUTE TAGS');
         }
     }
 
     // #### BY CARD TYPE
-    function buildStandardCard(){
+    function buildStandardCard() {
         // ## HIDING VOCAB FURIGANA
         vocabRuby = document.getElementById(ID_VOCAB).querySelector('rt')
-        if (vocabRuby != null){
+        if (vocabRuby != null) {
             vocabRuby.classList.add(CLASS_HIDDEN);
         }
 
@@ -419,7 +429,7 @@
         // from the sentence containers, get the original sentences and the translated sentences
         let sentenceFragment = document.createDocumentFragment()
         let translatedFragment = document.createDocumentFragment()
-        for (let i = 0; i < Math.min(containerCollection.length,SENTENCE_MAX); i++){
+        for (let i = 0; i < Math.min(containerCollection.length,SENTENCE_MAX); i++) {
             // since HTMLCollections can't be edited directly,
             // create a documentFragment and append the children to it and later make a HTMLCollection from that
             sentenceFragment.append(getChildrenByAttribute(containerCollection[i].children, ATTRIBUTE_CONTENT, SENTENCE_DATA_PREFIX+'-a')[0]);
@@ -447,7 +457,7 @@
         addTagsFromDictionary();
     }
 
-    function buildFillInCard(){
+    function buildFillInCard() {
         // ## SENTENCE FETCHING
         // ## SENTENCE FETCHING: FROM FIELDS
         let sentenceContainer = document.getElementById(ID_HIDDENCONTAINER_SENTENCE);
@@ -469,7 +479,7 @@
             true,
             CLASS_HIDDEN,
             CLASS_SENTENCE,
-            CLASS_TRANSLATED+' hidden');
+            CLASS_TRANSLATED);
         populateSentences(
             ID_CONTAINER_SENTENCE_BACK, 
             sentenceList, 
@@ -491,7 +501,7 @@
         // from the sentence containers, get the original sentences and the translated sentences
         let sentenceFragment = document.createDocumentFragment()
         let translatedFragment = document.createDocumentFragment()
-        for (let i = 0; i < Math.min(containerCollection.length,SENTENCE_MAX); i++){
+        for (let i = 0; i < Math.min(containerCollection.length,SENTENCE_MAX); i++) {
             // since HTMLCollections can't be edited directly,
             // create a documentFragment and append the children to it and later make a HTMLCollection from that
             sentenceFragment.append(getChildrenByAttribute(containerCollection[i].children, ATTRIBUTE_CONTENT, SENTENCE_DATA_PREFIX+'-a')[0]);
@@ -508,7 +518,7 @@
             true,
             CLASS_HIDDEN,
             CLASS_SENTENCE,
-            CLASS_TRANSLATED+' hidden');
+            CLASS_TRANSLATED);
         populateSentences(
             ID_CONTAINER_SENTENCE_BACK,  
             sentenceCollection, 
@@ -522,12 +532,12 @@
    
     }
 
-    function linebreaksToItems(element, tag=""){
+    function linebreaksToItems(element, tag="") {
         element.innerHTML = '<ul><li>'+ element.innerHTML.replaceAll('<br>', '<li>') + '</li></ul>';
         return element.querySelectorAll('li');
     }
 
-    function buildGrammarCard(){
+    function buildGrammarCard() {
         let grammarSentences = document.getElementById(ID_HIDDENCONTAINER_SENTENCE);
         grammarSentences = linebreaksToItems(grammarSentences);
         let grammarSentencesGuides = document.getElementById(ID_HIDDENCONTAINER_GUIDES);
@@ -536,7 +546,7 @@
         grammarSentencesTranslated = linebreaksToItems(grammarSentencesTranslated);
 
         let container = document.getElementById(ID_CONTAINER_SENTENCE_FRONT);
-        for (let i = 0; i < grammarSentences.length; i++){
+        for (let i = 0; i < grammarSentences.length; i++) {
             container.innerHTML+=
                 '<div class="border-top">'+
                 '<div class="'+CLASS_SENTENCE+'">'+
@@ -559,7 +569,7 @@
         addClassByClass('sentence-translated', 'hidden');
         
         container = document.getElementById(ID_CONTAINER_SENTENCE_BACK);
-        for (let i = 0; i < grammarSentences.length; i++){
+        for (let i = 0; i < grammarSentences.length; i++) {
             container.innerHTML+=
                 '<div class="notes-sentences border-top">'+
                 '<div class="'+CLASS_SENTENCE+'">'+
@@ -576,18 +586,18 @@
         let functionList = document.getElementById(ID_HIDDENCONTAINER_FUNCTION);
         functionList = linebreaksToItems(functionList);
 
-        if (functionList[0].innerHTML != ''){
-            for(let i = 0; i < functionList.length; i++){
+        if (functionList[0].innerHTML != '') {
+            for(let i = 0; i < functionList.length; i++) {
                 try{
                     let tag = document.createElement('div');
                     tag.innerHTML=functionList[i].innerHTML;
                     tag.classList.add('tag');
                     tag.classList.add(FUNCTION_CLASS[tag.innerHTML]);
                     document.getElementById(ID_CONTAINER_TAGS).appendChild(tag);
-                } catch(error){
+                } catch(error) {
                     console.log('FAILED TO ADD FUNCTION TAG');
                     try {console.log('TAG:' + functionList[i].innerHTML);}
-                    catch (error){console.log('FAILED TO READ TAG HTML.')}
+                    catch (error) {console.log('FAILED TO READ TAG HTML.')}
                     console.log(error);
                     console.log('---')
                 }
@@ -598,8 +608,8 @@
         let attachList = document.getElementById(ID_HIDDENCONTAINER_ATTACHTO);
         attachList = linebreaksToItems(attachList);
 
-        if (attachList[0].innerHTML != ''){ 
-            for(let i = 0; i < attachList.length; i++){
+        if (attachList[0].innerHTML != '') { 
+            for(let i = 0; i < attachList.length; i++) {
                 try{
                     let text = ATTACH_CLASS[attachList[i].innerHTML][0];
                     let tag = document.createElement('div');
@@ -608,11 +618,11 @@
                     tag.classList.add('tag-attach');
                     tag.classList.add(ATTACH_CLASS[attachList[i].innerHTML][1]);
                     document.getElementById(ID_CONTAINER_ATTACHTO).appendChild(tag);
-                } catch (error){
+                } catch (error) {
                     console.log('FAILED TO ADD ATTACH TAG');
                     console.log('ITEM: '+attachList[i])
                     try{console.log('TAG: '+attachList[i].innerHTML)}
-                    catch (error){
+                    catch (error) {
                         console.log('NO INNER HTML')
                     }
                     console.log(error);
@@ -622,7 +632,7 @@
         }
     }
 
-    function buildKanjiCard(){
+    function buildKanjiCard() {
 
         /**
          * Converts a HTMLCollection into an Array
@@ -650,18 +660,19 @@
          * @param {String} tag Default li 
          * @returns 
          */
-        const elementsFromArray = (array, tag='li') =>{
+        const ensureArrayItems = (array, tag='li') =>{
             let newArray = []
             array.forEach(item => {
                 let element = item;
-                if (typeof item.innerHTML !== 'string'){
-                    // if it's not a string, ie if it's undefined or similar
+                if (typeof item.innerHTML !== 'string') {
+                    // if innerHTML is not a string, ie if it's undefined or similar
                     // meaning it has no innerHTML and is therefore not an object
                     element = document.createElement(tag);
                     element.innerHTML=item;
                     newArray.push(element)
-                } else if (!(item.innerHTML === '')){
+                } else if (!(item.innerHTML === '')) {
                     // if it IS a string and it's not empty
+                    // pushes the item without alteration
                     newArray.push(element)
                 }
             })
@@ -677,7 +688,7 @@
          */
 
         const getItemsFromElement = element => {          
-            if (element.innerHTML === ''){
+            if (element.innerHTML === '') {
                 throw new TypeError('Element is empty')
             }
             elementCopy = element.cloneNode(true);
@@ -693,7 +704,7 @@
          * @returns 
          */
         const getItemsFromElementCSV = (element, separator=',') => {
-            if (element.innerHTML === ''){
+            if (element.innerHTML === '') {
                 throw new TypeError('Element is empty')
             }
             let text = element.innerHTML;
@@ -712,7 +723,7 @@
         const populateFromArray = (array, newContainer, wrapUl=false, clone=true) =>{
             let receptor = newContainer;
             
-            if(wrapUl){
+            if(wrapUl) {
                 let newUl = document.createElement('ul');
                 newContainer.appendChild(newUl);
                 receptor = newUl;
@@ -743,13 +754,14 @@
          */
         const populateFromElement = (
             target,
-            source, className = '',
+            source, 
+            className = '',
             elemType = 'li',
             wrapUl = true) => 
         {
             let list = nodeListToArray(getItemsFromElement(source));
-            list = elementsFromArray(list, elemType); // makes sure every item in the array is an element
-            if (className !== ''){ // if there is a tag  to be added
+            list = ensureArrayItems(list, elemType); // makes sure every item in the array is an element
+            if (className !== '') { // if there is a class to be added
                 list = addClassToArrayItems(list, className);
             }
             populateFromArray(
@@ -762,21 +774,22 @@
         /**
          * Populates the target element with a list of elements from the source, split by a separator
          * @param {Object} target Element to populate
-         * @param {Object} source Element to draw list items from
-         * @param {String} className Class to be added to list items, will be skipped if left blank
+         * @param {Array} source Element to draw list items from
+         * @param {Array} classNames Classes to apply to the populated items
          * @param {String} elemType Type of elements to be made from items drawn from source, default li
          * @param {Boolean} wrapUl Wrap the added elements in a ul element, default true
          */
         const populateFromCSV = (
             target,
-            source, className = '',
+            source, 
+            classNames,
             elemType = 'li',
             wrapUl = true
             ) => 
         {
             let list = nodeListToArray(getItemsFromElementCSV(source));
-            list = elementsFromArray(list, elemType); // makes sure every item in the array is an element
-            if (className !== ''){ // if there is a tag  to be added
+            list = ensureArrayItems(list, elemType); // makes sure every item in the array is an element
+            if (className !== '') { // if there is a class to be added
                 list = addClassToArrayItems(list, className);
             }
             populateFromArray(
@@ -784,6 +797,76 @@
                 target,
                 wrapUl
             );
+        }
+
+        const convertArrayItems = (
+            array,
+            tag
+        ) =>
+        {
+            let newArray = []
+            array.forEach(item => {
+                if (typeof item.innerHTML !== 'string') {
+                    // if it's not a string, ie if it's undefined or similar
+                    // meaning it has no innerHTML and is therefore not an object
+                    // (plain text, for example)
+                    let element = document.createElement(tag);
+                    element.innerHTML=item;
+                    newArray.push(element)
+                } else if (!(item.innerHTML === '')) {
+                    // if innerHTML IS a string and it's not empty
+                    let element = document.createElement(tag);
+                    element.innerHTML = item.innerHTML;
+                    newArray.push(element)
+                }
+            })
+            return newArray;
+        }
+
+        /**
+         * Populates the target grid with a list of elements from the source, split by line breaks, divs or lis
+         * @param {Object} target Element to populate
+         * @param {Array} sources Array of objects to draw items from, in the desired order
+         * @param {Boolean} rows
+         * @param {String} className Class to be added to list items, will be skipped if left blank
+         * @param {String} elemType Type of elements to be made from items drawn from source, default div
+         */
+        const populateGridFromElement = (
+            target,
+            sources,
+            rows = false,
+            className = 'test',
+            elemType = 'div'
+            ) => 
+        {
+            if (sources.length < 2){
+                throw new TypeError('sources must be an array with length > 1')
+            }
+
+            let listOfElementArrays = [];
+            const filesAmount = sources.length;
+            
+            // let cellsAmount = filesAmount*Math.max()
+
+            sources.forEach(item => {
+                listOfElementArrays.push(nodeListToArray(getItemsFromElement(item)));
+            })
+
+            for (let i = 0; i < listOfElementArrays.length; i++) {
+                // for each array in the list of arrays, convert its items to elemType
+                listOfElementArrays[i] = convertArrayItems(listOfElementArrays[i], elemType);
+                if (className !== '') { // if there is a class to be added
+                    listOfElementArrays[i] = addClassToArrayItems(listOfElementArrays[i], className);
+                }
+            }
+
+            let transversalAmount = 0;
+            listOfElementArrays.forEach(array => {
+                transversalAmount = Math.max(transversalAmount, array.length);
+            });
+
+            // grid will be of size filexAmount x transversalAmount
+
         }
         
         populateFromElement(
@@ -795,13 +878,13 @@
         populateFromCSV(
             target = document.getElementById(ID_CONTAINER_KANJI_ON),
             source = document.getElementById(ID_HIDDENCONTAINER_KANJI_ON),
-            className = 'pronunciation-item'
+            className = 'kanji-readings-item'
         )
         
         populateFromCSV(
             target = document.getElementById(ID_CONTAINER_KANJI_KUN),
             source = document.getElementById(ID_HIDDENCONTAINER_KANJI_KUN),
-            className = 'pronunciation-item'
+            className = 'kanji-readings-item'
         )
         
         populateFromElement(
@@ -815,7 +898,22 @@
             className = 'kanji-example-translated'
         )
 
-        // add lookalikes
+        populateFromElement(
+            target =  document.getElementById(ID_CONTAINER_KANJI_LOOKALIKES),
+            source = document.getElementById(ID_HIDDENCONTAINER_KANJI_LOOKALIKES),
+            className = 'kanji-lookalikes'
+        )
+        populateFromElement(
+            target =  document.getElementById(ID_CONTAINER_KANJI_LOOKALIKES_MEANING),
+            source = document.getElementById(ID_HIDDENCONTAINER_KANJI_LOOKALIKES_MEANING),
+            className = 'kanji-lookalikes'
+        )
+
+        populateGridFromElement(            
+            target =  document.getElementById(ID_CONTAINER_KANJI_LOOKALIKES_MEANING),
+            source = [document.getElementById(ID_HIDDENCONTAINER_KANJI_LOOKALIKES), document.getElementById(ID_HIDDENCONTAINER_KANJI_LOOKALIKES_MEANING), document.getElementById(ID_HIDDENCONTAINER_KANJI_LOOKALIKES_MEANING)],
+            classNames = ['kanji-lookalikes']
+        )
     }
 
     // #### CALLING FUNCTION
