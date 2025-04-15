@@ -130,6 +130,14 @@ li{
     border-top: 3px solid var(--color-border);
 }
 
+.border-right {
+    border-right: 3px solid var(--color-border);
+}
+
+.border-thin {
+    border-width: 1px;
+}
+
 .hidden{
     display:none;
 }
@@ -280,7 +288,7 @@ li{
     grid-template-columns: repeat(2, 1fr);
 }
 
-.tab-dictionary, .tab-forming{
+.tab-dictionary, .tab-forming, .tab-lookalikes{
     display:none;
 }
 
@@ -337,6 +345,77 @@ li{
 .tag-attach{
     border: 3px solid var(--color-border);
     border-radius: 0 1em;
+}
+
+
+.kanji-meaning{
+    display:flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.kanji-readings-container{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.title {
+    text-transform: uppercase;
+    color:var(--color-accent);
+    font-size:var(--fontsize-h3);
+    border-bottom:3px solid var(--color-accent);
+    text-align: center;
+    margin:0.25em 0;
+}
+
+.on * {
+    color: var(--color-on);
+    border-color: var(--color-on);
+}
+
+.kun * {
+    color: var(--color-kun);
+    border-color: var(--color-kun);
+}
+
+.kanji-readings-content{
+    display:flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    padding: 0 0.25em;
+}
+
+.kanji-readings-item{
+    color:var(--color-text);
+    padding: 0 0.25em;
+    border-width: 1px;
+    border-style:solid;
+    display:block;
+    width:fit-content;
+}
+
+.kanji-examples, .kanji-lookalikes{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.kanji-examples-item {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+
+    & .highlight {
+        color: var(--color-text);
+    }
+}
+
+.example{    
+    align-items: end;
+    color: var(--color-accent);
+    font-size:var(--fontsize-h3);
 }
 
 /* TAG STYLING */
@@ -416,6 +495,7 @@ li{
 }
 
 
+
 /* DESKTOP */
 @media screen and (min-width: 1000px){
     body{
@@ -429,6 +509,10 @@ li{
     .tab-container{
         display:grid;
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    .tab-container.kanji {
+        grid-template-columns: 70% 30%;
     }
 
     .tab-container-grammar{
