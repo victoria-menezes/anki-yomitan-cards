@@ -408,23 +408,46 @@
      * @param {String} tag Default li 
      * @returns 
      */
-    const ensureArrayItems = (array, tag='li') =>{
+    const ensureArrayItems = (array, tag = 'li', allowEmpty = true) =>{
         let newArray = []
-        array.forEach(item => {
-            let element = item;
-            if (typeof item.innerHTML !== 'string') {
-                // if innerHTML is not a string, ie if it's undefined or similar
-                // meaning it has no innerHTML and is therefore not an object
-                element = document.createElement(tag);
-                element.innerHTML=item;
-                newArray.push(element)
-            } else if (!(item.innerHTML === '')) {
-                // if it IS a string and it's not empty
-                // pushes the item without alteration
-                newArray.push(element)
+        if (allowEmpty) {
+            try {
+                array.forEach(item => {
+                    let element = item;
+                    if (typeof item.innerHTML !== 'string') {
+                        // if innerHTML is not a string, ie if it's undefined or similar
+                        // meaning it has no innerHTML and is therefore not an object
+                        element = document.createElement(tag);
+                        element.innerHTML=item;
+                        newArray.push(element)
+                    } else if (!(item.innerHTML === '')) {
+                        // if it IS a string and it's not empty
+                        // pushes the item without alteration
+                        newArray.push(element)
+                    }
+                })
+                return newArray;
+            } catch (error) {
+                return []
             }
-        })
-        return newArray;
+        }
+        else {            
+            array.forEach(item => {
+                let element = item;
+                if (typeof item.innerHTML !== 'string') {
+                    // if innerHTML is not a string, ie if it's undefined or similar
+                    // meaning it has no innerHTML and is therefore not an object
+                    element = document.createElement(tag);
+                    element.innerHTML=item;
+                    newArray.push(element)
+                } else if (!(item.innerHTML === '')) {
+                    // if it IS a string and it's not empty
+                    // pushes the item without alteration
+                    newArray.push(element)
+                }
+            })
+            return newArray;
+            }
     }
     
     /**
@@ -481,10 +504,10 @@
      * @param {Object} element - Where to search
      * 
      * @returns {NodeList} List of li elements
-     * @throws Error if element is empty
+     * @throws Error if element is empty, unless allowEmpty
      */
-    const getItemsFromElement = element => {         
-        if (element.innerHTML === '' | element.innerHTML === undefined) {
+    const getItemsFromElement = (element, allowEmpty = true) => {         
+        if (!allowEmpty & (element.innerHTML === '' | element.innerHTML === undefined)) {
             console.log('WARNING: Element is empty');
             return []
         }
@@ -503,10 +526,12 @@
      * Gets items from an element separated by a specific string
      * @param {Object} element 
      * @param {String} separator default: , 
-     * @returns 
+     * 
+     * @returns {Array}
+     * @throws Error if element is empty, unless allowEmpty
      */
-    const getItemsFromElementCSV = (element, separator=',') => {
-        if (element.innerHTML === '') {
+    const getItemsFromElementCSV = (element, separator=',', allowEmpty = true) => {
+        if (!allowEmpty & (element.innerHTML === '')) {
             throw new TypeError('Element is empty')
         }
         let text = element.innerHTML;
@@ -522,7 +547,7 @@
      * @param {Boolean} clone If true, clones the items instead of simply appending them
      */
 
-    const populateFromArray = (array, newContainer, wrapUl=false, clone=true) =>{
+    const populateFromArray = (array, newContainer, wrapUl=false, clone=true, allowEmpty=true) =>{
         let receptor = newContainer;
 
         if(wrapUl) {
@@ -530,8 +555,16 @@
             newContainer.appendChild(newUl);
             receptor = newUl;
         }
-        
-        array.forEach(item => receptor.appendChild(item.cloneNode(clone)))
+
+        if (allowEmpty){
+            try {        
+                array.forEach(item => receptor.appendChild(item.cloneNode(clone)))
+            } catch (error) {
+                return
+            }
+        } else {
+            array.forEach(item => receptor.appendChild(item.cloneNode(clone)))
+        }
     };
 
     /**
