@@ -4,9 +4,6 @@
 </head>
 
 <body>
-    
-    <div id="kanji-examples-translated"></div>
-    <div id="kanji-lookalikes-meaning"></div>
 <div class="wrapper">
     
     <section class="front border-bottom">
@@ -30,7 +27,10 @@
         </ul>
         <div class="tab-container kanji">
             <div class="tab tab-main" id="tab-main">
-                <div class="kanji-meaning" id="dictionary"></div>
+                <div class="kanji-meaning border-bottom" id="dictionary"></div>
+                <div class="notes">
+                    {{Notes}}
+                </div>
                 <div class="kanji-readings-container">
                     <div class="kanji-readings kun border-right">
                         <div class="kanji-readings-title title">kun</div>
@@ -53,17 +53,13 @@
                 </div>
                 <div class="notes-sentences" id="back-sentences-container"></div>
                 <div class="notes-tags" id="back-attributes-container"></div>
-                <div class="notes">
-                    {{Notes}}
-                </div>
             </div>
-            <div class="tab tab-forming" id="tab-forming">{{Forming}}</div>
         </div>
     <ul class="link-list footer border-top">
-        <li class="link-list-item"><a href="https://bunpro.jp/vocabs/{{Vocab}}">Bp. Vocab</a></li>
-        <li class="link-list-item"><a href="https://bunpro.jp/grammar_points/{{Vocab}}">Bp. Grammar</a></li>
-        <li class="link-list-item"><a href="https://bunpro.jp/search?query={{Vocab}}">Bp. Search</a></li>
-        <li class="link-list-item"><a href="https://jisho.org/word/{{Vocab}}">Jisho</a></li>
+        <li class="link-list-item"><a href="https://bunpro.jp/vocabs/{{Character}}">Bp. Vocab</a></li>
+        <li class="link-list-item"><a href="https://bunpro.jp/grammar_points/{{Character}}">Bp. Grammar</a></li>
+        <li class="link-list-item"><a href="https://bunpro.jp/search?query={{Character}}">Bp. Search</a></li>
+        <li class="link-list-item"><a href="https://jisho.org/word/{{Character}}">Jisho</a></li>
     </ul>
     </section>
 </div>

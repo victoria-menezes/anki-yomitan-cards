@@ -1,6 +1,6 @@
 
 // FIRST AND FINAL CURLY BRACKETS MUST BE UNCOMMENTED, IF THEY ARE COMMENTED IT IS LIKELY A LEFTOVER FROM DEBUGGING AND WILL BE FIXED
-//{
+{
             
     // ## CONSTANTS
     const SENTENCE_MAX = 4;
@@ -382,6 +382,355 @@
         }
     }
 
+    /**
+         * Converts a HTMLCollection into an Array
+         * @param {HTMLCollection} collection 
+         * @returns {Array}
+         */
+    const collectionToArray = (collection) => {
+        for (var array=[], i=collection.length; i;) array[--i] = collection[i];
+        return array
+    }
+
+    /**
+     * Converts a NodeList into an Array
+     * @param {NodeList} nodeList 
+     * @returns {Array}
+     */
+    const nodeListToArray = (nodeList) => {
+        for (var array=[], i=nodeList.length; i;) array[--i] = nodeList[i];
+        return array
+    }
+
+    /**
+     * Turns every non-element item of the array into an item. Drops empty items
+     * @param {Array} array 
+     * @param {String} tag Default li 
+     * @returns 
+     */
+    const ensureArrayItems = (array, tag='li') =>{
+        let newArray = []
+        array.forEach(item => {
+            let element = item;
+            if (typeof item.innerHTML !== 'string') {
+                // if innerHTML is not a string, ie if it's undefined or similar
+                // meaning it has no innerHTML and is therefore not an object
+                element = document.createElement(tag);
+                element.innerHTML=item;
+                newArray.push(element)
+            } else if (!(item.innerHTML === '')) {
+                // if it IS a string and it's not empty
+                // pushes the item without alteration
+                newArray.push(element)
+            }
+        })
+        return newArray;
+    }
+    
+    /**
+     * Generates a Regex expression that will separate elements by the tags given
+     * @param {Array.<String>} tags 
+     * @returns {RegExp}
+     */
+    const regexFromTags = tags => {
+        let exp = new RegExp('');
+        
+        for (let i = 0; i < tags.length; i++){
+            let tag = tags[i]
+            let expression = ''
+            if (['br'].includes(tag)){
+                expression = new RegExp('(?<=(\\<'+tag+'\\>))((.|\\n)*?)(?=\\<'+tag+')');
+                if (i === 0) {
+                    exp = expression;
+                } else {
+                    exp = new RegExp(exp.source  + '|' +  expression.source);
+                }
+            }
+            else {
+                expression = new RegExp('(?<=(\\<'+tag+'\\>))((.|\\n)*?)(?=\\<\\/'+tag+'>)');
+                if (i === 0) {
+                    exp = expression;
+                } else {
+                    exp = new RegExp(exp.source + '|' + expression.source);
+                }
+            }
+        }
+        exp = new RegExp(exp.source, "g");
+        return exp;
+    }
+
+    /**
+     * Gets a list from a string separated by the given html tag
+     * @param {String} html 
+     * @param {Array.<String>} tags
+     * @returns {Array.<String>}
+     */
+    const separateBySpecificTags = (html, tags) => {
+        let toSearch = html;
+        toSearch = '<br>'.concat(toSearch.concat('<br>'));
+        expr = regexFromTags(tags);
+        
+        // console.log('separateBySpecificTags')
+        // console.log(expr)
+
+        return toSearch.match(regexFromTags(tags));
+    }
+    
+    /**
+     * Gets a list from an element, separated by br, li and div tags
+     * @param {Object} element - Where to search
+     * 
+     * @returns {NodeList} List of li elements
+     * @throws Error if element is empty
+     */
+    const getItemsFromElement = element => {         
+        if (element.innerHTML === '' | element.innerHTML === undefined) {
+            console.log('WARNING: Element is empty');
+            return []
+        }
+        elementCopy = element.cloneNode(true);
+        let items = separateBySpecificTags(elementCopy.innerHTML, ['br','li','div']);
+
+        try {
+            items = ensureArrayItems(items);
+            return items;
+        } catch (error) {
+            return [];
+        }
+    }
+
+    /**
+     * Gets items from an element separated by a specific string
+     * @param {Object} element 
+     * @param {String} separator default: , 
+     * @returns 
+     */
+    const getItemsFromElementCSV = (element, separator=',') => {
+        if (element.innerHTML === '') {
+            throw new TypeError('Element is empty')
+        }
+        let text = element.innerHTML;
+        text = text.replaceAll(' ','');
+        return text.split(separator);
+    }
+
+    /**
+     * Attaches items of array to a new container.
+     * @param {Array} array 
+     * @param {Object} newContainer 
+     * @param {Boolean} wrapUl If true, wraps the items in ul tag
+     * @param {Boolean} clone If true, clones the items instead of simply appending them
+     */
+
+    const populateFromArray = (array, newContainer, wrapUl=false, clone=true) =>{
+        let receptor = newContainer;
+
+        if(wrapUl) {
+            let newUl = document.createElement('ul');
+            newContainer.appendChild(newUl);
+            receptor = newUl;
+        }
+        
+        array.forEach(item => receptor.appendChild(item.cloneNode(clone)))
+    };
+
+    /**
+     * Goes through every element in the array and adds a class
+     * @param {Array.<Object>} array Array of elements
+     * @param {String} className Classes separated by spaces
+     * @returns {Array}
+     */
+    const addClassToArrayItems = (array, className) => {
+        
+        // console.log(className);
+        // console.log(typeof className)
+        let classes = className.split(' ');
+        
+        array.forEach(item => 
+            classes.forEach(classItem => item.classList.add(classItem))
+        );
+        return array;
+    }
+
+    
+    /**
+     * Populates the target element with a list of elements from the source, split by line breaks, divs or lis
+     * @param {Object} target Element to populate
+     * @param {Object} source Element to draw list items from
+     * @param {String} className Class to be added to list items, will be skipped if left blank
+     * @param {String} elemType Type of elements to be made from items drawn from source, default li
+     * @param {Boolean} wrapUl Wrap the added elements in a ul element, default true
+     */
+    const populateFromElement = (
+        target,
+        source, 
+        className = '',
+        elemType = 'li',
+        wrapUl = true) => 
+    {
+        // console.log('getting elements from '+ target);
+        let list = nodeListToArray(getItemsFromElement(source));
+        list = ensureArrayItems(list, elemType); // makes sure every item in the array is an element
+        if (className !== '') { // if there is a class to be added
+            list = addClassToArrayItems(list, className);
+        }
+        populateFromArray(
+            list,
+            target,
+            wrapUl
+        );
+    }
+
+    /**
+     * Populates the target element with a list of elements from the source, split by a separator
+     * @param {Object} target Element to populate
+     * @param {Array} source Element to draw list items from
+     * @param {Array} classNames Classes to apply to the populated items
+     * @param {String} elemType Type of elements to be made from items drawn from source, default li
+     * @param {Boolean} wrapUl Wrap the added elements in a ul element, default true
+     */
+    const populateFromCSV = (
+        target,
+        source, 
+        classNames,
+        elemType = 'li',
+        wrapUl = true
+        ) => 
+    {
+        let list = nodeListToArray(getItemsFromElementCSV(source));
+        list = ensureArrayItems(list, elemType); // makes sure every item in the array is an element
+        if (className !== '') { // if there is a class to be added
+            list = addClassToArrayItems(list, className);
+        }
+        populateFromArray(
+            list,
+            target,
+            wrapUl
+        );
+    }
+
+    const convertArrayItems = (
+        array,
+        tag
+    ) =>
+    {
+        let newArray = []
+        array.forEach(item => {
+            if (typeof item.innerHTML !== 'string') {
+                // if it's not a string, ie if it's undefined or similar
+                // meaning it has no innerHTML and is therefore not an object
+                // (plain text, for example)
+                let element = document.createElement(tag);
+                element.innerHTML=item;
+                newArray.push(element)
+            } else if (!(item.innerHTML === '')) {
+                // if innerHTML IS a string and it's not empty
+                let element = document.createElement(tag);
+                element.innerHTML = item.innerHTML;
+                newArray.push(element)
+            }
+        })
+        return newArray;
+    }
+
+    /**
+     * Populates the target grid with a list of elements from the source, split by line breaks, divs or lis
+     * @param {Object} target Element to populate
+     * @param {Array.<Object>} sources Array of objects to draw items from, in the desired order
+     * @param {Array.<String>} className Class to be added to list items, will be skipped if left blank
+     * @param {String} elemType Type of elements to be made from items drawn from source, default div
+     * @param {Boolean} rows Transpose the grid (currently not functional), default false
+     */
+    const populateGridFromElement = (
+        target,
+        sources,
+        className,
+        elemType = 'div',
+        rows = false
+        ) => 
+    {
+        if (sources.length < 2){
+            throw new TypeError('sources must be an array with length > 1')
+        }
+
+        const listOfElementArrays = [];
+        const fileAmount = sources.length;
+        
+        // 'file' refers to either column or row, depending on bool rows
+
+        sources.forEach(item => {
+            listOfElementArrays.push(nodeListToArray(getItemsFromElement(item)));
+        })
+
+        for (let i = 0; i < listOfElementArrays.length; i++) {
+            // for each array in the list of arrays, convert its items to elemType
+            listOfElementArrays[i] = convertArrayItems(listOfElementArrays[i], elemType);
+            if ((className[i] !== undefined) & className[i] !== '') { // if there is a class to be added
+                listOfElementArrays[i] = addClassToArrayItems(listOfElementArrays[i], className[i]);
+            }
+        }
+
+
+        let transversalAmount = 0;
+        listOfElementArrays.forEach(array => {
+            transversalAmount = Math.max(transversalAmount, array.length);
+        });
+
+        // grid will be of size fileAmount x transversalAmount
+
+        const cellAmount = fileAmount * transversalAmount;
+        let filePosition = 0;
+        let transversalPosition = 0;
+        let item;
+
+
+        for (let i = 0; i < cellAmount; i++){
+            filePosition = i % fileAmount; // refers to the current file
+            transversalPosition = Math.floor(i / fileAmount);
+            item = listOfElementArrays[filePosition][transversalPosition];
+            
+            // console.log(item);
+            // console.log('row ' + transversalPosition + ' | column ' + filePosition);
+            try {
+                target.appendChild(item);
+            }
+            catch (error){
+                console.log('Skipping ' + item);
+            }
+        }
+    }
+
+    /**
+     * Searches for a word in an element and wraps every instance of that word in a span tag 
+     * @param {String} word Word to wrap inside span
+     * @param {Object} searchIn Element to search in
+     * @param {Array.<String>} className Classes to be added to the span, separated by spaces
+     */
+    const addClassAroundWord = (
+        word,
+        searchIn,
+        className=''
+    ) => {
+        // adding span tag:
+        let innerContent = searchIn;
+        innerContent.innerHTML = innerContent.innerHTML.replaceAll(word, '<span>'+word+'</span>');
+
+        // selecting ALL span tags
+        let spanList = innerContent.querySelectorAll('span');
+        
+        // narrowing it down to only the ones with the right content
+        let elementList = [];
+        spanList.forEach(span => {
+            if (span.innerHTML === word){
+                elementList.push(span);
+            }
+        })
+
+        if (className !== ''){
+            addClassToArrayItems(elementList, className);
+        }
+    }
+
     // #### BY CARD TYPE
     function buildStandardCard() {
         // ## HIDING VOCAB FURIGANA
@@ -636,295 +985,7 @@
         }
     }
 
-    function buildKanjiCard() {
-
-        /**
-         * Converts a HTMLCollection into an Array
-         * @param {HTMLCollection} collection 
-         * @returns {Array}
-         */
-        const collectionToArray = (collection) => {
-            for (var array=[], i=collection.length; i;) array[--i] = collection[i];
-            return array
-        }
-
-        /**
-         * Converts a NodeList into an Array
-         * @param {NodeList} nodeList 
-         * @returns {Array}
-         */
-        const nodeListToArray = (nodeList) => {
-            for (var array=[], i=nodeList.length; i;) array[--i] = nodeList[i];
-            return array
-        }
-
-        /**
-         * Turns every non-element item of the array into an item. Drops empty items
-         * @param {Array} array 
-         * @param {String} tag Default li 
-         * @returns 
-         */
-        const ensureArrayItems = (array, tag='li') =>{
-            let newArray = []
-            array.forEach(item => {
-                let element = item;
-                if (typeof item.innerHTML !== 'string') {
-                    // if innerHTML is not a string, ie if it's undefined or similar
-                    // meaning it has no innerHTML and is therefore not an object
-                    element = document.createElement(tag);
-                    element.innerHTML=item;
-                    newArray.push(element)
-                } else if (!(item.innerHTML === '')) {
-                    // if it IS a string and it's not empty
-                    // pushes the item without alteration
-                    newArray.push(element)
-                }
-            })
-            return newArray;
-        }
-        
-        /**
-         * Gets items from an element separated by lists, simple line breaks and divs
-         * @param {Object} element - Where to search
-         * 
-         * @returns {NodeList} List of li elements
-         * @throws Error if element is empty
-         */
-
-        const getItemsFromElement = element => {          
-            if (element.innerHTML === '') {
-                throw new TypeError('Element is empty')
-            }
-            elementCopy = element.cloneNode(true);
-            elementCopy.innerHTML = elementCopy.innerHTML.replaceAll('div','li');
-            let items = elementCopy.querySelectorAll('li');
-            return items;
-        }
-
-        /**
-         * Gets items from an element separated by a specific string
-         * @param {Object} element 
-         * @param {String} separator default: , 
-         * @returns 
-         */
-        const getItemsFromElementCSV = (element, separator=',') => {
-            if (element.innerHTML === '') {
-                throw new TypeError('Element is empty')
-            }
-            let text = element.innerHTML;
-            text = text.replaceAll(' ','');
-            return text.split(separator);
-        }
-
-        /**
-         * Attaches items of array to a new container.
-         * @param {Array} array 
-         * @param {Object} newContainer 
-         * @param {Boolean} wrapUl If true, wraps the items in ul tag
-         * @param {Boolean} clone If true, clones the items instead of simply appending them
-         */
-
-        const populateFromArray = (array, newContainer, wrapUl=false, clone=true) =>{
-            let receptor = newContainer;
-
-            if(wrapUl) {
-                let newUl = document.createElement('ul');
-                newContainer.appendChild(newUl);
-                receptor = newUl;
-            }
-            
-            array.forEach(item => receptor.appendChild(item.cloneNode(clone)))
-        };
-
-        /**
-         * Goes through every element in the array and adds a class
-         * @param {Array.<Object>} array Array of elements
-         * @param {String} className Classes separated by spaces
-         * @returns {Array}
-         */
-        const addClassToArrayItems = (array, className) => {
-            
-            // console.log(className);
-            // console.log(typeof className)
-            let classes = className.split(' ');
-            
-            array.forEach(item => 
-                classes.forEach(classItem => item.classList.add(classItem))
-            );
-            return array;
-        }
-
-        
-        /**
-         * Populates the target element with a list of elements from the source, split by line breaks, divs or lis
-         * @param {Object} target Element to populate
-         * @param {Object} source Element to draw list items from
-         * @param {String} className Class to be added to list items, will be skipped if left blank
-         * @param {String} elemType Type of elements to be made from items drawn from source, default li
-         * @param {Boolean} wrapUl Wrap the added elements in a ul element, default true
-         */
-        const populateFromElement = (
-            target,
-            source, 
-            className = '',
-            elemType = 'li',
-            wrapUl = true) => 
-        {
-            let list = nodeListToArray(getItemsFromElement(source));
-            list = ensureArrayItems(list, elemType); // makes sure every item in the array is an element
-            if (className !== '') { // if there is a class to be added
-                list = addClassToArrayItems(list, className);
-            }
-            populateFromArray(
-                list,
-                target,
-                wrapUl
-            );
-        }
-
-        /**
-         * Populates the target element with a list of elements from the source, split by a separator
-         * @param {Object} target Element to populate
-         * @param {Array} source Element to draw list items from
-         * @param {Array} classNames Classes to apply to the populated items
-         * @param {String} elemType Type of elements to be made from items drawn from source, default li
-         * @param {Boolean} wrapUl Wrap the added elements in a ul element, default true
-         */
-        const populateFromCSV = (
-            target,
-            source, 
-            classNames,
-            elemType = 'li',
-            wrapUl = true
-            ) => 
-        {
-            let list = nodeListToArray(getItemsFromElementCSV(source));
-            list = ensureArrayItems(list, elemType); // makes sure every item in the array is an element
-            if (className !== '') { // if there is a class to be added
-                list = addClassToArrayItems(list, className);
-            }
-            populateFromArray(
-                list,
-                target,
-                wrapUl
-            );
-        }
-
-        const convertArrayItems = (
-            array,
-            tag
-        ) =>
-        {
-            let newArray = []
-            array.forEach(item => {
-                if (typeof item.innerHTML !== 'string') {
-                    // if it's not a string, ie if it's undefined or similar
-                    // meaning it has no innerHTML and is therefore not an object
-                    // (plain text, for example)
-                    let element = document.createElement(tag);
-                    element.innerHTML=item;
-                    newArray.push(element)
-                } else if (!(item.innerHTML === '')) {
-                    // if innerHTML IS a string and it's not empty
-                    let element = document.createElement(tag);
-                    element.innerHTML = item.innerHTML;
-                    newArray.push(element)
-                }
-            })
-            return newArray;
-        }
-
-        /**
-         * Populates the target grid with a list of elements from the source, split by line breaks, divs or lis
-         * @param {Object} target Element to populate
-         * @param {Array.<Object>} sources Array of objects to draw items from, in the desired order
-         * @param {Array.<String>} className Class to be added to list items, will be skipped if left blank
-         * @param {String} elemType Type of elements to be made from items drawn from source, default div
-         * @param {Boolean} rows Transpose the grid (currently not functional), default false
-         */
-        const populateGridFromElement = (
-            target,
-            sources,
-            className,
-            elemType = 'div',
-            rows = false
-            ) => 
-        {
-            if (sources.length < 2){
-                throw new TypeError('sources must be an array with length > 1')
-            }
-
-            const listOfElementArrays = [];
-            const fileAmount = sources.length;
-            
-            // 'file' refers to either column or row, depending on bool rows
-
-            sources.forEach(item => {
-                listOfElementArrays.push(nodeListToArray(getItemsFromElement(item)));
-            })
-
-            for (let i = 0; i < listOfElementArrays.length; i++) {
-                // for each array in the list of arrays, convert its items to elemType
-                listOfElementArrays[i] = convertArrayItems(listOfElementArrays[i], elemType);
-                if ((className[i] !== undefined) & className[i] !== '') { // if there is a class to be added
-                    listOfElementArrays[i] = addClassToArrayItems(listOfElementArrays[i], className[i]);
-                }
-            }
-
-
-            let transversalAmount = 0;
-            listOfElementArrays.forEach(array => {
-                transversalAmount = Math.max(transversalAmount, array.length);
-            });
-
-            // grid will be of size fileAmount x transversalAmount
-            const cellAmount = fileAmount * transversalAmount;
-            let filePosition = 0;
-            let transversalPosition = 0;
-            let item;
-
-            for (let i = 0; i < cellAmount; i++){
-                filePosition = i % fileAmount; // refers to the current file
-                transversalPosition = Math.floor(i / fileAmount);
-                item = listOfElementArrays[filePosition][transversalPosition];
-                
-                // console.log(item);
-                // console.log('row ' + transversalPosition + ' | column ' + filePosition);
-                target.appendChild(item);
-            }
-        }
-
-        /**
-         * Searches for a word in an element and wraps every instance of that word in a span tag 
-         * @param {String} word Word to wrap inside span
-         * @param {Object} searchIn Element to search in
-         * @param {Array.<String>} className Classes to be added to the span, separated by spaces
-         */
-        const addClassAroundWord = (
-            word,
-            searchIn,
-            className=''
-        ) => {
-            // adding span tag:
-            let innerContent = searchIn;
-            innerContent.innerHTML = innerContent.innerHTML.replaceAll(word, '<span>'+word+'</span>');
-
-            // selecting ALL span tags
-            let spanList = innerContent.querySelectorAll('span');
-            
-            // narrowing it down to only the ones with the right content
-            let elementList = [];
-            spanList.forEach(span => {
-                if (span.innerHTML === word){
-                    elementList.push(span);
-                }
-            })
-
-            if (className !== ''){
-                addClassToArrayItems(elementList, className);
-            }
-        }
-        
+    function buildKanjiCard() {        
         populateFromElement(
             target =  document.getElementById(ID_CONTAINER_MEANING),
             source = document.getElementsByClassName('yomitan-glossary')[0].childNodes[0],
@@ -972,7 +1033,8 @@
     //buildStandardCard();
     //buildFillInCard();
     //buildGrammarCard();
+    //buildKanjiCard();
 
     // UNCOMMENT BELOW LINE IF FRONT-SIDE
-    // hideBack(); 
-//}
+    //hideBack(); 
+}
