@@ -1074,7 +1074,7 @@
     //buildStandardCard();
     //buildFillInCard();
     //buildGrammarCard();
-    buildKanjiCard();
+    //buildKanjiCard();
 
     // UNCOMMENT BELOW LINE IF FRONT-SIDE
     //hideBack(); 
