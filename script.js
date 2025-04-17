@@ -189,16 +189,19 @@
         let sentencesContainer = document.getElementById(idNewContainer)
 
         for(let i = 0; i < collectionSentencesCopy.length; i++) {
-            let span = collectionSentencesCopy[i].getElementsByTagName('span')[0];
+            let spanList = collectionSentencesCopy[i].getElementsByTagName('span');
+            spanList = collectionToArray(spanList);
             
             // converts <span> to <b>
             try{
                 if(convertSpan) {
-                    let highlightedText ="";
-                    highlightedText = document.createElement('b')
-                    //highlightedText.classList.add(CLASSHIGHLIGHT);
-                    highlightedText.innerHTML = span.innerHTML;
-                    collectionSentencesCopy[i].replaceChild(highlightedText, span);
+                    spanList.forEach ( span => {
+                        let highlightedText ="";
+                        highlightedText = document.createElement('b')
+                        //highlightedText.classList.add(CLASSHIGHLIGHT);
+                        highlightedText.innerHTML = span.innerHTML;
+                        collectionSentencesCopy[i].replaceChild(highlightedText, span);
+                    })
                 }
     
                 // adds a class to all ruby text
