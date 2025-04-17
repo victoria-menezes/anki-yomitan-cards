@@ -767,10 +767,7 @@
     // #### BY CARD TYPE
     function buildStandardCard() {
         // ## HIDING VOCAB FURIGANA
-        vocabRuby = document.getElementById(ID_VOCAB).querySelector('rt')
-        if (vocabRuby != null) {
-            vocabRuby.classList.add(CLASS_HIDDEN);
-        }
+        addClassByTag('rt', CLASS_HIDDEN, document.getElementById(ID_VOCAB));
 
         // ## SENTENCE FETCHING
         // ## SENTENCE FETCHING: FROM FIELDS
