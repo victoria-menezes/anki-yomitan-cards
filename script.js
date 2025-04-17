@@ -1016,11 +1016,22 @@
     }
 
     function buildKanjiCard() {        
-        populateFromElement(
-            target =  document.getElementById(ID_CONTAINER_MEANING),
-            source = document.getElementsByClassName('yomitan-glossary')[0].childNodes[0],
-            className = 'meaning-item'
-        )
+        let meaningSource = document.getElementsByClassName('yomitan-glossary')[0];
+
+        if (meaningSource.childNodes[0].innerHTML !== undefined){
+            populateFromElement(
+                target =  document.getElementById(ID_CONTAINER_MEANING),
+                source = meaningSource.childNodes[0],
+                className = 'meaning-item'
+            )
+        } else { // only one meaning
+            populateFromElement(
+                target =  document.getElementById(ID_CONTAINER_MEANING),
+                source = meaningSource,
+                className = 'meaning-item'
+            )
+        }
+
 
         populateFromCSV(
             target = document.getElementById(ID_CONTAINER_KANJI_ON),
@@ -1063,7 +1074,7 @@
     //buildStandardCard();
     //buildFillInCard();
     //buildGrammarCard();
-    //buildKanjiCard();
+    buildKanjiCard();
 
     // UNCOMMENT BELOW LINE IF FRONT-SIDE
     //hideBack(); 
