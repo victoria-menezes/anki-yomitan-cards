@@ -9,6 +9,7 @@
     font-family: var(--font);
 
     --color-accent:#3fdb1f;
+    --color-accent-secondary:#cfd854;
     --color-text: #fff;
     --color-text-dark:#181818;
     --color-border:#00aa17;
@@ -360,6 +361,23 @@ li{
 .kanji-readings-container{
     display:grid;
     grid-template-columns: repeat(2, 1fr);
+}
+
+.radicals {
+    font-size: var(--fontsize-h3);
+}
+
+.radical {
+    padding-right: 0.3em;
+}
+
+.radical, .radical-highlight {
+    color: var(--color-accent-secondary);
+}
+
+.kanji-highlight {
+    color: var(--color-accent);
+    font-weight: 900;
 }
 
 .title {

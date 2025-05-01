@@ -5,10 +5,10 @@
 
 <body>
 <div class="wrapper">
-    
     <section class="front border-bottom">
         <div class="vocab" id="vocab">{{Character}}</div>
         <div class="hidden">
+            <div id="hidden-radicals">{{Radicals}}</div>
             <div id="hidden-meaning">{{Meaning}}</div>
             <div id="hidden-kun">{{Kunyomi}}</div>
             <div id="hidden-on">{{Onyomi}}</div>
@@ -28,6 +28,7 @@
         <div class="tab-container kanji">
             <div class="tab tab-main" id="tab-main">
                 <div class="kanji-meaning border-bottom" id="dictionary"></div>
+                <div class="radicals" id="radicals"></div>
                 <div class="notes">
                     {{Notes}}
                 </div>
@@ -63,10 +64,7 @@
     </ul>
     </section>
 </div>
-<script type="text/javascript" src="script.js"></script>
-<script type="text/javascript" src="debug.js"></script>
 <script>
-    debugMode();
-    buildKanjiCard();
+    // PASTE SCRIPT HERE
 </script> 
 </body>

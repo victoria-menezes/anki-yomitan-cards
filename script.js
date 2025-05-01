@@ -33,6 +33,8 @@
     const ID_HIDDENCONTAINER_KANJI_ON = 'hidden-on';
     const ID_HIDDENCONTAINER_KANJI_LOOKALIKES = 'hidden-lookalikes';
     const ID_HIDDENCONTAINER_KANJI_LOOKALIKES_MEANING = 'hidden-lookalikes-meaning';
+    const ID_HIDDENCONTAINER_KANJI_RADICALS = 'hidden-radicals';
+
 
     const ID_CONTAINER_KANJI_EXAMPLES = 'kanji-examples';
     const ID_CONTAINER_KANJI_EXAMPLES_TRANSLATED = 'kanji-examples-translated';
@@ -40,7 +42,9 @@
     const ID_CONTAINER_KANJI_ON = 'kanji-on';
     const ID_CONTAINER_KANJI_LOOKALIKES = 'kanji-lookalikes';
     const ID_CONTAINER_KANJI_LOOKALIKES_MEANING = 'kanji-lookalikes-meaning';
-
+    const ID_CONTAINER_RADICALS = 'radicals';
+    
+    
     const ID_CONTAINER_SENTENCE_FRONT = 'front-sentences-container';
     const ID_CONTAINER_SENTENCE_BACK = 'back-sentences-container';    
     const ID_CONTAINER_TRANSLATED = 'translated-container';
@@ -1035,6 +1039,11 @@
             )
         }
 
+        populateFromElement(
+            target = document.getElementById(ID_CONTAINER_RADICALS),
+            source = document.getElementById(ID_HIDDENCONTAINER_KANJI_RADICALS),
+            className = 'radical-item'
+        )
 
         populateFromCSV(
             target = document.getElementById(ID_CONTAINER_KANJI_ON),
@@ -1066,6 +1075,7 @@
             className = ['kanji-examples-item example', 'kanji-examples-item translated']
         )
 
+        
 
         let character = document.getElementById(ID_VOCAB).innerHTML;
         addClassAroundWord(character, document.getElementById('kanji-examples'), 'highlight')
