@@ -133,7 +133,8 @@ i{
 .container-buttons {
     display: flex;
     width: 100%;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 1em;
 }
 
 .container-sentences {
@@ -207,6 +208,16 @@ i{
     flex-wrap: wrap;
     margin-bottom: 0.5em;
 }
+
+.container-sentence-back{
+    text-align: center;
+    .sentence-translated {
+        margin-bottom:0.5em;
+        border-bottom: 2px solid var(--color-border);
+    }
+}
+
+
 
 /* TAG STYLING */
 
@@ -293,4 +304,35 @@ i{
 
 .particle{
     background-color: var(--color-particle);
+}
+
+
+/* DESKTOP */
+@media screen and (min-width: 1000px){
+    body{
+        font-size:16px;
+    }
+
+    .back{
+        flex:1 1;
+        overflow-y: hidden;
+    }
+
+    .container-tab{
+        display:grid;
+        grid-template-columns: repeat(3, 1fr);
+        overflow-y: hidden;
+    }
+
+    .tab.hidden{
+        display:flex;
+    }
+
+    .tab {
+        overflow-y: auto;
+    }
+
+    .navigation-list{
+        display:none;
+    }
 }

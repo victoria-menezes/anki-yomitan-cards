@@ -154,12 +154,13 @@ import { debugMode } from './debug.js'
      */
     function fetchByAttribute(attributeName, attributeValue, searchIn) {
         if (DEBUG) console.log('Searching for attribute',attributeName,attributeValue,'in',searchIn);
+        let copyToSearch = searchIn.cloneNode(true);
         let search;
         if (attributeValue!==''){
-            search = searchIn.querySelectorAll('['+attributeName+'='+attributeValue+']');
+            search = copyToSearch.querySelectorAll('['+attributeName+'='+attributeValue+']');
             search = toArray(search);
         } else {
-            search = searchIn.querySelectorAll('['+attributeName+']');
+            search = copyToSearch.querySelectorAll('['+attributeName+']');
             search = toArray(search);
         }
         if (DEBUG) console.log('Returning: ', search);
@@ -288,23 +289,33 @@ import { debugMode } from './debug.js'
      * @returns 
      */
     const convertLineBreaksToDivs = (element) => {
-        if (DEBUG) console.log('Separating',element,'into divs')
-        let newHTML = element.innerHTML;
-        newHTML = '<div>'+newHTML.replaceAll('<br>','</div><div>')+'</div>'
-        element.innerHTML = newHTML;
-        return element;
+        if (DEBUG) console.log('Separating',element,'into divs');
+        try {
+            let newHTML = element.innerHTML;
+            newHTML = '<div>'+newHTML.replaceAll('<br>','</div><div>')+'</div>'
+            element.innerHTML = newHTML;
+            return element;
+        } catch (error) {
+            if (DEBUG) console.log('Failed to split, error:', error);
+            return element;
+        }
     }
 
     const restyleSentences = (sentences) => {
-        sentences.forEach(element => {
-            element.style.fontSize ='';
-            let span = element.getElementsByTagName('span')[0];
-            let html = span.innerHTML;
-            let newElem = newElement('span', CLASS_HIGHLIGHT);
-            newElem.innerHTML = html;            
-            element.replaceChild(newElem, span);
-        })
-        return sentences;
+        if (DEBUG) console.log('Restyling',sentences);
+        try {
+            sentences.forEach(element => {
+                element.style.fontSize ='';
+                let span = element.getElementsByTagName('span')[0];
+                let html = span.innerHTML;
+                let newElem = newElement('span', CLASS_HIGHLIGHT);
+                newElem.innerHTML = html;            
+                element.replaceChild(newElem, span);
+            })
+            return sentences;
+        } catch (error) {
+            if (DEBUG) console.log('Failed to restyle, error:', error);
+        }
     }
 
     // SECTION: INITIALIZER 
@@ -327,9 +338,7 @@ import { debugMode } from './debug.js'
         modifyClasses(CONTAINER_BACK, 'hidden', 'add');
     }
 
-
     const buildStandardCard = () => {
-
         // FRONT
         // TEXT: VOCAB
         let vocab = simpleFetch(document.getElementById('hidden-vocab'));
@@ -454,7 +463,7 @@ import { debugMode } from './debug.js'
 
         let dictSentencesTrans = fetchByAttribute(ATTRIBUTE_CONTENT, SENTENCE_DATA_PREFIX+'-b', CONTAINER_HIDDEN_MEANING)
         restyleSentences(dictSentencesTrans);
-        modifyClassesInArray(dictSentences, 'sentence-translated');
+        modifyClassesInArray(dictSentencesTrans, 'sentence-translated');
 
         alternatedAppend(dictSentences, dictSentencesTrans, CONTAINER_SENTENCE_BACK, SENTENCE_MAX);       
 
@@ -550,5 +559,5 @@ import { debugMode } from './debug.js'
 
 
     // HIDE BACK?
-    hideback();
+    // hideback();
 }
