@@ -1,16 +1,20 @@
 <!-- USED AS A BASE FOR ALL CARDS -->
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="module" src="./script.js"></script>
 </head>
 
 <body>
 <div class="wrapper">
     <section class="front border-bottom">
         <div class="vocab" id="vocab">{{Vocab-furigana}}</div>
-        <div class="front-sentences" id="front-sentences-container"></div>
+        <div class="front-fill-in">
+            <div class="front-sentences redacted" id="front-sentences-container"></div>
+            <div class="front-meaning" id="front-meaning-container"></div>
+        </div>
         <div class="buttons-container">
-            <button class="button" onclick="showByClass('front-sentences','block')"><span>Sentences</span></button>
-            <button class="button" onclick="removeClassByTag('rt','hidden')"><span>Furigana</span></button>
+            <button class="button" id="btn-furigana" onclick="showByClass('front-sentences','block')"><span>Sentences</span></button>
+            <button class="button" id="btn-sentences" onclick="removeClassByTag('rt','hidden')"><span>Furigana</span></button>
         </div>
         <div class="hidden">
             <div id="hidden-sentences">{{Sentence}}</div>

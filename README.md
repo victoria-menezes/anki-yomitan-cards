@@ -6,6 +6,7 @@ Description in progress
 
 ## Card types
 Description in progress
+
 ### Card fields
 Description in progress
 
@@ -14,6 +15,7 @@ Files in the 'debugging' folder are for testing and styling purposes, they are t
 
 # To-do
 ## Major
+- Refactor cards (again...)
 - Mobile-first:
     - Comparison cards
 

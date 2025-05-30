@@ -1,7 +1,6 @@
-
+import { debugMode } from './debug.js'
 // FIRST AND FINAL CURLY BRACKETS MUST BE UNCOMMENTED, IF THEY ARE COMMENTED IT IS LIKELY A LEFTOVER FROM DEBUGGING AND WILL BE FIXED
 {
-            
     // ## CONSTANTS
     const SENTENCE_MAX = 4;
     const SENTENCE_DATA_PREFIX = 'example-sentence';
@@ -18,6 +17,8 @@
     const ID_BACK = 'answer';
     const ID_AUDIO = 'audio';
 
+    const ID_BUTTON_FURIGANA = 'btn-furigana';
+    const ID_BUTTON_SENTENCES = 'btn-sentences';
     
     const ID_CONTAINER_MEANING = 'dictionary';
     const ID_HIDDENCONTAINER_MEANING = 'hidden-meaning'
@@ -43,6 +44,7 @@
     const ID_CONTAINER_KANJI_LOOKALIKES = 'kanji-lookalikes';
     const ID_CONTAINER_KANJI_LOOKALIKES_MEANING = 'kanji-lookalikes-meaning';
     const ID_CONTAINER_RADICALS = 'radicals';
+    const ID_CONTAINER_MEANINGFRONT = 'front-meaning-container';
     
     
     const ID_CONTAINER_SENTENCE_FRONT = 'front-sentences-container';
@@ -674,6 +676,33 @@
     }
 
     /**
+     * Gets the meanings from the yomitan dictionary and formats them in an ordered list
+     * @returns Ol
+     */
+    const getMeanings = (className = '') => {
+        let meaningCollection = document.querySelectorAll('['+ATTRIBUTE_CONTENT+'='+'glossary'+']');
+        let meaningList = nodeListToArray(meaningCollection);
+        
+        let finalOl = document.createElement('ol');
+
+        // console.log(meaningList);
+        meaningList.forEach(ul => {
+            let currentItem = ''
+            let children = ul.querySelectorAll('li');
+            children = nodeListToArray(children);
+            children.forEach(li => {
+                currentItem += li.innerText+', ';
+            })
+            currentItem = currentItem.slice(0,-2); //removing the extra comma
+            let newLi = document.createElement('li');
+            newLi.innerText = currentItem;
+            finalOl.appendChild(newLi);            
+        })
+        finalOl.classList = className;
+        return finalOl;
+    }   
+
+    /**
      * Populates the target grid with a list of elements from the source, split by line breaks, divs or lis
      * @param {Object} target Element to populate
      * @param {Array.<Object>} sources Array of objects to draw items from, in the desired order
@@ -920,6 +949,13 @@
         
         addTagsFromDictionary();
    
+        let dictMeanings = getMeanings('front-meaning');
+
+        let frontMeanings = document.getElementById(ID_CONTAINER_MEANINGFRONT);
+        frontMeanings.appendChild(dictMeanings);
+
+        // hide vocab
+        document.getElementById(ID_VOCAB).style.display = 'none';
     }
 
     function linebreaksToItems(element, tag="") {
@@ -954,7 +990,7 @@
                 '</div>'+
                 '</div>';
         }
-        addClassByTag('b', 'highlighted', container);
+        addClassByTag('b', CLASS_HIGHLIGHT, container);
         addClassByTag('rt', 'hidden', container);
         addClassByClass('sentence-translated', 'hidden');
         
@@ -1083,9 +1119,12 @@
 
     // #### CALLING FUNCTION
 
+    // DEBUG-ONLY
+    debugMode();
+
     // CALL ONLY THE RELEVANT CARD, COMMENT THE REST
     //buildStandardCard();
-    //buildFillInCard();
+    buildFillInCard();
     //buildGrammarCard();
     //buildKanjiCard();
 

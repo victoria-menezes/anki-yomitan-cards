@@ -99,8 +99,35 @@ i{
 
 li{
     list-style: none;
+    counter-increment: item;
 }
-    
+
+.front-fill-in{
+    display:grid;
+    grid-template-columns: 3fr 2fr;
+}
+
+.front-meaning{
+    font-size:var(--fontsize-small);
+}
+
+.front-meaning {
+    counter-reset: item;
+}
+
+.front-meaning li {
+    margin-top:0.5em;
+}    
+.front-meaning >li:before {
+    margin-right: 10px;
+    content: counter(item)".";
+    background: var(--color-border);
+    color: white;
+    width: 2em;
+    text-align: center;
+    display: inline-block;
+}
+
 .wrapper{
     display:flex;
     flex-flow:column;
