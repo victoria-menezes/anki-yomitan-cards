@@ -1,6 +1,6 @@
-import { debugMode } from './debug.js'
+//import { debugMode } from './debug.js'
 {
-    const DEBUG = true;
+    const DEBUG = false;
     
     const ID_VOCAB = 'vocab';
     const ID_FRONT = 'front';
@@ -167,6 +167,33 @@ import { debugMode } from './debug.js'
         return search;
     }
 
+    /**
+     * Gets the meanings from the yomitan dictionary and formats them in an ordered list
+     * @returns Ol
+     */
+    const getMeanings = (className = '') => {
+        let meaningCollection = document.querySelectorAll('['+ATTRIBUTE_CONTENT+'='+'glossary'+']');
+        let meaningList = toArray(meaningCollection);
+        
+        let finalOl = document.createElement('ol');
+
+        // console.log(meaningList);
+        meaningList.forEach(ul => {
+            let currentItem = ''
+            let children = ul.querySelectorAll('li');
+            children = toArray(children);
+            children.forEach(li => {
+                currentItem += li.innerText+', ';
+            })
+            currentItem = currentItem.slice(0,-2); //removing the extra comma
+            let newLi = document.createElement('li');
+            newLi.innerText = currentItem;
+            finalOl.appendChild(newLi);            
+        })
+        finalOl.classList = className;
+        return finalOl;
+    }   
+
     // SECTION: UTILITY - APPEND
 
     /**
@@ -186,14 +213,66 @@ import { debugMode } from './debug.js'
     }
 
     const alternatedAppend = (appendWhat1, appendWhat2, appendToWho, max=99) => {
+        if (DEBUG) console.log('Alternated append of',appendWhat1,appendWhat2, ' to',appendToWho)
         let count = Math.min(appendWhat1.length, appendWhat2.length, max);
         for (let i = 0; i<count; i++){
+            if (DEBUG) console.log('Appending pair:',appendWhat1[i], appendWhat2[i]);
             simpleAppend(appendWhat1[i], appendToWho);
             simpleAppend(appendWhat2[i], appendToWho);
         }
     }
 
     // SECTION: UTILITY - FETCH + APPEND
+
+    /**
+     * Fetches attribute tags from the dictionary
+     * and appends them to the given element with
+     * the suitable formatting
+     * @param {Object} appendTo 
+     */
+    const appendTagsFromDictionary = (appendTo) => {
+        let tagElements = fetchByAttribute(ATTRIBUTE_TAG, '', CONTAINER_HIDDEN_MEANING) ?? [];
+        let tagList = [];
+        tagElements.forEach(element => {
+            let attribute = element.getAttribute(ATTRIBUTE_TAG);
+            let tags = TAGS[attribute][0].split(" ") ?? [];
+            let superTag = TAGS[attribute][1];
+            
+            if (!tagList.includes(superTag)){
+                let elem = newElement('div', 'tag '+superTag);
+                elem.innerText = superTag;
+                tagList.push(superTag);
+                simpleAppend(elem, appendTo);
+            }
+            tags.forEach(tag =>{
+                if(tagList.includes(tag)){
+                    return;
+                } else {
+                    let elem = newElement('div', 'tag '+attribute+' '+superTag);
+                    elem.innerText = tag;
+                    tagList.push(tag);
+                    simpleAppend(elem, appendTo);
+                }
+            })
+        })
+    }
+
+    /**
+         * Fetches the readings from the given element,
+         * separates them by comma and appends them
+         * to the other given element as divs
+         * @param {Object} hiddenElement 
+         * @param {Object} appendTo 
+         */
+        const splitAndAppendReadings = (hiddenElement, appendTo, classes='reading') => {
+            let readings = hiddenElement;
+            let readingsText = readings.innerText.split(", ") ?? [];
+            readingsText.forEach(element => {
+                let el = newElement('div', classes);
+                el.innerText = element;
+                simpleAppend(el, appendTo);
+            })
+        }
 
     // SECTION: UTILITY - CLASS MANIPULATION
 
@@ -301,12 +380,51 @@ import { debugMode } from './debug.js'
         }
     }
 
-    const restyleSentences = (sentences) => {
+    /**
+     * Searches for a word in an element and wraps every instance of that word in a span tag 
+     * @param {String} word Word to wrap inside span
+     * @param {Object} searchIn Element to search in
+     * @param {Array.<String>} className Classes to be added to the span, separated by spaces
+     */
+    const addClassAroundWord = (
+        word,
+        searchIn,
+        className=''
+    ) => {
+        // adding span tag:
+        let innerContent = searchIn;
+        innerContent.innerHTML = innerContent.innerHTML.replaceAll(word, '<span>'+word+'</span>');
+
+        // selecting ALL span tags
+        let spanList = innerContent.querySelectorAll('span');
+        
+        // narrowing it down to only the ones with the right content
+        let elementList = [];
+        spanList.forEach(span => {
+            if (span.innerHTML === word){
+                elementList.push(span);
+            }
+        })
+
+        if (className !== ''){
+            modifyClassesInArray(elementList, className);
+        }
+    }
+
+
+    /**
+     * Re-styles span (or other) elements in the array
+     * to have their highlights with the proper formatting
+     * @param {array} sentences 
+     * @param {string} styleBy 
+     * @returns 
+     */
+    const restyleSentences = (sentences, styleBy = 'span') => {
         if (DEBUG) console.log('Restyling',sentences);
         try {
             sentences.forEach(element => {
                 element.style.fontSize ='';
-                let span = element.getElementsByTagName('span')[0];
+                let span = element.getElementsByTagName(styleBy)[0];
                 let html = span.innerHTML;
                 let newElem = newElement('span', CLASS_HIGHLIGHT);
                 newElem.innerHTML = html;            
@@ -442,6 +560,7 @@ import { debugMode } from './debug.js'
         simpleAppend(CONTAINER_SENTENCE_BACK, CONTAINER_TAB_NOTES);
 
         customSentences = getChildren(sentences); // re-calling the function to make another copy
+        customSentences = restyleSentences(customSentences, 'b');
         customSentencesTrans = getChildren(sentencesTranslated);
         customSentencesAmount = customSentences.length;
 
@@ -471,30 +590,7 @@ import { debugMode } from './debug.js'
         const CONTAINER_TAB_NOTES_TAGS = newElement('div', 'container-tags', 'container-tags');
         simpleAppend(CONTAINER_TAB_NOTES_TAGS, CONTAINER_TAB_NOTES);
 
-        let tagElements = fetchByAttribute(ATTRIBUTE_TAG, '', CONTAINER_HIDDEN_MEANING) ?? [];
-        let tagList = [];
-        tagElements.forEach(element => {
-            let attribute = element.getAttribute(ATTRIBUTE_TAG);
-            let tags = TAGS[attribute][0].split(" ") ?? [];
-            let superTag = TAGS[attribute][1];
-            
-            if (!tagList.includes(superTag)){
-                let elem = newElement('div', 'tag '+superTag);
-                elem.innerText = superTag;
-                tagList.push(superTag);
-                simpleAppend(elem, CONTAINER_TAB_NOTES_TAGS);
-            }
-            tags.forEach(tag =>{
-                if(tagList.includes(tag)){
-                    return;
-                } else {
-                    let elem = newElement('div', 'tag '+attribute+' '+superTag);
-                    elem.innerText = tag;
-                    tagList.push(tag);
-                    simpleAppend(elem, CONTAINER_TAB_NOTES_TAGS);
-                }
-            })
-        })
+        appendTagsFromDictionary(CONTAINER_TAB_NOTES_TAGS);
 
         // TABS: Notes - Notes
         let notes = simpleFetch(CONTAINER_HIDDEN_NOTES);
@@ -550,12 +646,334 @@ import { debugMode } from './debug.js'
             event.preventDefault();
         })
     }
+
+    const buildFillInCard = () => {
+        // FRONT
+        const CONTAINER_SENTENCE_DEFINITIONS = newElement('div', 'container container-sentence-meaning');
+        simpleAppend(CONTAINER_SENTENCE_DEFINITIONS, CONTAINER_FRONT);
+
+        // CONTAINER: sentences
+        const CONTAINER_SENTENCE = newElement('div', 'container container-sentences');
+        simpleAppend(CONTAINER_SENTENCE, CONTAINER_SENTENCE_DEFINITIONS);
+        modifyClasses(CONTAINER_SENTENCE, 'redacted');
+
+        const ID_HIDDEN_SENTENCE = 'hidden-sentence';
+        const CONTAINER_HIDDEN_SENTENCE = getByID(ID_HIDDEN_SENTENCE);
+        const ID_HIDDEN_SENTENCE_TRANS = 'hidden-sentence-translated';
+        const CONTAINER_HIDDEN_SENTENCE_TRANS = getByID(ID_HIDDEN_SENTENCE_TRANS); 
+        let sentences = simpleFetch(CONTAINER_HIDDEN_SENTENCE);
+        let sentencesTranslated = simpleFetch(CONTAINER_HIDDEN_SENTENCE_TRANS);
+
+        convertLineBreaksToDivs(sentences);
+        convertLineBreaksToDivs(sentencesTranslated);
+        
+        let customSentences = getChildren(sentences);
+        customSentences = restyleSentences(customSentences, 'b');
+        
+        let customSentencesTrans = getChildren(sentencesTranslated);
+        let customSentencesAmount = customSentences.length;
+
+        for (let i = 0; i<customSentencesAmount; i++){
+            let sentence = simpleAppend(customSentences[i], CONTAINER_SENTENCE);
+            modifyClasses(sentence, 'sentence front-sentence')
+            modifyClassesByTag('rt', CLASS_HIDDEN, 'add', sentence);
+            let sentenceTrans = simpleAppend(customSentencesTrans[i], CONTAINER_SENTENCE);
+            modifyClasses(sentenceTrans, 'sentence-translated');
+        }
+
+        // getting sentences from dictionary and replacing their formatting
+        let dictSentences = fetchByAttribute(ATTRIBUTE_CONTENT, SENTENCE_DATA_PREFIX+'-a', CONTAINER_HIDDEN_MEANING)
+        let dictSentenceAmount = Math.min(SENTENCE_MAX, dictSentences.length);
+        restyleSentences(dictSentences);
+        modifyClassesInArray(dictSentences, 'sentence front-sentence');        
+
+        let dictSentencesTrans = fetchByAttribute(ATTRIBUTE_CONTENT, SENTENCE_DATA_PREFIX+'-b', CONTAINER_HIDDEN_MEANING)
+        restyleSentences(dictSentencesTrans);
+        modifyClassesInArray(dictSentencesTrans, 'sentence-translated');
+
+
+        for (let i = 0; i<dictSentenceAmount; i++){
+            let sentence = simpleAppend(dictSentences[i], CONTAINER_SENTENCE);
+            modifyClassesByTag('rt',CLASS_HIDDEN,'add',sentence);
+            let sentenceTrans = simpleAppend(dictSentencesTrans[i], CONTAINER_SENTENCE);
+            modifyClasses(sentenceTrans, 'sentence-translated');
+        }
+
+        // CONTAINER: DEFINITIONS
+        const CONTAINER_DEFINITIONS = newElement('div', 'container container-sentences');
+        simpleAppend(CONTAINER_DEFINITIONS, CONTAINER_SENTENCE_DEFINITIONS);
+        let dictMeanings = getMeanings('front-meaning');
+        simpleAppend(dictMeanings, CONTAINER_DEFINITIONS)
+
+        // BACK
+        // NAVIGATION
+        const CONTAINER_NAVIGATION = newElement('div','navigation-list', 'navigation');
+        simpleAppend(CONTAINER_NAVIGATION, CONTAINER_BACK);
+
+        const NAVI_DICT = newElement('div','navigation-item', 'navi-dictionary');
+        NAVI_DICT.innerText = 'Dictionary';
+        simpleAppend(NAVI_DICT, CONTAINER_NAVIGATION);
+
+        const NAVI_NOTES = newElement('div','navigation-item '+CLASS_ACTIVE, 'navi-notes');
+        NAVI_NOTES.innerText = 'notes';
+        simpleAppend(NAVI_NOTES, CONTAINER_NAVIGATION);
+
+        const NAVI_FORM = newElement('div','navigation-item', 'navi-form');
+        NAVI_FORM.innerText = 'Forming';
+        simpleAppend(NAVI_FORM, CONTAINER_NAVIGATION);
+
+        // CONTAINER: tabs
+        const CONTAINER_TAB = newElement('div','container-tab', 'container-tab');
+        simpleAppend(CONTAINER_TAB, CONTAINER_BACK);
+
+        // TABS
+        const CONTAINER_TAB_DICT = newElement('div','tab '+CLASS_HIDDEN, ID_TAB_DICT);
+        simpleAppend(CONTAINER_TAB_DICT, CONTAINER_TAB);
+        const CONTAINER_TAB_NOTES = newElement('div','tab', ID_TAB_NOTES);
+        simpleAppend(CONTAINER_TAB_NOTES, CONTAINER_TAB);
+        const CONTAINER_TAB_FORM = newElement('div','tab '+CLASS_HIDDEN, ID_TAB_FORM);
+        simpleAppend(CONTAINER_TAB_FORM, CONTAINER_TAB);
+        
+        // TABS: Dictionary
+        let meaning = simpleFetch(CONTAINER_HIDDEN_MEANING);        
+        simpleAppend(meaning, CONTAINER_TAB_DICT);
+
+        // TABS: Notes
+        // NOTES: vocab
+        let vocab = simpleFetch(document.getElementById('hidden-vocab'));
+        setID(vocab, ID_VOCAB);
+        simpleAppend(vocab, CONTAINER_TAB_NOTES);
+        modifyClasses(vocab,
+            CLASS_HIGHLIGHT+' '+CLASS_VOCAB);
+
+        // NOTES: sentences
+        const CONTAINER_SENTENCE_BACK = newElement('div', 'container-sentence-back', 'container-sentence-back');
+        simpleAppend(CONTAINER_SENTENCE_BACK, CONTAINER_TAB_NOTES);
+
+        customSentences = getChildren(sentences); // re-calling the function to make another copy
+        customSentences = restyleSentences(customSentences, 'b');
+        customSentencesTrans = getChildren(sentencesTranslated);
+        customSentencesAmount = customSentences.length;
+
+        for (let i = 0; i<customSentencesAmount; i++){
+            let sentence = simpleAppend(customSentences[i], CONTAINER_SENTENCE_BACK);
+            modifyClasses(sentence, 'sentence')
+            modifyClassesByTag('rt', CLASS_HIDDEN, 'add', sentence);
+            let sentenceTrans = simpleAppend(customSentencesTrans[i], CONTAINER_SENTENCE_BACK);
+            modifyClasses(sentenceTrans, 'sentence-translated');
+        }
+
+        // getting sentences from dictionary and replacing their formatting
+        dictSentences = fetchByAttribute(ATTRIBUTE_CONTENT, SENTENCE_DATA_PREFIX+'-a', CONTAINER_HIDDEN_MEANING)
+        restyleSentences(dictSentences);
+        modifyClassesInArray(dictSentences, 'sentence');
+        dictSentences.forEach(element => {
+            modifyClassesByTag('rt',CLASS_HIDDEN,'add',element);
+        })
+
+        dictSentencesTrans = fetchByAttribute(ATTRIBUTE_CONTENT, SENTENCE_DATA_PREFIX+'-b', CONTAINER_HIDDEN_MEANING)
+        restyleSentences(dictSentencesTrans);
+        modifyClassesInArray(dictSentencesTrans, 'sentence-translated');
+
+        alternatedAppend(dictSentences, dictSentencesTrans, CONTAINER_SENTENCE_BACK, SENTENCE_MAX);       
+
+        // TABS: Notes - Tags
+        const CONTAINER_TAB_NOTES_TAGS = newElement('div', 'container-tags', 'container-tags');
+        simpleAppend(CONTAINER_TAB_NOTES_TAGS, CONTAINER_TAB_NOTES);
+
+        appendTagsFromDictionary(CONTAINER_TAB_NOTES_TAGS);
+
+        // TABS: Notes - Notes
+        let notes = simpleFetch(CONTAINER_HIDDEN_NOTES);
+        simpleAppend(notes, CONTAINER_TAB_NOTES);                
+
+        // TABS: Form
+        let form = simpleFetch(CONTAINER_HIDDEN_FORM);
+        simpleAppend(form, CONTAINER_TAB_FORM);
+
+        NAVI_DICT.addEventListener('click', function(event){
+            modifyClasses(CONTAINER_TAB_DICT, CLASS_HIDDEN, 'remove');
+            modifyClasses(CONTAINER_TAB_NOTES, CLASS_HIDDEN, 'add');
+            modifyClasses(CONTAINER_TAB_FORM, CLASS_HIDDEN, 'add')
+            
+            modifyClasses(NAVI_DICT, CLASS_ACTIVE, 'add');
+            modifyClasses(NAVI_NOTES, CLASS_ACTIVE, 'remove');
+            modifyClasses(NAVI_FORM, CLASS_ACTIVE, 'remove');
+            event.preventDefault();
+        })
+        NAVI_NOTES.addEventListener('click', function(event){
+            modifyClasses(CONTAINER_TAB_DICT, CLASS_HIDDEN, 'add');
+            modifyClasses(CONTAINER_TAB_NOTES, CLASS_HIDDEN, 'remove');
+            modifyClasses(CONTAINER_TAB_FORM, CLASS_HIDDEN, 'add');
+
+            modifyClasses(NAVI_DICT, CLASS_ACTIVE, 'remove');
+            modifyClasses(NAVI_NOTES, CLASS_ACTIVE, 'add');
+            modifyClasses(NAVI_FORM, CLASS_ACTIVE, 'remove');
+            event.preventDefault();
+        })
+        NAVI_FORM.addEventListener('click', function(event){
+            modifyClasses(CONTAINER_TAB_DICT, CLASS_HIDDEN, 'add');
+            modifyClasses(CONTAINER_TAB_NOTES, CLASS_HIDDEN, 'add');
+            modifyClasses(CONTAINER_TAB_FORM, CLASS_HIDDEN, 'remove');
+            
+            modifyClasses(NAVI_DICT, CLASS_ACTIVE, 'remove');
+            modifyClasses(NAVI_NOTES, CLASS_ACTIVE, 'remove');
+            modifyClasses(NAVI_FORM, CLASS_ACTIVE, 'add');
+            event.preventDefault();
+        })
+
+    }
+
+    const buildKanjiCard = () => {
+        // FRONT
+        // TEXT: VOCAB
+        let character = simpleFetch(document.getElementById('hidden-character'));
+        setID(character, ID_VOCAB);
+        simpleAppend(character, CONTAINER_FRONT);
+        modifyClassesByTag('rt',CLASS_HIDDEN,'add',character);
+        modifyClasses(character,
+            CLASS_HIGHLIGHT+' '+CLASS_VOCAB);
+
+        // BACK
+
+        // BACK - navigation
+        // NAVIGATION
+        const CONTAINER_NAVIGATION = newElement('div','navigation-list two', 'navigation');
+        simpleAppend(CONTAINER_NAVIGATION, CONTAINER_BACK);
+
+        const NAVI_MAIN = newElement('div','navigation-item '+CLASS_ACTIVE, 'navi-dictionary');
+        NAVI_MAIN.innerText = 'main';
+        simpleAppend(NAVI_MAIN, CONTAINER_NAVIGATION);
+
+        const NAVI_LOOKALIKES = newElement('div','navigation-item', 'navi-form');
+        NAVI_LOOKALIKES.innerText = 'lookalikes';
+        simpleAppend(NAVI_LOOKALIKES, CONTAINER_NAVIGATION);
+
+        // CONTAINER: tabs
+        const CONTAINER_TAB = newElement('div','container-tab two', 'container-tab');
+        simpleAppend(CONTAINER_TAB, CONTAINER_BACK);
+
+        // move
+        const ID_TAB_MAIN = 'tab-main';
+        const ID_TAB_LOOKALIKES = 'tab-lookalikes'
+
+        // TABS
+        const CONTAINER_TAB_MAIN = newElement('div','tab', ID_TAB_MAIN);
+        simpleAppend(CONTAINER_TAB_MAIN, CONTAINER_TAB);
+        const CONTAINER_TAB_LOOKALIKES = newElement('div','tab '+CLASS_HIDDEN, ID_TAB_LOOKALIKES); //
+        simpleAppend(CONTAINER_TAB_LOOKALIKES, CONTAINER_TAB);
+
+        // MAIN - meaning
+        let meaningOriginal = simpleFetch(document.getElementsByClassName('yomitan-glossary')[0]);
+        let meaning = simpleAppend(meaningOriginal.childNodes[0], CONTAINER_TAB_MAIN);
+        modifyClasses(meaning, 'meaning-list');
+
+        // MAIN - readings
+        let CONTAINER_READINGS = newElement('div', 'container-readings');
+        simpleAppend(CONTAINER_READINGS, CONTAINER_TAB_MAIN);
+        
+        let CONTAINER_KUN = newElement('div', 'container kun')
+        simpleAppend(CONTAINER_KUN, CONTAINER_READINGS);
+        let CONTAINER_TITLE_KUN = newElement('div', 'title');
+        CONTAINER_TITLE_KUN.innerText = 'kun';
+        simpleAppend(CONTAINER_TITLE_KUN, CONTAINER_KUN);
+        let CONTAINER_READINGS_KUN = newElement('div', 'readings');
+        simpleAppend(CONTAINER_READINGS_KUN, CONTAINER_KUN);
+
+        let CONTAINER_ON = newElement('div', 'container on')
+        simpleAppend(CONTAINER_ON, CONTAINER_READINGS);
+        let CONTAINER_TITLE_ON = newElement('div', 'title');
+        CONTAINER_TITLE_ON.innerText = 'on';
+        simpleAppend(CONTAINER_TITLE_ON, CONTAINER_ON);            
+        let CONTAINER_READINGS_ON = newElement('div', 'readings');
+        simpleAppend(CONTAINER_READINGS_ON, CONTAINER_ON);
+        
+        splitAndAppendReadings(simpleFetch(getByID('hidden-kun')), CONTAINER_READINGS_KUN, 'reading');
+        splitAndAppendReadings(simpleFetch(getByID('hidden-on')), CONTAINER_READINGS_ON, 'reading');
+
+        // MAIN - vocab
+        const CONTAINER_VOCAB = newElement('div','container-vocab');
+        simpleAppend(CONTAINER_VOCAB, CONTAINER_TAB_MAIN);
+
+        let examples = simpleFetch(getByID('hidden-kanji-examples'));
+        examples = convertLineBreaksToDivs(examples);
+        examples = toArray(examples.childNodes);
+        examples.forEach(element => {
+            addClassAroundWord(character.innerText, element, CLASS_HIGHLIGHT);
+        })
+        modifyClassesInArray(examples, 'vocab-example');
+        let examplesMeaning = simpleFetch(getByID('hidden-kanji-examples-meaning'));
+        examplesMeaning = convertLineBreaksToDivs(examplesMeaning);
+        examplesMeaning = toArray(examplesMeaning.childNodes);
+        modifyClassesInArray(examplesMeaning, 'vocab-example-meaning');
+
+        let examples_title = newElement('div','title');
+        examples_title.innerText = 'examples';
+        simpleAppend(examples_title, CONTAINER_VOCAB);
+        
+        let examples_title_meaning = newElement('div','title');
+        examples_title_meaning.innerText = 'meaning';
+        simpleAppend(examples_title_meaning, CONTAINER_VOCAB);
+        
+        alternatedAppend(examples, examplesMeaning, CONTAINER_VOCAB);
+
+        // LOOKALIKES - lookalikes
+
+        let CONTAINER_LOOKALIKES = newElement('div', 'container-lookalikes');
+        simpleAppend(CONTAINER_LOOKALIKES, CONTAINER_TAB_LOOKALIKES)
+
+        let lookalikes = simpleFetch(getByID('hidden-lookalikes'));
+        lookalikes = convertLineBreaksToDivs(lookalikes);
+        lookalikes = toArray(lookalikes.childNodes);
+        modifyClassesInArray(lookalikes, 'vocab-example');
+        let lookalikesMeaning = simpleFetch(getByID('hidden-lookalikes-meaning'));
+        lookalikesMeaning = convertLineBreaksToDivs(lookalikesMeaning);
+        lookalikesMeaning = toArray(lookalikesMeaning.childNodes);
+        modifyClassesInArray(lookalikesMeaning, 'vocab-example-meaning');
+
+        let lookalikes_title = newElement('div','title');
+        lookalikes_title.innerText = 'lookalikes';
+        simpleAppend(lookalikes_title, CONTAINER_LOOKALIKES);
+        
+        let lookalikes_title_meaning = newElement('div','title');
+        lookalikes_title_meaning.innerText = 'meaning';
+        simpleAppend(lookalikes_title_meaning, CONTAINER_LOOKALIKES);
+        
+        alternatedAppend(lookalikes, lookalikesMeaning, CONTAINER_LOOKALIKES);
+
+        // EVENT LISTENERS
+        NAVI_MAIN.addEventListener('click', function(event){
+            modifyClasses(CONTAINER_TAB_MAIN, CLASS_HIDDEN, 'remove');
+            modifyClasses(CONTAINER_TAB_LOOKALIKES, CLASS_HIDDEN, 'add')
+            
+            modifyClasses(NAVI_MAIN, CLASS_ACTIVE, 'add');
+            modifyClasses(NAVI_LOOKALIKES, CLASS_ACTIVE, 'remove');
+            event.preventDefault();
+        })
+        NAVI_LOOKALIKES.addEventListener('click', function(event){
+            modifyClasses(CONTAINER_TAB_MAIN, CLASS_HIDDEN, 'add');
+            modifyClasses(CONTAINER_TAB_LOOKALIKES, CLASS_HIDDEN, 'remove')
+            
+            modifyClasses(NAVI_MAIN, CLASS_ACTIVE, 'remove');
+            modifyClasses(NAVI_LOOKALIKES, CLASS_ACTIVE, 'add');
+            event.preventDefault();
+        })
+    }
+
+
+
+
+
     // DO NOT TOUCH
-    debugMode();
+    if (DEBUG){
+        debugMode();
+    }
     getKeyElements();
 
     // BUILDING - ENABLE ONLY THE RELEVANT ONE
-    buildStandardCard();
+    //buildStandardCard();
+    //buildFillInCard();
+    buildKanjiCard();
 
 
     // HIDE BACK?
