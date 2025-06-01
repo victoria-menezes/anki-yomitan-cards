@@ -1,6 +1,7 @@
 //import { debugMode } from './debug.js'
 {
     const DEBUG = false;
+    const DEBUG_FUNCTION = false;
     
     const ID_VOCAB = 'vocab';
     const ID_FRONT = 'front';
@@ -32,6 +33,7 @@
         'adj-no':['の adjective','adj'],
         'adj-na':['な adjective','adj'],
         'adj-i':['い adjective','adj'],
+        'adj-f':['adjectival', 'adj'],
         'adv':['adverb','adv'],
         'uk':['かな','misc'],
         'n':['noun','noun'],
@@ -42,18 +44,18 @@
         'vs':['する verb','verb'],
         'vs-i':['する verb','verb'],
         'vs-s':['する verb','verb'],
-        'v5s':['5-dan','verb'],
-        'v5r':['5-dan','verb'],
-        'v5y':['5-dan','verb'],
-        'v5m':['5-dan','verb'],
-        'v5h':['5-dan','verb'],
-        'v5f':['5-dan','verb'],
-        'v5b':['5-dan','verb'],
-        'v5n':['5-dan','verb'],
-        'v5t':['5-dan','verb'],
-        'v5s':['5-dan','verb'],
-        'v5k':['5-dan','verb'],
-        'v5u':['5-dan','verb'],
+        'v5s':['5-dan verb','verb'],
+        'v5r':['5-dan verb','verb'],
+        'v5y':['5-dan verb','verb'],
+        'v5m':['5-dan verb','verb'],
+        'v5h':['5-dan verb','verb'],
+        'v5f':['5-dan verb','verb'],
+        'v5b':['5-dan verb','verb'],
+        'v5n':['5-dan verb','verb'],
+        'v5t':['5-dan verb','verb'],
+        'v5s':['5-dan verb','verb'],
+        'v5k':['5-dan verb','verb'],
+        'v5u':['5-dan verb','verb'],
         'aux-v':['auxiliary verb','verb'],
         'col':['colloquial','misc'],
         'n-suf':['suffix','su-prefix'],
@@ -131,16 +133,16 @@
      * @returns new Element
      */
     const simpleFetch = (fetchFrom, tag='div') => {
-        let origin = fetchFrom;
-        let newElem = document.createElement(tag);
+        let origin = fetchFrom.cloneNode(true);
+        if (DEBUG) console.log('Fetching from',fetchFrom, 'clone:', origin);
         if (origin !== null) {
+            let newElem = document.createElement(tag);
             newElem.innerHTML = origin.innerHTML;
-            
             if (DEBUG) console.log('Successfully fetched ', newElem);
             return newElem;
         }
         else {
-            if (DEBUG) console.log('Fetch from',fetchFrom,'failed')
+            if (DEBUG) console.log('Fetch failed');
             return '';
         }
     }
@@ -231,12 +233,17 @@
      * @param {Object} appendTo 
      */
     const appendTagsFromDictionary = (appendTo) => {
+        if (DEBUG) console.log('APPENDING TAGS FROM DICTIONARY')
         let tagElements = fetchByAttribute(ATTRIBUTE_TAG, '', CONTAINER_HIDDEN_MEANING) ?? [];
         let tagList = [];
         tagElements.forEach(element => {
+            if (DEBUG) console.log('Current tag:',element);
             let attribute = element.getAttribute(ATTRIBUTE_TAG);
-            let tags = TAGS[attribute][0].split(" ") ?? [];
-            let superTag = TAGS[attribute][1];
+            let tagBundle = TAGS[attribute] ?? [element,'misc']; 
+            console.log(tagBundle);
+            let tags = tagBundle[0].split(" ") ?? [];
+            let superTag = tagBundle[1] ?? 'misc';
+            
             
             if (!tagList.includes(superTag)){
                 let elem = newElement('div', 'tag '+superTag);
@@ -353,7 +360,7 @@
     const getChildren = (element) => {
         let copy = element.cloneNode(true);
         let children = copy.childNodes;
-        children = toArray(children);
+        children = toArray(children) ?? [];
 
         if (DEBUG) console.log ('Children of ',element,children);
         return children;
@@ -365,15 +372,21 @@
      * Tries to break down an element's contents into different divs, 
      * separated by line-breaks (<br>)
      * @param {Object} element 
-     * @returns 
+     * @returns div
      */
     const convertLineBreaksToDivs = (element) => {
         if (DEBUG) console.log('Separating',element,'into divs');
         try {
-            let newHTML = element.innerHTML;
-            newHTML = '<div>'+newHTML.replaceAll('<br>','</div><div>')+'</div>'
-            element.innerHTML = newHTML;
-            return element;
+            let result = document.createElement('div');
+            let source = element.innerHTML;
+            let splitSource = source.split('<br>');
+            splitSource.forEach(txt => {
+                let elem = document.createElement('div');
+                elem.innerText = txt;
+                simpleAppend(elem, result);
+            })
+            if (DEBUG) console.log('Separated: ', result,'| children',result.childNodes);
+            return result;
         } catch (error) {
             if (DEBUG) console.log('Failed to split, error:', error);
             return element;
@@ -423,6 +436,7 @@
         if (DEBUG) console.log('Restyling',sentences);
         try {
             sentences.forEach(element => {
+                if (DEBUG) console.log('Restyling element: ',element)
                 element.style.fontSize ='';
                 let span = element.getElementsByTagName(styleBy)[0];
                 let html = span.innerHTML;
@@ -498,8 +512,8 @@
         let sentences = simpleFetch(CONTAINER_HIDDEN_SENTENCE);
         let sentencesTranslated = simpleFetch(CONTAINER_HIDDEN_SENTENCE_TRANS);
 
-        convertLineBreaksToDivs(sentences);
-        convertLineBreaksToDivs(sentencesTranslated);
+        sentences = convertLineBreaksToDivs(sentences);
+        sentencesTranslated = convertLineBreaksToDivs(sentencesTranslated);
         
         let customSentences = getChildren(sentences);
         let customSentencesTrans = getChildren(sentencesTranslated);
@@ -507,12 +521,13 @@
 
         for (let i = 0; i<customSentencesAmount; i++){
             let sentence = simpleAppend(customSentences[i], CONTAINER_SENTENCE);
+            if (DEBUG) console.log('Current sentence:', sentence);
             modifyClasses(sentence, 'sentence front-sentence')
             modifyClassesByTag('rt', CLASS_HIDDEN, 'add', sentence);
         }
 
         // getting sentences from dictionary and replacing their formatting
-        let dictSentences = fetchByAttribute(ATTRIBUTE_CONTENT, SENTENCE_DATA_PREFIX+'-a', CONTAINER_HIDDEN_MEANING)
+        let dictSentences = fetchByAttribute(ATTRIBUTE_CONTENT, SENTENCE_DATA_PREFIX+'-a', CONTAINER_HIDDEN_MEANING) ?? [];
         let dictSentenceAmount = Math.min(SENTENCE_MAX, dictSentences.length);
         restyleSentences(dictSentences);
         modifyClassesInArray(dictSentences, 'sentence front-sentence');        
@@ -560,7 +575,7 @@
         simpleAppend(CONTAINER_SENTENCE_BACK, CONTAINER_TAB_NOTES);
 
         customSentences = getChildren(sentences); // re-calling the function to make another copy
-        customSentences = restyleSentences(customSentences, 'b');
+        restyleSentences(customSentences, 'b');
         customSentencesTrans = getChildren(sentencesTranslated);
         customSentencesAmount = customSentences.length;
 
@@ -664,11 +679,11 @@
         let sentences = simpleFetch(CONTAINER_HIDDEN_SENTENCE);
         let sentencesTranslated = simpleFetch(CONTAINER_HIDDEN_SENTENCE_TRANS);
 
-        convertLineBreaksToDivs(sentences);
-        convertLineBreaksToDivs(sentencesTranslated);
+        sentences = convertLineBreaksToDivs(sentences);
+        sentencesTranslated = convertLineBreaksToDivs(sentencesTranslated);
         
         let customSentences = getChildren(sentences);
-        customSentences = restyleSentences(customSentences, 'b');
+        restyleSentences(customSentences, 'b');
         
         let customSentencesTrans = getChildren(sentencesTranslated);
         let customSentencesAmount = customSentences.length;
@@ -751,7 +766,7 @@
         simpleAppend(CONTAINER_SENTENCE_BACK, CONTAINER_TAB_NOTES);
 
         customSentences = getChildren(sentences); // re-calling the function to make another copy
-        customSentences = restyleSentences(customSentences, 'b');
+        restyleSentences(customSentences, 'b');
         customSentencesTrans = getChildren(sentencesTranslated);
         customSentencesAmount = customSentences.length;
 
@@ -864,9 +879,56 @@
         simpleAppend(CONTAINER_TAB_LOOKALIKES, CONTAINER_TAB);
 
         // MAIN - meaning
+        const CONTAINER_TAB_MAIN_MEANING = newElement('div', 'container-meaning');
+        simpleAppend(CONTAINER_TAB_MAIN_MEANING, CONTAINER_TAB_MAIN);
+
+        // make divs out of each meaning and dunk them into CONTAINER_TAB_MAIN_MEANING
         let meaningOriginal = simpleFetch(document.getElementsByClassName('yomitan-glossary')[0]);
-        let meaning = simpleAppend(meaningOriginal.childNodes[0], CONTAINER_TAB_MAIN);
-        modifyClasses(meaning, 'meaning-list');
+        
+        // will return a <ol> if multiple meanings,
+        // plain text if it doesn't
+
+        let meanings = [];
+
+        if (meaningOriginal.childNodes[0].childNodes.length === 0) { // if single meaning
+            let elem = document.createElement('div');
+            if (DEBUG) console.log('KANJI MEANING: single meaning from ', meaningOriginal, ':', meaningOriginal.innerText);            
+            elem.innerText = meaningOriginal.innerText;
+            meanings = [elem];
+            if (DEBUG) console.log('KANJI MEANING: gotten meanings', meanings);            
+        } else {
+            let list = meaningOriginal.childNodes[0].childNodes;
+            list = toArray(list);
+            list.forEach(element => {
+                let elem = document.createElement('div');
+                elem.innerText = element.innerText;
+                meanings.push(elem);
+            })
+        }
+
+        meanings.forEach(meaning => {
+            modifyClasses(meaning, 'kanji-meaning-item');
+            simpleAppend(meaning, CONTAINER_TAB_MAIN_MEANING);
+        })
+
+        // MAIN - radicals
+        let radicals = simpleFetch(getByID('hidden-radicals'));
+        let radicalCharacters = radicals.getElementsByClassName('radical');
+        radicalCharacters = toArray(radicalCharacters);
+        let radicalMeaning = radicals.getElementsByClassName('radical-meaning');
+        radicalMeaning = toArray(radicalMeaning);
+
+        let CONTAINER_RADICALS = newElement('div', 'container-radicals');
+        simpleAppend(CONTAINER_RADICALS, CONTAINER_TAB_MAIN);
+
+        alternatedAppend(radicalCharacters, radicalMeaning, CONTAINER_RADICALS);
+
+        // MAIN - mnemonics
+        let mnem = simpleFetch(getByID('hidden-notes'));
+        let CONTAINER_MNEM = newElement('div', 'container-mnem');
+        simpleAppend(CONTAINER_MNEM, CONTAINER_TAB_MAIN);
+        simpleAppend(mnem, CONTAINER_MNEM);
+
 
         // MAIN - readings
         let CONTAINER_READINGS = newElement('div', 'container-readings');
@@ -895,18 +957,24 @@
         const CONTAINER_VOCAB = newElement('div','container-vocab');
         simpleAppend(CONTAINER_VOCAB, CONTAINER_TAB_MAIN);
 
-        let examples = simpleFetch(getByID('hidden-kanji-examples'));
-        examples = convertLineBreaksToDivs(examples);
-        examples = toArray(examples.childNodes);
-        examples.forEach(element => {
-            addClassAroundWord(character.innerText, element, CLASS_HIGHLIGHT);
-        })
-        modifyClassesInArray(examples, 'vocab-example');
-        let examplesMeaning = simpleFetch(getByID('hidden-kanji-examples-meaning'));
-        examplesMeaning = convertLineBreaksToDivs(examplesMeaning);
-        examplesMeaning = toArray(examplesMeaning.childNodes);
-        modifyClassesInArray(examplesMeaning, 'vocab-example-meaning');
+        let examples;
+        let examplesMeaning;
 
+        try {
+            examples = simpleFetch(getByID('hidden-kanji-examples'));
+            examples = convertLineBreaksToDivs(examples);
+            examples = toArray(examples.childNodes);
+            examples.forEach(element => {
+                addClassAroundWord(character.innerText, element, CLASS_HIGHLIGHT);
+            })
+            modifyClassesInArray(examples, 'vocab-example');
+            examplesMeaning = simpleFetch(getByID('hidden-kanji-examples-meaning'));
+            examplesMeaning = convertLineBreaksToDivs(examplesMeaning);
+            examplesMeaning = toArray(examplesMeaning.childNodes);
+            modifyClassesInArray(examplesMeaning, 'vocab-example-meaning');
+        } catch (error) {
+            if (DEBUG) console.log('Failed to get examples:',error);
+        }
         let examples_title = newElement('div','title');
         examples_title.innerText = 'examples';
         simpleAppend(examples_title, CONTAINER_VOCAB);
@@ -915,21 +983,29 @@
         examples_title_meaning.innerText = 'meaning';
         simpleAppend(examples_title_meaning, CONTAINER_VOCAB);
         
-        alternatedAppend(examples, examplesMeaning, CONTAINER_VOCAB);
-
+        try {
+            alternatedAppend(examples, examplesMeaning, CONTAINER_VOCAB);
+        } catch (error) {
+            if (DEBUG) console.log('Failed to append examples:',error);
+        }
         // LOOKALIKES - lookalikes
-
         let CONTAINER_LOOKALIKES = newElement('div', 'container-lookalikes');
         simpleAppend(CONTAINER_LOOKALIKES, CONTAINER_TAB_LOOKALIKES)
 
-        let lookalikes = simpleFetch(getByID('hidden-lookalikes'));
-        lookalikes = convertLineBreaksToDivs(lookalikes);
-        lookalikes = toArray(lookalikes.childNodes);
-        modifyClassesInArray(lookalikes, 'vocab-example');
-        let lookalikesMeaning = simpleFetch(getByID('hidden-lookalikes-meaning'));
-        lookalikesMeaning = convertLineBreaksToDivs(lookalikesMeaning);
-        lookalikesMeaning = toArray(lookalikesMeaning.childNodes);
-        modifyClassesInArray(lookalikesMeaning, 'vocab-example-meaning');
+        let lookalikes;
+        let lookalikesMeaning;
+        try {
+            lookalikes = simpleFetch(getByID('hidden-lookalikes'));
+            lookalikes = convertLineBreaksToDivs(lookalikes);
+            lookalikes = toArray(lookalikes.childNodes);
+            modifyClassesInArray(lookalikes, 'vocab-example');
+            lookalikesMeaning = simpleFetch(getByID('hidden-lookalikes-meaning'));
+            lookalikesMeaning = convertLineBreaksToDivs(lookalikesMeaning);
+            lookalikesMeaning = toArray(lookalikesMeaning.childNodes);
+            modifyClassesInArray(lookalikesMeaning, 'vocab-example-meaning');
+        } catch(error) {
+            if (DEBUG) console.log('Failed to get lookalikes:',error);
+        }
 
         let lookalikes_title = newElement('div','title');
         lookalikes_title.innerText = 'lookalikes';
@@ -939,8 +1015,11 @@
         lookalikes_title_meaning.innerText = 'meaning';
         simpleAppend(lookalikes_title_meaning, CONTAINER_LOOKALIKES);
         
-        alternatedAppend(lookalikes, lookalikesMeaning, CONTAINER_LOOKALIKES);
-
+        try {
+            alternatedAppend(lookalikes, lookalikesMeaning, CONTAINER_LOOKALIKES);
+        } catch (error) {
+            if (DEBUG) console.log('Failed to append lookalikes:',error);
+        }
         // EVENT LISTENERS
         NAVI_MAIN.addEventListener('click', function(event){
             modifyClasses(CONTAINER_TAB_MAIN, CLASS_HIDDEN, 'remove');
@@ -965,7 +1044,7 @@
 
 
     // DO NOT TOUCH
-    if (DEBUG){
+    if (DEBUG_FUNCTION){
         debugMode();
     }
     getKeyElements();
@@ -973,7 +1052,7 @@
     // BUILDING - ENABLE ONLY THE RELEVANT ONE
     //buildStandardCard();
     //buildFillInCard();
-    buildKanjiCard();
+    //buildKanjiCard();
 
 
     // HIDE BACK?

@@ -15,9 +15,10 @@ Files in the 'debugging' folder are for testing and styling purposes, they are t
 
 # To-do
 ## Major
-- Refactor cards (again...)
+- Refactor grammar
 - Mobile-first:
     - Comparison cards
+- Remake comparison
 
 ## Medium
 - Fix source link

@@ -252,13 +252,36 @@ li{
     text-align: center;
 }
 
-/* KANJI */
+/* SECTION: KANJI */
 /* SECTION: MAIN */
-.meaning-list{
+.container-meaning{
     text-align: center;
     font-size:var(--fontsize-h3);
     border-bottom: 3px solid var(--color-border);
     margin-bottom: 0.5em;
+}
+
+.container-radicals{
+    display:grid;
+    grid-template-columns: 1fr 6fr;
+}
+
+.radical{
+    font-size: var(--fontsize-h2);
+    color: var(--color-accent-secondary);
+}
+
+.radical-meaning {
+    margin: auto 0;
+    font-size: var(--fontsize-h3);
+}
+
+.radical-highlight {
+    color: var(--color-accent-secondary);
+}
+
+.kanji-highlight {
+    color: var(--color-accent);
 }
 
 .container-readings{
@@ -336,6 +359,9 @@ li{
 .vocab-example-meaning{
     margin:auto;
 }
+
+
+
 /* TAG STYLING */
 
 .tag{
