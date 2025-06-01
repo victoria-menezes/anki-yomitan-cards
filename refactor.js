@@ -239,8 +239,7 @@
         tagElements.forEach(element => {
             if (DEBUG) console.log('Current tag:',element);
             let attribute = element.getAttribute(ATTRIBUTE_TAG);
-            let tagBundle = TAGS[attribute] ?? [element,'misc']; 
-            console.log(tagBundle);
+            let tagBundle = TAGS[attribute] ?? [attribute,'misc'];
             let tags = tagBundle[0].split(" ") ?? [];
             let superTag = tagBundle[1] ?? 'misc';
             
@@ -291,6 +290,9 @@
     const modifyClasses = (element, modifyingClasses, action='add') => {
         if (DEBUG) console.log('Modifying',element,'with "',modifyingClasses,'" (',action,')');
         if (modifyingClasses === '') {
+            return;
+        }
+        if (element === undefined) {
             return;
         }
         let classes = modifyingClasses.split(' ');
@@ -380,12 +382,12 @@
             let result = document.createElement('div');
             let source = element.innerHTML;
             let splitSource = source.split('<br>');
+            if (DEBUG) console.log('Separated: ', result,'| children',result.childNodes,'| now appending to new element');
             splitSource.forEach(txt => {
                 let elem = document.createElement('div');
-                elem.innerText = txt;
+                elem.innerHTML = txt;
                 simpleAppend(elem, result);
             })
-            if (DEBUG) console.log('Separated: ', result,'| children',result.childNodes);
             return result;
         } catch (error) {
             if (DEBUG) console.log('Failed to split, error:', error);
@@ -439,14 +441,18 @@
                 if (DEBUG) console.log('Restyling element: ',element)
                 element.style.fontSize ='';
                 let span = element.getElementsByTagName(styleBy)[0];
-                let html = span.innerHTML;
-                let newElem = newElement('span', CLASS_HIGHLIGHT);
-                newElem.innerHTML = html;            
-                element.replaceChild(newElem, span);
+                if (DEBUG) console.log('elements to restyle: ', span)
+                if (span !== undefined){
+                    let html = span.innerHTML;
+                    let newElem = newElement('span', CLASS_HIGHLIGHT);
+                    newElem.innerHTML = html;            
+                    if (DEBUG) console.log('restyled element',newElem,'will replace', span);
+                    span.replaceWith(newElem);
+                }
             })
             return sentences;
         } catch (error) {
-            if (DEBUG) console.log('Failed to restyle, error:', error);
+            if (DEBUG) console.log('Failed to restyle,',sentences, '| error:', error);
         }
     }
 
@@ -676,6 +682,7 @@
         const CONTAINER_HIDDEN_SENTENCE = getByID(ID_HIDDEN_SENTENCE);
         const ID_HIDDEN_SENTENCE_TRANS = 'hidden-sentence-translated';
         const CONTAINER_HIDDEN_SENTENCE_TRANS = getByID(ID_HIDDEN_SENTENCE_TRANS); 
+        if (DEBUG) console.log('================== FETCHING CUSTOM SENTENCES')
         let sentences = simpleFetch(CONTAINER_HIDDEN_SENTENCE);
         let sentencesTranslated = simpleFetch(CONTAINER_HIDDEN_SENTENCE_TRANS);
 
@@ -697,6 +704,7 @@
         }
 
         // getting sentences from dictionary and replacing their formatting
+        if (DEBUG) console.log('================== FETCHING DICTIONARY SENTENCES')
         let dictSentences = fetchByAttribute(ATTRIBUTE_CONTENT, SENTENCE_DATA_PREFIX+'-a', CONTAINER_HIDDEN_MEANING)
         let dictSentenceAmount = Math.min(SENTENCE_MAX, dictSentences.length);
         restyleSentences(dictSentences);
@@ -1050,7 +1058,7 @@
     getKeyElements();
 
     // BUILDING - ENABLE ONLY THE RELEVANT ONE
-    //buildStandardCard();
+    buildStandardCard();
     //buildFillInCard();
     //buildKanjiCard();
 

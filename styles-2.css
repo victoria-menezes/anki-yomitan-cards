@@ -493,4 +493,8 @@ li{
     .front-meaning{
         font-size: var(--fontsize);
     }
+
+    .front-sentenze {
+        font-size: var(--fontsize-h3);
+    }
 }
