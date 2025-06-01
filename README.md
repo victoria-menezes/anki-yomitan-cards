@@ -1,11 +1,20 @@
 # About
-Description in progress
+Cards made for personal use for Anki and Yomitan, specifically for japanese study.
+The goal is to achieve clear, informative cards requiring as little user-input as possible to incentivize vocabulary-mining.
 
 ## Preview
 Description in progress
 
 ## Card types
-Description in progress
+### Standard
+Vocabulary in front, definitions and such on the back. Buttons allow for sentences (if available) or furigana to be viewed before answering.
+### Fill-in
+Sentences with a word censored, and the word's definition next to them. Definitions on the back.
+### Kanji
+Kanji in front, and definitions, mnemonics, readings etc on the back. 
+Radicals and mnemonics must be sourced by the user.
+### Grammar
+For grammar-points. So far the only card type to still be completely manual, as there is no dictionary to suit my needs.
 
 ### Card fields
 Description in progress
